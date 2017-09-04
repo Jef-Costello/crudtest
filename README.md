@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 FOSREST-User-OAuth-Skeleton
 ==========
 
@@ -55,3 +56,7 @@ To return JSON set Accept Header to *application/json*.  Will return an HTML vie
 ====
 
 - Unit Testing
+=======
+# crudtest
+react/redux with symfpony rest back end
+>>>>>>> e94796ed65550aa539cb541770b66151e43d3c24
