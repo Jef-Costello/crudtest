@@ -1,0 +1,29 @@
+app_homepage:
+    path:     /
+    defaults: { _controller: AppBundle:Default:index }
+app_view:
+    path:     /view/{slug}
+    defaults: { _controller: AppBundle:Default:index }
+app_office:
+    path:     /office
+    defaults: { _controller: AppBundle:Default:index }
+app_login:
+    path:     /profiel
+    defaults: { _controller: AppBundle:Default:index }
+
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
+
+users:
+    type:     rest
+    resource: AppBundle\Controller\UsersController
+products:
+    type:     rest
+    resource: AppBundle\Controller\ProductController
+
+fos_oauth_server_token:
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
+
+fos_oauth_server_authorize:
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.xml"
