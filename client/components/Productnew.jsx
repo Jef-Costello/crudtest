@@ -21,15 +21,16 @@ const Productnew = React.createClass({
             transitionLeave={false}
           >
             <figure className="modalinner" >
-
+              <div className="groups">
+                <button onClick={(e) => this.pb(e, 0)} ref={(c) => { this.b1 = c; }} className={this.props.ui.modalcatbuttons[0] ? 'selected' : ''}>cat1</button>
+                <button onClick={(e) => this.pb(e, 1)} ref={(c) => { this.b2 = c; }} className={this.props.ui.modalcatbuttons[1] ? 'selected' : ''}>cat2</button>
+                <button onClick={(e) => this.pb(e, 2)} ref={(c) => { this.b3 = c; }} className={this.props.ui.modalcatbuttons[2] ? 'selected' : ''}>cat3</button>
+              </div>
 
                 naam: <br /><input ref={(c) => { this.npname = c; }} type="text" onKeyPress={this.enterDetect} /><br />
               beschrijving:<br /><input ref={(c) => { this.ndescription = c; }} type="text" onKeyPress={this.enterDetect} />
               <br />
               {}
-              <button onClick={(e) => this.pb(e, 0)} ref={(c) => { this.b1 = c; }} className={this.props.ui.modalcatbuttons[0] ? 'selected' : ''}>1</button>
-              <button onClick={(e) => this.pb(e, 1)} ref={(c) => { this.b2 = c; }} className={this.props.ui.modalcatbuttons[1] ? 'selected' : ''}>2</button>
-              <button onClick={(e) => this.pb(e, 2)} ref={(c) => { this.b3 = c; }} className={this.props.ui.modalcatbuttons[2] ? 'selected' : ''}>3</button>
 
 
               <button onClick={this.newproduct}>opslaan</button>

@@ -12,7 +12,7 @@ export const reloadProductEpic = action$ =>
                   Observable.of(
                     { type: 'START_REFRESH' },
                    ),
-                    ajax({ url: 'http://localhost/api4/web/app_dev.php/users/refresh', headers: { credentials: 'include' } })
+                    ajax({ url: 'https://www.sublation.nl/web/app_dev.php/users/refresh', headers: { credentials: 'include' } })
                       .flatMap(json =>
                             Observable.concat(
 
@@ -57,7 +57,7 @@ Observable.concat(
        type: 'LOADING',
 
      }),
-   ajax({ url: `http://localhost/api4/web/app_dev.php/products/single?ProductId=${action.id}`, headers: { Authorization: `Bearer ${action.token}`, 'Content-Type': 'application/json' } })
+   ajax({ url: `https://www.sublation.nl/web/app_dev.php/products/single?ProductId=${action.id}`, headers: { Authorization: `Bearer ${action.token}`, 'Content-Type': 'application/json' } })
    .flatMap(json =>
      Observable.concat(
        // Fire 2 actions, one after the other
@@ -94,7 +94,7 @@ export const allProductsEpic = (action$, store) =>
        Observable.of({
          type: 'LOADING',
        }),
-     ajax({ url: 'http://localhost/api4/web/app_dev.php/products/getall', headers: { Authorization: `Bearer ${store.getState().connection.token}`, 'Content-Type': 'application/json' } })
+     ajax({ url: 'https://www.sublation.nl/web/app_dev.php/products/getall', headers: { Authorization: `Bearer ${store.getState().connection.token}`, 'Content-Type': 'application/json' } })
      .flatMap(json =>
        Observable.concat(
          // Fire 2 actions, one after the other
@@ -133,7 +133,7 @@ export const deleteProductEpic = (action$, store) =>
        Observable.of({
          type: 'LOADING',
        }),
-     ajax({ url: `http://localhost/api4/web/app_dev.php/products/productdelete?productId=${action.id}`, headers: { Authorization: `Bearer ${store.getState().connection.token}`, 'Content-Type': 'application/json' } })
+     ajax({ url: `https://www.sublation.nl/web/app_dev.php/products/productdelete?productId=${action.id}`, headers: { Authorization: `Bearer ${store.getState().connection.token}`, 'Content-Type': 'application/json' } })
      .flatMap(json =>
        Observable.concat(
          // Fire 2 actions, one after the other
@@ -171,7 +171,7 @@ export const newProductEpic = (action$, store) =>
       Observable.of({
         type: 'LOADING',
       }),
-      ajax({ url: `http://localhost/api4/web/app_dev.php/products/new?ProductName=${action.name}&&description=${action.description}&&${action.groups}`, headers: { Authorization: `Bearer ${store.getState().connection.token}`, 'Content-Type': 'application/json' } })
+      ajax({ url: `https://www.sublation.nl/web/app_dev.php/products/new?ProductName=${action.name}&&description=${action.description}&&${action.groups}`, headers: { Authorization: `Bearer ${store.getState().connection.token}`, 'Content-Type': 'application/json' } })
        .flatMap(json =>
          Observable.concat(
            // Fire 2 actions, one after the other
@@ -211,7 +211,7 @@ export const editProductEpic = (action$, store) =>
               Observable.of({
                 type: 'LOADING',
               }),
-         ajax({ url: `http://localhost/api4/web/app_dev.php/products/editproduct?ProductId=${action.id}&&ProductName=${action.name}&&ProductDescription=${action.description}&&${action.groups}`, headers: { Authorization: `Bearer ${store.getState().connection.token}`, 'Content-Type': 'application/json' } })
+         ajax({ url: `https://www.sublation.nl/web/app_dev.php/products/editproduct?ProductId=${action.id}&&ProductName=${action.name}&&ProductDescription=${action.description}&&${action.groups}`, headers: { Authorization: `Bearer ${store.getState().connection.token}`, 'Content-Type': 'application/json' } })
          .flatMap(json =>
            Observable.concat(
              Observable.of({
@@ -242,7 +242,7 @@ export const editProductEpic = (action$, store) =>
 export const refreshEpic = action$ =>
   action$.ofType('REFRESH')
     .mergeMap(() =>
-      ajax({ url: 'http://localhost/api4/web/app_dev.php/users/refresh', headers: { credentials: 'include' } })
+      ajax({ url: 'https://www.sublation.nl/web/app_dev.php/users/refresh', headers: { credentials: 'include' } })
         .flatMap(json =>
           Observable.concat(
             Observable.of({
@@ -273,7 +273,7 @@ export const loginEpic = action$ =>
     Observable.of({
       type: 'LOADING' },
     ),
-   ajax({ url: `http://localhost/api4/web/app_dev.php/users/login?password=${action.pw}&name=${action.name}`, headers: { credentials: 'include' } })
+   ajax({ url: `https://www.sublation.nl/web/app_dev.php/users/login?password=${action.pw}&name=${action.name}`, headers: { credentials: 'include' } })
    .flatMap(json =>
      Observable.concat(
        Observable.of({
@@ -314,7 +314,7 @@ export const logOutEpic = action$ =>
   action$.ofType('LOG_OUT')
   .delay(1)
   .mergeMap(action =>
-   ajax({ url: 'http://localhost/api4/web/app_dev.php/users/logout', headers: { credentials: 'include' } })
+   ajax({ url: 'https://www.sublation.nl/web/app_dev.php/users/logout', headers: { credentials: 'include' } })
    .flatMap(json =>
      Observable.concat(
               Observable.of({
@@ -345,7 +345,7 @@ export const getUserEpic = (action$, store) =>
         Observable.of({
           type: 'LOADING',
         }),
-        ajax({ url: 'http://localhost/api4/web/app_dev.php/users/user', headers: { Authorization: `Bearer ${store.getState().connection.token}`, 'Content-Type': 'application/json' } })
+        ajax({ url: 'https://www.sublation.nl/web/app_dev.php/users/user', headers: { Authorization: `Bearer ${store.getState().connection.token}`, 'Content-Type': 'application/json' } })
         .flatMap(json =>
           Observable.concat(
             Observable.of({

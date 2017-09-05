@@ -10,9 +10,9 @@ const TopBar = React.createClass({
     let refreshing;
     let loading;
     const opt = (<span>
-      <Link className="navbutton" to="/api4/web/app_dev.php">home</Link>
-      <Link className="navbutton" to="/api4/web/app_dev.php/office">mijn producten</Link>
-      <Link className="navbutton" to="/api4/web/app_dev.php/profiel">profiel</Link></span>
+      <Link className="navbutton" to="/web/app_dev.php">home</Link>
+      <Link className="navbutton" to="/web/app_dev.php/office">mijn producten</Link>
+      <Link className="navbutton" to="/web/app_dev.php/profiel">profiel</Link></span>
     );
     if (this.props.connection.refreshing === true) { refreshing = <div className="refreshing">..refreshing token..</div>; }
     if (this.props.connection.loading === true) { loading = <div className="spinner" />; }

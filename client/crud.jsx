@@ -12,16 +12,18 @@ import Profiel from './components/Profiel';
 import Home from './components/Home';
 import store, { history } from './store';
 
+const root = store.getState().connection.root;
+
 const router = (
   <Provider store={store}>
 
     <Router history={history}>
-      <Route path="/api4/web/app_dev.php" component={App}>
+      <Route path={`${root}/web/app_dev.php`} component={App}>
 
         <IndexRoute component={Home} />
-        <Route path="/api4/web/app_dev.php/view/:postId" component={Single} />
-        <Route path="/api4/web/app_dev.php/office" component={Office} />
-        <Route path="/api4/web/app_dev.php/profiel" component={Profiel} />
+        <Route path={`${root}/web/app_dev.php/view/:postId`} component={Single} />
+        <Route path={`${root}/web/app_dev.php/office`} component={Office} />
+        <Route path={`${root}/web/app_dev.php/profiel`} component={Profiel} />
       </Route>
     </Router>
   </Provider>

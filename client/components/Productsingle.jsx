@@ -31,19 +31,20 @@ const Productsingle = React.createClass({
           >
             <figure className="modalinner" >
 
-              <div className="grid-photo-wrap">{this.props.getSelectedProduct.name}  (id={this.props.getSelectedProduct.id})</div>
+              <div className="grid-photo-wrap" />
               <div>
-
-                naam:<input ref={'namesingle'} defaultValue={this.props.getSelectedProduct.name} /><br />
-              beschrijving<input ref={'descriptionsingle'} defaultValue={this.props.getSelectedProduct.description} />
-                <button onClick={(e) => this.pb(e, 0)} ref={(c) => { this.b1 = c; }} className={this.props.ui.modalcatbuttons[0] ? 'selected' : ''}>1</button>
-                <button onClick={(e) => this.pb(e, 1)} ref={(c) => { this.b2 = c; }} className={this.props.ui.modalcatbuttons[1] ? 'selected' : ''}>2</button>
-                <button onClick={(e) => this.pb(e, 2)} ref={(c) => { this.b3 = c; }} className={this.props.ui.modalcatbuttons[2] ? 'selected' : ''}>3</button>
+                <div className="groups">
+                  <button onClick={(e) => this.pb(e, 0)} ref={(c) => { this.b1 = c; }} className={this.props.ui.modalcatbuttons[0] ? 'selected' : ''}>cat1</button>
+                  <button onClick={(e) => this.pb(e, 1)} ref={(c) => { this.b2 = c; }} className={this.props.ui.modalcatbuttons[1] ? 'selected' : ''}>cat2</button>
+                  <button onClick={(e) => this.pb(e, 2)} ref={(c) => { this.b3 = c; }} className={this.props.ui.modalcatbuttons[2] ? 'selected' : ''}>cat3</button>
+                </div>
+                naam:<br /><input ref={'namesingle'} defaultValue={this.props.getSelectedProduct.name} /><br />
+              beschrijving:<br /><input ref={'descriptionsingle'} defaultValue={this.props.getSelectedProduct.description} />
 
               </div>
 
-              <button onClick={this.edit}>SAVEe</button>
-              <button onClick={this.delete}>delete</button>
+              <button onClick={this.edit}>opslaan</button>
+              <button onClick={this.delete}>verwijderen</button>
 
               <button onClick={this.props.closeModal}>cancel</button>
 

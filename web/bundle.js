@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "ccd80a8f4f8bb763764e"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "b165f205780326a123f4"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -633,6 +633,9 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	// import components
+	var root = _store2.default.getState().connection.root; // redux to react provider
+	
+	
 	var router = _react2.default.createElement(
 	  _reactRedux.Provider,
 	  { store: _store2.default },
@@ -641,15 +644,14 @@
 	    { history: _store.history },
 	    _react2.default.createElement(
 	      _reactRouter.Route,
-	      { path: '/api4/web/app_dev.php', component: _App2.default },
+	      { path: root + '/web/app_dev.php', component: _App2.default },
 	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _Home2.default }),
-	      _react2.default.createElement(_reactRouter.Route, { path: '/api4/web/app_dev.php/view/:postId', component: _Single2.default }),
-	      _react2.default.createElement(_reactRouter.Route, { path: '/api4/web/app_dev.php/office', component: _Office2.default }),
-	      _react2.default.createElement(_reactRouter.Route, { path: '/api4/web/app_dev.php/profiel', component: _Profiel2.default })
+	      _react2.default.createElement(_reactRouter.Route, { path: root + '/web/app_dev.php/view/:postId', component: _Single2.default }),
+	      _react2.default.createElement(_reactRouter.Route, { path: root + '/web/app_dev.php/office', component: _Office2.default }),
+	      _react2.default.createElement(_reactRouter.Route, { path: root + '/web/app_dev.php/profiel', component: _Profiel2.default })
 	    )
 	  )
-	); // redux to react provider
-	
+	);
 	
 	(0, _reactDom.render)(router, document.getElementById('root'));
 
@@ -29407,7 +29409,7 @@
 	
 	
 	// module
-	exports.push([module.id, "article,\naside,\ndetails,\nfigcaption,\nfigure,\nfooter,\nheader,\nhgroup,\nnav,\nsection,\nsummary {\n  display: block;\n}\naudio,\ncanvas,\nvideo {\n  display: inline-block;\n}\naudio:not([controls]) {\n  display: none;\n  height: 0;\n}\n[hidden] {\n  display: none;\n}\nhtml {\n  font-family: sans-serif;\n  -webkit-text-size-adjust: 100%;\n  -ms-text-size-adjust: 100%;\n}\na:focus {\n  outline: thin dotted;\n}\na:active,\na:hover {\n  outline: 0;\n}\nh1 {\n  font-size: 2em;\n}\nabbr[title] {\n  border-bottom: 1px dotted;\n}\nb,\nstrong {\n  font-weight: 700;\n}\ndfn {\n  font-style: italic;\n}\nmark {\n  background: #ff0;\n  color: #000;\n}\ncode,\nkbd,\npre,\nsamp {\n  font-family: monospace, serif;\n  font-size: 1em;\n}\npre {\n  white-space: pre-wrap;\n  word-wrap: break-word;\n}\nq {\n  quotes: 2 1C 2 1D 2 18 2 19;\n}\nsmall {\n  font-size: 80%;\n}\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}\nsup {\n  top: -0.5em;\n}\nsub {\n  bottom: -0.25em;\n}\nimg {\n  border: 0;\n}\nsvg:not(:root) {\n  overflow: hidden;\n}\nfieldset {\n  border: 1px solid #c0c0c0;\n  margin: 0 2px;\n  padding: 0.35em 0.625em 0.75em;\n}\nbutton,\ninput,\nselect,\ntextarea {\n  font-family: inherit;\n  font-size: 100%;\n  margin: 0;\n}\nbutton,\ninput {\n  line-height: normal;\n}\nbutton,\nhtml input[type=button],\ninput[type=reset],\ninput[type=submit] {\n  -webkit-appearance: button;\n  cursor: pointer;\n}\nbutton[disabled],\ninput[disabled] {\n  cursor: default;\n}\ninput[type=checkbox],\ninput[type=radio] {\n  box-sizing: border-box;\n  padding: 0;\n}\ninput[type=search] {\n  -webkit-appearance: textfield;\n  -moz-box-sizing: content-box;\n  -webkit-box-sizing: content-box;\n  box-sizing: content-box;\n}\ninput[type=search]::-webkit-search-cancel-button,\ninput[type=search]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\ntextarea {\n  overflow: auto;\n  vertical-align: top;\n}\ntable {\n  border-collapse: collapse;\n  border-spacing: 0;\n}\nbody,\nfigure {\n  margin: 0;\n}\nlegend,\nbutton::-moz-focus-inner,\ninput::-moz-focus-inner {\n  border: 0;\n  padding: 0;\n}\n.clearfix:after {\n  visibility: hidden;\n  display: block;\n  font-size: 0;\n  content: \" \";\n  clear: both;\n  height: 0;\n}\n* {\n  -moz-box-sizing: border-box;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n}\nimg {\n  max-width: 100%;\n}\nhtml {\n  font-size: 10px;\n  font-family: sans-serif;\n}\np {\n  font-size: 1.6rem;\n  line-height: 1.5;\n}\nh1 {\n  font-family: billabong, 'billabongregular';\n  text-align: center;\n  font-weight: 100;\n  font-size: 13rem;\n  margin: 2rem 0;\n  letter-spacing: -1px;\n  text-shadow: 0px 4px 0 rgba(18,86,136,0.11);\n}\nh1 a {\n  color: #125688;\n  text-decoration: none;\n}\nh1 a:focus {\n  outline: 0;\n}\n@font-face {\n  font-family: 'billabongregular';\n  src: url(\"https://cdn.rawgit.com/milktronics/beaglegr.am/master/public/fonts/billabong-webfont.eot\");\n  src: url(\"https://cdn.rawgit.com/milktronics/beaglegr.am/master/public/fonts/billabong-webfont.eot?#iefix\") format('embedded-opentype'), url(\"https://cdn.rawgit.com/milktronics/beaglegr.am/master/public/fonts/billabong-webfont.woff\") format('woff'), url(\"https://cdn.rawgit.com/milktronics/beaglegr.am/master/public/fonts/billabong-webfont.ttf\") format('truetype'), url(\"https://cdn.rawgit.com/milktronics/beaglegr.am/master/public/fonts/billabong-webfont.svg#billabongregular\") format('svg');\n  font-weight: normal;\n  font-style: normal;\n}\n.likes-heart {\n  opacity: 0;\n  transition: all 0.5s;\n  transform: translateX(-50%) translateY(-50%) scale(5);\n  display: block;\n}\n.likes-heart.like-enter {\n  transition: all 0.2s;\n  transform: translateX(-50%) translateY(-50%) scale(1);\n  opacity: 1;\n}\n.likes-heart.like-enter.like-enter-active {\n  transform: translateX(-50%) translateY(-50%) scale(5);\n}\n.likes-heart .like-leave-active {\n  display: none;\n}\n.likes-heart .like-leave-active .example-enter {\n  opacity: 0.01;\n}\n.likes-heart .like-leave-active .example-enter.example-enter-active {\n  opacity: 1;\n  transition: opacity 500ms ease-in;\n}\n.likes-heart .like-leave-active .example-leave {\n  opacity: 1;\n}\n.likes-heart .like-leave-active .example-leave.example-leave-active {\n  opacity: 0.01;\n  transition: opacity 300ms ease-in;\n}\nbody {\n  background: #fafafa;\n}\n.loading {\n  position: absolute;\n  z-index: 2;\n  width: 100%;\n  height: 100%;\n  font-size: 30px;\n}\n.photo-grid {\n  display: flex;\n  flex-wrap: wrap;\n  max-width: 1200px;\n  margin: 0 auto;\n}\n.photo-grid-header {\n  width: 100%;\n  margin: 16px;\n}\n.modal {\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  background: rgba(0,0,0,0.3);\n  left: 0px;\n  top: 0px;\n  z-index: 4;\n}\n.spinner {\n  float: right;\n  width: 20px;\n  height: 20px;\n  background-color: transparent;\n  border-radius: 50%;\n  border: 4px solid #fff;\n  -webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;\n  animation: sk-rotateplane 1.2s infinite ease-in-out;\n}\n@-webkit-keyframes sk-rotateplane {\n  0% {\n    -webkit-transform: perspective(120px);\n  }\n  50% {\n    -webkit-transform: perspective(120px) rotateY(180deg);\n  }\n  100% {\n    -webkit-transform: perspective(120px) rotateY(180deg) rotateX(180deg);\n  }\n}\n.refreshing {\n  float: right;\n}\n.modalinner {\n  flex-basis: calc(33.333% - 4rem);\n  flex-grow: 1;\n  flex-shrink: 0;\n  margin-left: -200px;\n  padding: 2rem;\n  border: 1px solid #edeeed;\n  background: #fff;\n  box-shadow: 0 0 0 5px rgba(0,0,0,0.03);\n  position: absolute;\n  width: 400px;\n  top: 50%;\n  left: 50%;\n}\n.noprod {\n  margin: auto;\n}\n.error {\n  color: #f00;\n  font-size: 12px;\n}\n.errorinner {\n  flex-basis: calc(33.333% - 4rem);\n  flex-grow: 1;\n  flex-shrink: 0;\n  margin-left: -100px;\n  padding: 2rem;\n  border: 1px solid #edeeed;\n  background: #f00;\n  box-shadow: 0 0 0 5px rgba(0,0,0,0.03);\n  position: absolute;\n  width: 200px;\n  top: 50%;\n  left: 50%;\n}\n.example-appear {\n  opacity: 0.01;\n}\n.example-appear.example-appear-active {\n  opacity: 1;\n  transition: opacity 0.2s ease-in;\n}\n.user {\n  margin: auto;\n  margin-top: 100px;\n  font-size: 26px;\n  width: 25%;\n}\n.grid-figure,\n.profiel,\n.single-photo {\n  flex-basis: calc(33.333% - 4rem);\n  flex-grow: 1;\n  flex-shrink: 0;\n  margin: 0 2rem 2rem 2rem;\n  padding: 2rem;\n  border: 1px solid #edeeed;\n  background: #fff;\n  box-shadow: 0 0 0 5px rgba(0,0,0,0.03);\n  position: relative;\n}\n.map {\n  flex-basis: calc(33.333% - 4rem);\n  height: 30rem;\n  flex-grow: 1;\n  flex-shrink: 0;\n  margin: 0 2rem 2rem 2rem;\n  padding: 2rem;\n  border: 1px solid #edeeed;\n  background: #fff;\n  box-shadow: 0 0 0 5px rgba(0,0,0,0.03);\n  position: relative;\n}\n.navbutton {\n  color: #000;\n  text-decoration: none;\n  font-size: 16px;\n  margin: 16px;\n}\n.TopBar {\n  font-size: 16px;\n  color: #fff;\n  z-index: 4;\n  position: fixed;\n  background: #125688;\n  width: 100%;\n  height: 40px;\n  top: 0px;\n}\n.TopBarName {\n  margin: 10px;\n}\n#map {\n  height: 50px;\n  width: 100%;\n}\n.notify {\n  text-align: center;\n}\n.form {\n  text-align: center;\n  font-weight: 100;\n  font-size: 4rem;\n  margin: 2rem 0;\n  letter-spacing: -1px;\n  text-shadow: 0px 4px 0 rgba(18,86,136,0.11);\n}\n.profiel {\n  max-width: 900px;\n  margin: 50px auto;\n  display: flex;\n  background: #fff;\n}\n.single-photo {\n  max-width: 900px;\n  margin: 0 auto;\n  display: flex;\n  background: #fff;\n}\n.single-photo .grid-figure {\n  box-shadow: none;\n  margin: 0 2rem 0 0;\n  border: 0;\n  padding: 0;\n  flex: 1 0 60%;\n  max-width: 60%;\n}\n.single-photo .comments {\n  flex: 1 0 40%;\n  max-width: 40%;\n}\n.single-photo .grid-photo {\n  width: 100%;\n  margin: 0;\n}\n.grid-photo {\n  width: calc(100% + 4rem);\n  margin-left: -2rem;\n  margin-top: -2rem;\n  max-width: none;\n}\n.remove-comment {\n  background: none;\n  border: 0;\n  line-height: 1;\n  opacity: 0;\n}\n.remove-comment:hover {\n  color: #f00;\n}\n.comment {\n  border-bottom: 1px solid #edeeed;\n  padding: 0.5rem 0;\n}\n.comment p {\n  font-size: 1.2rem;\n  margin: 0;\n}\n.comment strong {\n  color: #125688;\n  margin-right: 5px;\n}\n.comment:hover .remove-comment {\n  opacity: 1;\n}\n.comment-form input,\n.comment-form textarea {\n  width: 100%;\n  border: 0;\n  font-size: 1.3rem;\n  padding: 1rem 0;\n  border-bottom: 1px solid #edeeed;\n  outline: none;\n  resize: vertical;\n}\n.grid-photo-wrap {\n  position: relative;\n}\n.likes-heart {\n  background: url(\"http://f.cl.ly/items/3Y373q2Q3J3Y1j203n0m/Bitmap-3.png\") center no-repeat;\n  background-size: contain;\n  font-size: 2rem;\n  padding: 1rem;\n  position: absolute;\n  color: #125688;\n  left: 50%;\n  top: 50%;\n  pointer-events: none;\n}\n/*\n  Buttons\n*/\n.control-buttons {\n  display: flex;\n  justify-content: space-between;\n}\nbutton,\n.button {\n  border: 2px solid #f2f2f2;\n  background: none;\n  flex-basis: 48%;\n  display: inline-block;\n  line-height: 2;\n  text-decoration: none;\n  padding: 5px;\n  text-align: center;\n  font-size: 15px;\n  color: #125688;\n  transition: all 0.2s;\n  box-sizing: padding-box;\n}\nbutton:hover,\n.button:hover,\nbutton:focus,\n.button:focus {\n  border-color: #125688;\n  outline: 0;\n}\nbutton:disabled {\n  background: #f00;\n}\nbutton.selected {\n  background: #008000;\n}\n/*\n  Cowboy style speech bubble - you should probably use an SVG for this if you are doing more icons.\n*/\n.speech-bubble {\n  width: 1.5rem;\n  height: 1.25rem;\n  background: #125688;\n  display: inline-block;\n  border-radius: 50%;\n  position: relative;\n}\n.speech-bubble:after {\n  display: inline-block;\n  position: absolute;\n  content: '';\n  width: 0;\n  height: 0;\n  border-style: solid;\n  border-width: 0 1.25rem 1.25rem 0;\n  border-color: transparent #125688 transparent transparent;\n  top: 30%;\n  left: 0;\n}\n@-moz-keyframes sk-rotateplane {\n  0% {\n    transform: perspective(120px) rotateX(0deg) rotateY(0deg);\n    -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg);\n  }\n  50% {\n    transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);\n    -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);\n  }\n  100% {\n    transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);\n    -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);\n  }\n}\n@-webkit-keyframes sk-rotateplane {\n  0% {\n    transform: perspective(120px) rotateX(0deg) rotateY(0deg);\n    -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg);\n  }\n  50% {\n    transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);\n    -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);\n  }\n  100% {\n    transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);\n    -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);\n  }\n}\n@-o-keyframes sk-rotateplane {\n  0% {\n    transform: perspective(120px) rotateX(0deg) rotateY(0deg);\n    -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg);\n  }\n  50% {\n    transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);\n    -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);\n  }\n  100% {\n    transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);\n    -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);\n  }\n}\n@keyframes sk-rotateplane {\n  0% {\n    transform: perspective(120px) rotateX(0deg) rotateY(0deg);\n    -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg);\n  }\n  50% {\n    transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);\n    -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);\n  }\n  100% {\n    transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);\n    -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);\n  }\n}\n", ""]);
+	exports.push([module.id, "article,\naside,\ndetails,\nfigcaption,\nfigure,\nfooter,\nheader,\nhgroup,\nnav,\nsection,\nsummary {\n  display: block;\n}\naudio,\ncanvas,\nvideo {\n  display: inline-block;\n}\naudio:not([controls]) {\n  display: none;\n  height: 0;\n}\n[hidden] {\n  display: none;\n}\nhtml {\n  font-family: sans-serif;\n  -webkit-text-size-adjust: 100%;\n  -ms-text-size-adjust: 100%;\n}\na:focus {\n  outline: thin dotted;\n}\na:active,\na:hover {\n  outline: 0;\n}\nh1 {\n  font-size: 2em;\n}\nabbr[title] {\n  border-bottom: 1px dotted;\n}\nb,\nstrong {\n  font-weight: 700;\n}\ndfn {\n  font-style: italic;\n}\nmark {\n  background: #ff0;\n  color: #000;\n}\ncode,\nkbd,\npre,\nsamp {\n  font-family: monospace, serif;\n  font-size: 1em;\n}\npre {\n  white-space: pre-wrap;\n  word-wrap: break-word;\n}\nq {\n  quotes: 2 1C 2 1D 2 18 2 19;\n}\nsmall {\n  font-size: 80%;\n}\nsub,\nsup {\n  font-size: 75%;\n  line-height: 0;\n  position: relative;\n  vertical-align: baseline;\n}\nsup {\n  top: -0.5em;\n}\nsub {\n  bottom: -0.25em;\n}\nimg {\n  border: 0;\n}\nsvg:not(:root) {\n  overflow: hidden;\n}\nfieldset {\n  border: 1px solid #c0c0c0;\n  margin: 0 2px;\n  padding: 0.35em 0.625em 0.75em;\n}\nbutton,\ninput,\nselect,\ntextarea {\n  font-family: inherit;\n  font-size: 100%;\n  margin: 0;\n}\nbutton,\ninput {\n  line-height: normal;\n}\nbutton,\nhtml input[type=button],\ninput[type=reset],\ninput[type=submit] {\n  -webkit-appearance: button;\n  cursor: pointer;\n}\nbutton[disabled],\ninput[disabled] {\n  cursor: default;\n}\ninput[type=checkbox],\ninput[type=radio] {\n  box-sizing: border-box;\n  padding: 0;\n}\ninput[type=search] {\n  -webkit-appearance: textfield;\n  -moz-box-sizing: content-box;\n  -webkit-box-sizing: content-box;\n  box-sizing: content-box;\n}\ninput[type=search]::-webkit-search-cancel-button,\ninput[type=search]::-webkit-search-decoration {\n  -webkit-appearance: none;\n}\ntextarea {\n  overflow: auto;\n  vertical-align: top;\n}\ntable {\n  border-collapse: collapse;\n  border-spacing: 0;\n}\nbody,\nfigure {\n  margin: 0;\n}\nlegend,\nbutton::-moz-focus-inner,\ninput::-moz-focus-inner {\n  border: 0;\n  padding: 0;\n}\n.clearfix:after {\n  visibility: hidden;\n  display: block;\n  font-size: 0;\n  content: \" \";\n  clear: both;\n  height: 0;\n}\n* {\n  -moz-box-sizing: border-box;\n  -webkit-box-sizing: border-box;\n  box-sizing: border-box;\n}\nimg {\n  max-width: 100%;\n}\nhtml {\n  font-size: 10px;\n  font-family: sans-serif;\n}\np {\n  font-size: 1.6rem;\n  line-height: 1.5;\n}\nh1 {\n  font-family: billabong, 'billabongregular';\n  text-align: center;\n  font-weight: 100;\n  font-size: 13rem;\n  margin: 2rem 0;\n  letter-spacing: -1px;\n  text-shadow: 0px 4px 0 rgba(18,86,136,0.11);\n}\nh1 a {\n  color: #125688;\n  text-decoration: none;\n}\nh1 a:focus {\n  outline: 0;\n}\n@font-face {\n  font-family: 'billabongregular';\n  src: url(\"https://cdn.rawgit.com/milktronics/beaglegr.am/master/public/fonts/billabong-webfont.eot\");\n  src: url(\"https://cdn.rawgit.com/milktronics/beaglegr.am/master/public/fonts/billabong-webfont.eot?#iefix\") format('embedded-opentype'), url(\"https://cdn.rawgit.com/milktronics/beaglegr.am/master/public/fonts/billabong-webfont.woff\") format('woff'), url(\"https://cdn.rawgit.com/milktronics/beaglegr.am/master/public/fonts/billabong-webfont.ttf\") format('truetype'), url(\"https://cdn.rawgit.com/milktronics/beaglegr.am/master/public/fonts/billabong-webfont.svg#billabongregular\") format('svg');\n  font-weight: normal;\n  font-style: normal;\n}\n.likes-heart {\n  opacity: 0;\n  transition: all 0.5s;\n  transform: translateX(-50%) translateY(-50%) scale(5);\n  display: block;\n}\n.likes-heart.like-enter {\n  transition: all 0.2s;\n  transform: translateX(-50%) translateY(-50%) scale(1);\n  opacity: 1;\n}\n.likes-heart.like-enter.like-enter-active {\n  transform: translateX(-50%) translateY(-50%) scale(5);\n}\n.likes-heart .like-leave-active {\n  display: none;\n}\n.likes-heart .like-leave-active .example-enter {\n  opacity: 0.01;\n}\n.likes-heart .like-leave-active .example-enter.example-enter-active {\n  opacity: 1;\n  transition: opacity 500ms ease-in;\n}\n.likes-heart .like-leave-active .example-leave {\n  opacity: 1;\n}\n.likes-heart .like-leave-active .example-leave.example-leave-active {\n  opacity: 0.01;\n  transition: opacity 300ms ease-in;\n}\nbody {\n  background: #fafafa;\n  font-size: 12px;\n}\n.loading {\n  position: absolute;\n  z-index: 2;\n  width: 100%;\n  height: 100%;\n  font-size: 30px;\n}\n.photo-grid {\n  display: flex;\n  flex-wrap: wrap;\n  max-width: 1200px;\n  margin: 0 auto;\n}\n.photo-grid-header {\n  width: 100%;\n  margin: 16px;\n}\n.groups {\n  float: right;\n}\n.cat1 {\n  margin: 3px;\n  padding: 10px;\n  background: #ff5722;\n  color: #fff;\n}\n.cat2 {\n  margin: 3px;\n  padding: 10px;\n  background: #4caf50;\n  color: #fff;\n}\n.cat3 {\n  margin: 3px;\n  padding: 10px;\n  background: #9c27b0;\n  color: #fff;\n}\n.modal {\n  position: fixed;\n  width: 100%;\n  height: 100%;\n  background: rgba(0,0,0,0.3);\n  left: 0px;\n  top: 0px;\n  z-index: 4;\n}\n.spinner {\n  float: right;\n  width: 20px;\n  height: 20px;\n  background-color: transparent;\n  border-radius: 50%;\n  border: 4px solid #fff;\n  -webkit-animation: sk-rotateplane 1.2s infinite ease-in-out;\n  animation: sk-rotateplane 1.2s infinite ease-in-out;\n}\n@-webkit-keyframes sk-rotateplane {\n  0% {\n    -webkit-transform: perspective(120px);\n  }\n  50% {\n    -webkit-transform: perspective(120px) rotateY(180deg);\n  }\n  100% {\n    -webkit-transform: perspective(120px) rotateY(180deg) rotateX(180deg);\n  }\n}\n.refreshing {\n  float: right;\n}\n.modalinner {\n  flex-basis: calc(33.333% - 4rem);\n  flex-grow: 1;\n  flex-shrink: 0;\n  margin-left: -200px;\n  margin-top: -100px;\n  padding: 2rem;\n  border: 1px solid #edeeed;\n  background: #fff;\n  box-shadow: 0 0 0 5px rgba(0,0,0,0.03);\n  position: absolute;\n  width: 400px;\n  top: 50%;\n  left: 50%;\n}\n.noprod {\n  margin: auto;\n}\n.error {\n  color: #f00;\n  font-size: 12px;\n}\n.errorinner {\n  flex-basis: calc(33.333% - 4rem);\n  flex-grow: 1;\n  flex-shrink: 0;\n  margin-left: -100px;\n  padding: 2rem;\n  border: 1px solid #edeeed;\n  background: #f00;\n  box-shadow: 0 0 0 5px rgba(0,0,0,0.03);\n  position: absolute;\n  width: 200px;\n  top: 50%;\n  left: 50%;\n}\n.example-appear {\n  opacity: 0.01;\n}\n.example-appear.example-appear-active {\n  opacity: 1;\n  transition: opacity 0.2s ease-in;\n}\n.user {\n  margin: auto;\n  margin-top: 100px;\n  font-size: 26px;\n  width: 25%;\n}\n.grid-figure,\n.profiel,\n.single-photo {\n  flex-basis: calc(25.333% - 4rem);\n  flex-grow: 1;\n  flex-shrink: 0;\n  margin: 0 0rem 2rem 2rem;\n  padding: 2rem;\n  border: 1px solid #edeeed;\n  background: #fff;\n  box-shadow: 0 0 0 5px rgba(0,0,0,0.03);\n  position: relative;\n}\n.map {\n  flex-basis: calc(33.333% - 4rem);\n  height: 30rem;\n  flex-grow: 1;\n  flex-shrink: 0;\n  margin: 0 2rem 2rem 2rem;\n  padding: 2rem;\n  border: 1px solid #edeeed;\n  background: #fff;\n  box-shadow: 0 0 0 5px rgba(0,0,0,0.03);\n  position: relative;\n}\n.navbutton {\n  color: #000;\n  text-decoration: none;\n  font-size: 16px;\n  margin: 16px;\n}\n.TopBar {\n  font-size: 16px;\n  color: #fff;\n  z-index: 4;\n  position: fixed;\n  background: #3a558a;\n  width: 100%;\n  height: 40px;\n  top: 0px;\n}\n.TopBarName {\n  margin: 10px;\n}\n#map {\n  height: 50px;\n  width: 100%;\n}\n.notify {\n  text-align: center;\n}\n.form {\n  text-align: center;\n  font-weight: 100;\n  font-size: 4rem;\n  margin: 2rem 0;\n  letter-spacing: -1px;\n  text-shadow: 0px 4px 0 rgba(18,86,136,0.11);\n}\n.profiel {\n  max-width: 900px;\n  margin: 50px auto;\n  display: flex;\n  background: #fff;\n}\n.single-photo {\n  max-width: 900px;\n  margin: 0 auto;\n  display: flex;\n  background: #fff;\n}\n.single-photo .grid-figure {\n  box-shadow: none;\n  margin: 0 2rem 0 0;\n  border: 0;\n  padding: 0;\n  flex: 1 0 60%;\n  max-width: 60%;\n}\n.single-photo .comments {\n  flex: 1 0 40%;\n  max-width: 40%;\n}\n.single-photo .grid-photo {\n  width: 100%;\n  margin: 0;\n}\n.grid-photo {\n  width: calc(100% + 4rem);\n  margin-left: -2rem;\n  margin-top: -2rem;\n  max-width: none;\n}\n.remove-comment {\n  background: none;\n  border: 0;\n  line-height: 1;\n  opacity: 0;\n}\n.remove-comment:hover {\n  color: #f00;\n}\ninput {\n  padding: 5px;\n}\n.comment {\n  border-bottom: 1px solid #edeeed;\n  padding: 0.5rem 0;\n}\n.comment p {\n  font-size: 1.2rem;\n  margin: 0;\n}\n.comment strong {\n  color: #125688;\n  margin-right: 5px;\n}\n.comment:hover .remove-comment {\n  opacity: 1;\n}\n.comment-form input,\n.comment-form textarea {\n  width: 100%;\n  border: 0;\n  font-size: 1.3rem;\n  padding: 1rem 0;\n  border-bottom: 1px solid #edeeed;\n  outline: none;\n  resize: vertical;\n}\n.grid-photo-wrap {\n  position: relative;\n  font-size: 16px;\n  font-family: sans-serif;\n}\n.likes-heart {\n  background: url(\"http://f.cl.ly/items/3Y373q2Q3J3Y1j203n0m/Bitmap-3.png\") center no-repeat;\n  background-size: contain;\n  font-size: 2rem;\n  padding: 1rem;\n  position: absolute;\n  color: #125688;\n  left: 50%;\n  top: 50%;\n  pointer-events: none;\n}\n/*\n  Buttons\n*/\n.control-buttons {\n  display: flex;\n  justify-content: space-between;\n}\nbutton,\n.button {\n  border: 2px solid #f2f2f2;\n  background: none;\n  flex-basis: 48%;\n  display: inline-block;\n  line-height: 2;\n  text-decoration: none;\n  padding: 5px;\n  text-align: center;\n  font-size: 15px;\n  color: #125688;\n  transition: all 0.2s;\n  box-sizing: padding-box;\n}\nbutton:hover,\n.button:hover,\nbutton:focus,\n.button:focus {\n  border-color: #125688;\n  outline: 0;\n}\nbutton:disabled {\n  background: #f00;\n}\nbutton.selected {\n  background: #4caf50;\n}\n/*\n  Cowboy style speech bubble - you should probably use an SVG for this if you are doing more icons.\n*/\n.speech-bubble {\n  width: 1.5rem;\n  height: 1.25rem;\n  background: #125688;\n  display: inline-block;\n  border-radius: 50%;\n  position: relative;\n}\n.speech-bubble:after {\n  display: inline-block;\n  position: absolute;\n  content: '';\n  width: 0;\n  height: 0;\n  border-style: solid;\n  border-width: 0 1.25rem 1.25rem 0;\n  border-color: transparent #125688 transparent transparent;\n  top: 30%;\n  left: 0;\n}\n@-moz-keyframes sk-rotateplane {\n  0% {\n    transform: perspective(120px) rotateX(0deg) rotateY(0deg);\n    -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg);\n  }\n  50% {\n    transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);\n    -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);\n  }\n  100% {\n    transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);\n    -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);\n  }\n}\n@-webkit-keyframes sk-rotateplane {\n  0% {\n    transform: perspective(120px) rotateX(0deg) rotateY(0deg);\n    -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg);\n  }\n  50% {\n    transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);\n    -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);\n  }\n  100% {\n    transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);\n    -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);\n  }\n}\n@-o-keyframes sk-rotateplane {\n  0% {\n    transform: perspective(120px) rotateX(0deg) rotateY(0deg);\n    -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg);\n  }\n  50% {\n    transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);\n    -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);\n  }\n  100% {\n    transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);\n    -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);\n  }\n}\n@keyframes sk-rotateplane {\n  0% {\n    transform: perspective(120px) rotateX(0deg) rotateY(0deg);\n    -webkit-transform: perspective(120px) rotateX(0deg) rotateY(0deg);\n  }\n  50% {\n    transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);\n    -webkit-transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);\n  }\n  100% {\n    transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);\n    -webkit-transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);\n  }\n}\n", ""]);
 	
 	// exports
 
@@ -38782,17 +38784,17 @@
 	      null,
 	      _react3.default.createElement(
 	        _reactRouter.Link,
-	        { className: 'navbutton', to: '/api4/web/app_dev.php' },
+	        { className: 'navbutton', to: '/web/app_dev.php' },
 	        'home'
 	      ),
 	      _react3.default.createElement(
 	        _reactRouter.Link,
-	        { className: 'navbutton', to: '/api4/web/app_dev.php/office' },
+	        { className: 'navbutton', to: '/web/app_dev.php/office' },
 	        'mijn producten'
 	      ),
 	      _react3.default.createElement(
 	        _reactRouter.Link,
-	        { className: 'navbutton', to: '/api4/web/app_dev.php/profiel' },
+	        { className: 'navbutton', to: '/web/app_dev.php/profiel' },
 	        'profiel'
 	      )
 	    );
@@ -39263,7 +39265,7 @@
 	      return _extends({}, state, { token: action.json, error: 'succes', loggedin: true });
 	
 	    case 'LOG_OUT':
-	      location.assign('http://localhost/api4/web/app_dev.php/');
+	      location.assign('/web/app_dev.php/');
 	      document.cookie = 'cloggedin=false';
 	      document.cookie = 'ctoken=null';
 	      return _extends({}, state, { token: '', loggedin: false });
@@ -39792,9 +39794,7 @@
 	        "div",
 	        { className: "grid-photo-wrap" },
 	        product.name,
-	        " (id=",
-	        product.id,
-	        ")"
+	        " "
 	      ),
 	      _react3.default.createElement(
 	        "div",
@@ -39804,16 +39804,20 @@
 	      ),
 	      _react3.default.createElement(
 	        "div",
-	        null,
+	        { className: "groups" },
 	        product.groups.map(function (el) {
-	          return el.groupname;
+	          return _react3.default.createElement(
+	            "div",
+	            { className: el.groupname, key: el.groupid },
+	            el.groupname
+	          );
 	        }),
 	        " "
 	      ),
 	      _react3.default.createElement(
 	        "button",
 	        { onClick: this.onClickl },
-	        "select"
+	        "bewerk"
 	      )
 	    );
 	  },
@@ -39915,59 +39919,58 @@
 	          _react3.default.createElement(
 	            'figure',
 	            { className: 'modalinner' },
-	            _react3.default.createElement(
-	              'div',
-	              { className: 'grid-photo-wrap' },
-	              this.props.getSelectedProduct.name,
-	              '  (id=',
-	              this.props.getSelectedProduct.id,
-	              ')'
-	            ),
+	            _react3.default.createElement('div', { className: 'grid-photo-wrap' }),
 	            _react3.default.createElement(
 	              'div',
 	              null,
+	              _react3.default.createElement(
+	                'div',
+	                { className: 'groups' },
+	                _react3.default.createElement(
+	                  'button',
+	                  { onClick: function onClick(e) {
+	                      return _this2.pb(e, 0);
+	                    }, ref: function ref(c) {
+	                      _this2.b1 = c;
+	                    }, className: this.props.ui.modalcatbuttons[0] ? 'selected' : '' },
+	                  'cat1'
+	                ),
+	                _react3.default.createElement(
+	                  'button',
+	                  { onClick: function onClick(e) {
+	                      return _this2.pb(e, 1);
+	                    }, ref: function ref(c) {
+	                      _this2.b2 = c;
+	                    }, className: this.props.ui.modalcatbuttons[1] ? 'selected' : '' },
+	                  'cat2'
+	                ),
+	                _react3.default.createElement(
+	                  'button',
+	                  { onClick: function onClick(e) {
+	                      return _this2.pb(e, 2);
+	                    }, ref: function ref(c) {
+	                      _this2.b3 = c;
+	                    }, className: this.props.ui.modalcatbuttons[2] ? 'selected' : '' },
+	                  'cat3'
+	                )
+	              ),
 	              'naam:',
+	              _react3.default.createElement('br', null),
 	              _react3.default.createElement('input', { ref: 'namesingle', defaultValue: this.props.getSelectedProduct.name }),
 	              _react3.default.createElement('br', null),
-	              'beschrijving',
-	              _react3.default.createElement('input', { ref: 'descriptionsingle', defaultValue: this.props.getSelectedProduct.description }),
-	              _react3.default.createElement(
-	                'button',
-	                { onClick: function onClick(e) {
-	                    return _this2.pb(e, 0);
-	                  }, ref: function ref(c) {
-	                    _this2.b1 = c;
-	                  }, className: this.props.ui.modalcatbuttons[0] ? 'selected' : '' },
-	                '1'
-	              ),
-	              _react3.default.createElement(
-	                'button',
-	                { onClick: function onClick(e) {
-	                    return _this2.pb(e, 1);
-	                  }, ref: function ref(c) {
-	                    _this2.b2 = c;
-	                  }, className: this.props.ui.modalcatbuttons[1] ? 'selected' : '' },
-	                '2'
-	              ),
-	              _react3.default.createElement(
-	                'button',
-	                { onClick: function onClick(e) {
-	                    return _this2.pb(e, 2);
-	                  }, ref: function ref(c) {
-	                    _this2.b3 = c;
-	                  }, className: this.props.ui.modalcatbuttons[2] ? 'selected' : '' },
-	                '3'
-	              )
+	              'beschrijving:',
+	              _react3.default.createElement('br', null),
+	              _react3.default.createElement('input', { ref: 'descriptionsingle', defaultValue: this.props.getSelectedProduct.description })
 	            ),
 	            _react3.default.createElement(
 	              'button',
 	              { onClick: this.edit },
-	              'SAVEe'
+	              'opslaan'
 	            ),
 	            _react3.default.createElement(
 	              'button',
 	              { onClick: this.delete },
-	              'delete'
+	              'verwijderen'
 	            ),
 	            _react3.default.createElement(
 	              'button',
@@ -41824,6 +41827,37 @@
 	          _react3.default.createElement(
 	            'figure',
 	            { className: 'modalinner' },
+	            _react3.default.createElement(
+	              'div',
+	              { className: 'groups' },
+	              _react3.default.createElement(
+	                'button',
+	                { onClick: function onClick(e) {
+	                    return _this.pb(e, 0);
+	                  }, ref: function ref(c) {
+	                    _this.b1 = c;
+	                  }, className: this.props.ui.modalcatbuttons[0] ? 'selected' : '' },
+	                'cat1'
+	              ),
+	              _react3.default.createElement(
+	                'button',
+	                { onClick: function onClick(e) {
+	                    return _this.pb(e, 1);
+	                  }, ref: function ref(c) {
+	                    _this.b2 = c;
+	                  }, className: this.props.ui.modalcatbuttons[1] ? 'selected' : '' },
+	                'cat2'
+	              ),
+	              _react3.default.createElement(
+	                'button',
+	                { onClick: function onClick(e) {
+	                    return _this.pb(e, 2);
+	                  }, ref: function ref(c) {
+	                    _this.b3 = c;
+	                  }, className: this.props.ui.modalcatbuttons[2] ? 'selected' : '' },
+	                'cat3'
+	              )
+	            ),
 	            'naam: ',
 	            _react3.default.createElement('br', null),
 	            _react3.default.createElement('input', { ref: function ref(c) {
@@ -41836,33 +41870,6 @@
 	                _this.ndescription = c;
 	              }, type: 'text', onKeyPress: this.enterDetect }),
 	            _react3.default.createElement('br', null),
-	            _react3.default.createElement(
-	              'button',
-	              { onClick: function onClick(e) {
-	                  return _this.pb(e, 0);
-	                }, ref: function ref(c) {
-	                  _this.b1 = c;
-	                }, className: this.props.ui.modalcatbuttons[0] ? 'selected' : '' },
-	              '1'
-	            ),
-	            _react3.default.createElement(
-	              'button',
-	              { onClick: function onClick(e) {
-	                  return _this.pb(e, 1);
-	                }, ref: function ref(c) {
-	                  _this.b2 = c;
-	                }, className: this.props.ui.modalcatbuttons[1] ? 'selected' : '' },
-	              '2'
-	            ),
-	            _react3.default.createElement(
-	              'button',
-	              { onClick: function onClick(e) {
-	                  return _this.pb(e, 2);
-	                }, ref: function ref(c) {
-	                  _this.b3 = c;
-	                }, className: this.props.ui.modalcatbuttons[2] ? 'selected' : '' },
-	              '3'
-	            ),
 	            _react3.default.createElement(
 	              'button',
 	              { onClick: this.newproduct },
@@ -42051,7 +42058,7 @@
 	        _react3.default.createElement(
 	          'h1',
 	          null,
-	          'welskom'
+	          'welkom'
 	        )
 	      );
 	    }
@@ -42211,6 +42218,7 @@
 	
 	
 	var connection = {
+	  root: '',
 	  loading: false,
 	  user: { name: 'logged out', email: 'none' },
 	  refreshing: false,
@@ -42248,7 +42256,7 @@
 	};
 	var rootEpic = (0, _reduxObservable.combineEpics)(_epics.loginEpic, _epics.logOutEpic, _epics.singleProductEpic, _epics.newProductEpic, _epics.editProductEpic, _epics.deleteProductEpic, _epics.reloadProductEpic, _epics.refreshEpic, _epics.getUserEpic, _epics.retryLastActionEpic, _epics.allProductsEpic);
 	var epicMiddleware = (0, _reduxObservable.createEpicMiddleware)(rootEpic);
-	var store = (0, _redux.createStore)(_index2.default, defaultState, (0, _redux.compose)((0, _redux.applyMiddleware)(_reduxThunk2.default, epicMiddleware), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
+	var store = (0, _redux.createStore)(_index2.default, defaultState, (0, _redux.compose)((0, _redux.applyMiddleware)(epicMiddleware)));
 	var history = exports.history = (0, _reactRouterRedux.syncHistoryWithStore)(_reactRouter.browserHistory, store);
 	exports.default = store;
 
@@ -45525,7 +45533,7 @@
 	  }).filter(function (rr) {
 	    return rr.payload.xhr.response.error_description === 'The access token provided has expired.';
 	  }).flatMap(function () {
-	    return _rxjs.Observable.concat(_rxjs.Observable.of({ type: 'START_REFRESH' }), (0, _ajax.ajax)({ url: 'http://localhost/api4/web/app_dev.php/users/refresh', headers: { credentials: 'include' } }).flatMap(function (json) {
+	    return _rxjs.Observable.concat(_rxjs.Observable.of({ type: 'START_REFRESH' }), (0, _ajax.ajax)({ url: 'https://www.sublation.nl/web/app_dev.php/users/refresh', headers: { credentials: 'include' } }).flatMap(function (json) {
 	      return _rxjs.Observable.concat(_rxjs.Observable.of({ type: 'FINISH_REFRESH' }), _rxjs.Observable.of({ type: 'GET_TOKEN',
 	        json: json.response }), _rxjs.Observable.of({ type: 'REPEAT_LAST_ACTION' }));
 	    }));
@@ -45545,7 +45553,7 @@
 	    }), _rxjs.Observable.of({
 	      type: 'LOADING'
 	
-	    }), (0, _ajax.ajax)({ url: 'http://localhost/api4/web/app_dev.php/products/single?ProductId=' + action.id, headers: { Authorization: 'Bearer ' + action.token, 'Content-Type': 'application/json' } }).flatMap(function (json) {
+	    }), (0, _ajax.ajax)({ url: 'https://www.sublation.nl/web/app_dev.php/products/single?ProductId=' + action.id, headers: { Authorization: 'Bearer ' + action.token, 'Content-Type': 'application/json' } }).flatMap(function (json) {
 	      return _rxjs.Observable.concat(
 	      // Fire 2 actions, one after the other
 	      _rxjs.Observable.of({
@@ -45570,7 +45578,7 @@
 	      action: action
 	    }), _rxjs.Observable.of({
 	      type: 'LOADING'
-	    }), (0, _ajax.ajax)({ url: 'http://localhost/api4/web/app_dev.php/products/getall', headers: { Authorization: 'Bearer ' + store.getState().connection.token, 'Content-Type': 'application/json' } }).flatMap(function (json) {
+	    }), (0, _ajax.ajax)({ url: 'https://www.sublation.nl/web/app_dev.php/products/getall', headers: { Authorization: 'Bearer ' + store.getState().connection.token, 'Content-Type': 'application/json' } }).flatMap(function (json) {
 	      return _rxjs.Observable.concat(
 	      // Fire 2 actions, one after the other
 	      _rxjs.Observable.of({
@@ -45599,7 +45607,7 @@
 	      action: action
 	    }), _rxjs.Observable.of({
 	      type: 'LOADING'
-	    }), (0, _ajax.ajax)({ url: 'http://localhost/api4/web/app_dev.php/products/productdelete?productId=' + action.id, headers: { Authorization: 'Bearer ' + store.getState().connection.token, 'Content-Type': 'application/json' } }).flatMap(function (json) {
+	    }), (0, _ajax.ajax)({ url: 'https://www.sublation.nl/web/app_dev.php/products/productdelete?productId=' + action.id, headers: { Authorization: 'Bearer ' + store.getState().connection.token, 'Content-Type': 'application/json' } }).flatMap(function (json) {
 	      return _rxjs.Observable.concat(
 	      // Fire 2 actions, one after the other
 	
@@ -45630,7 +45638,7 @@
 	      action: action
 	    }), _rxjs.Observable.of({
 	      type: 'LOADING'
-	    }), (0, _ajax.ajax)({ url: 'http://localhost/api4/web/app_dev.php/products/new?ProductName=' + action.name + '&&description=' + action.description + '&&' + action.groups, headers: { Authorization: 'Bearer ' + store.getState().connection.token, 'Content-Type': 'application/json' } }).flatMap(function (json) {
+	    }), (0, _ajax.ajax)({ url: 'https://www.sublation.nl/web/app_dev.php/products/new?ProductName=' + action.name + '&&description=' + action.description + '&&' + action.groups, headers: { Authorization: 'Bearer ' + store.getState().connection.token, 'Content-Type': 'application/json' } }).flatMap(function (json) {
 	      return _rxjs.Observable.concat(
 	      // Fire 2 actions, one after the other
 	      _rxjs.Observable.of({
@@ -45661,7 +45669,7 @@
 	      action: action
 	    }), _rxjs.Observable.of({
 	      type: 'LOADING'
-	    }), (0, _ajax.ajax)({ url: 'http://localhost/api4/web/app_dev.php/products/editproduct?ProductId=' + action.id + '&&ProductName=' + action.name + '&&ProductDescription=' + action.description + '&&' + action.groups, headers: { Authorization: 'Bearer ' + store.getState().connection.token, 'Content-Type': 'application/json' } }).flatMap(function (json) {
+	    }), (0, _ajax.ajax)({ url: 'https://www.sublation.nl/web/app_dev.php/products/editproduct?ProductId=' + action.id + '&&ProductName=' + action.name + '&&ProductDescription=' + action.description + '&&' + action.groups, headers: { Authorization: 'Bearer ' + store.getState().connection.token, 'Content-Type': 'application/json' } }).flatMap(function (json) {
 	      return _rxjs.Observable.concat(_rxjs.Observable.of({
 	        type: 'LOAD_COMPLETE'
 	      }), _rxjs.Observable.of({
@@ -45686,7 +45694,7 @@
 	};
 	var refreshEpic = exports.refreshEpic = function refreshEpic(action$) {
 	  return action$.ofType('REFRESH').mergeMap(function () {
-	    return (0, _ajax.ajax)({ url: 'http://localhost/api4/web/app_dev.php/users/refresh', headers: { credentials: 'include' } }).flatMap(function (json) {
+	    return (0, _ajax.ajax)({ url: 'https://www.sublation.nl/web/app_dev.php/users/refresh', headers: { credentials: 'include' } }).flatMap(function (json) {
 	      return _rxjs.Observable.concat(_rxjs.Observable.of({
 	        type: 'GET_TOKEN',
 	        json: json.response
@@ -45708,7 +45716,7 @@
 	var loginEpic = exports.loginEpic = function loginEpic(action$) {
 	  return action$.ofType('LOGIN').delay(1).flatMap(function (action) {
 	    return _rxjs.Observable.concat(_rxjs.Observable.of({
-	      type: 'LOADING' }), (0, _ajax.ajax)({ url: 'http://localhost/api4/web/app_dev.php/users/login?password=' + action.pw + '&name=' + action.name, headers: { credentials: 'include' } }).flatMap(function (json) {
+	      type: 'LOADING' }), (0, _ajax.ajax)({ url: 'https://www.sublation.nl/web/app_dev.php/users/login?password=' + action.pw + '&name=' + action.name, headers: { credentials: 'include' } }).flatMap(function (json) {
 	      return _rxjs.Observable.concat(_rxjs.Observable.of({
 	        type: 'GET_TOKEN',
 	        json: json.response.token
@@ -45732,7 +45740,7 @@
 	};
 	var logOutEpic = exports.logOutEpic = function logOutEpic(action$) {
 	  return action$.ofType('LOG_OUT').delay(1).mergeMap(function (action) {
-	    return (0, _ajax.ajax)({ url: 'http://localhost/api4/web/app_dev.php/users/logout', headers: { credentials: 'include' } }).flatMap(function (json) {
+	    return (0, _ajax.ajax)({ url: 'https://www.sublation.nl/web/app_dev.php/users/logout', headers: { credentials: 'include' } }).flatMap(function (json) {
 	      return _rxjs.Observable.concat(_rxjs.Observable.of({
 	        type: 'LOGGED_OUT'
 	      }));
@@ -45755,7 +45763,7 @@
 	      action: action
 	    }), _rxjs.Observable.of({
 	      type: 'LOADING'
-	    }), (0, _ajax.ajax)({ url: 'http://localhost/api4/web/app_dev.php/users/user', headers: { Authorization: 'Bearer ' + store.getState().connection.token, 'Content-Type': 'application/json' } }).flatMap(function (json) {
+	    }), (0, _ajax.ajax)({ url: 'https://www.sublation.nl/web/app_dev.php/users/user', headers: { Authorization: 'Bearer ' + store.getState().connection.token, 'Content-Type': 'application/json' } }).flatMap(function (json) {
 	      return _rxjs.Observable.concat(_rxjs.Observable.of({
 	        type: 'HANDLE_USER',
 	        json: json.response

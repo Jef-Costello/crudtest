@@ -41,6 +41,7 @@ function getCookie(cname) {
 
 // const products = { all: [{ empty: 'empty', name: 'none', description: 'none', id: 'x' }] };
 const connection = {
+  root: '',
   loading: false,
   user: { name: 'logged out', email: 'none' },
   refreshing: false,
@@ -96,6 +97,6 @@ const rootEpic = combineEpics(
 
 );
 const epicMiddleware = createEpicMiddleware(rootEpic);
-const store = createStore(rootReducer, defaultState, compose(applyMiddleware(thunk, epicMiddleware), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
+const store = createStore(rootReducer, defaultState, compose(applyMiddleware(epicMiddleware)));
 export const history = syncHistoryWithStore(browserHistory, store);
 export default store;

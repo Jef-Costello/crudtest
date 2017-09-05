@@ -7,7 +7,7 @@ function connection(state = [], action) {
       return { ...state, token: action.json, error: 'succes', loggedin: true };
 
     case 'LOG_OUT':
-      location.assign('http://localhost/api4/web/app_dev.php/');
+      location.assign('/web/app_dev.php/');
       document.cookie = 'cloggedin=false';
       document.cookie = 'ctoken=null';
       return { ...state, token: '', loggedin: false };

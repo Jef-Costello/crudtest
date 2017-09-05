@@ -10,11 +10,11 @@ const Product = React.createClass({
     return (
 
       <figure className="grid-figure" >
-        <div className="grid-photo-wrap">{product.name} (id={product.id})</div>
+        <div className="grid-photo-wrap">{product.name} </div>
         <div>{product.description} </div>
-        <div>{product.groups.map((el) => el.groupname) } </div>
+        <div className="groups">{product.groups.map(el => (<div className={el.groupname} key={el.groupid}>{el.groupname}</div>))} </div>
 
-        <button onClick={this.onClickl}>select</button>
+        <button onClick={this.onClickl}>bewerk</button>
 
 
       </figure>
