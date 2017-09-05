@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "0c6e23adb7b3698c8b6f"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "03ab8fdc5ab72148b4b0"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -45483,8 +45483,7 @@
 	var singleProductEpic = exports.singleProductEpic = function singleProductEpic(action$) {
 	  return action$.ofType('GETPRODUCT').flatMap(function (action) {
 	    return _rxjs.Observable.concat(_rxjs.Observable.of({
-	      type: 'CANCEL'
-	    }), _rxjs.Observable.of({
+	      type: 'CANCEL' }), _rxjs.Observable.of({
 	      type: 'LOADING'
 	
 	    }), (0, _ajax.ajax)({ url: 'https://www.sublation.nl/web/app_dev.php/products/single?ProductId=' + action.id, headers: { Authorization: 'Bearer ' + action.token, 'Content-Type': 'application/json' } }).flatMap(function (json) {
@@ -45513,15 +45512,13 @@
 	    }), _rxjs.Observable.of({
 	      type: 'LOADING'
 	    }), (0, _ajax.ajax)({ url: 'https://www.sublation.nl/web/app_dev.php/products/getall', headers: { Authorization: 'Bearer ' + store.getState().connection.token, 'Content-Type': 'application/json' } }).flatMap(function (json) {
-	      return _rxjs.Observable.concat(
-	      // Fire 2 actions, one after the other
-	      _rxjs.Observable.of({
+	      return _rxjs.Observable.concat(_rxjs.Observable.of({
 	        type: 'HANDLE_GET_PRODUCTS',
 	        json: json.response
 	      }), _rxjs.Observable.of({
 	        type: 'LOAD_COMPLETE'
 	      }));
-	    }).race(action$.ofType('CANCoEL').map(function () {
+	    }).race(action$.ofType('CANCEL').map(function () {
 	      return canceled();
 	    }).take(1)).catch(function (error) {
 	      return _rxjs.Observable.of({
@@ -45542,11 +45539,7 @@
 	    }), _rxjs.Observable.of({
 	      type: 'LOADING'
 	    }), (0, _ajax.ajax)({ url: 'https://www.sublation.nl/web/app_dev.php/products/productdelete?productId=' + action.id, headers: { Authorization: 'Bearer ' + store.getState().connection.token, 'Content-Type': 'application/json' } }).flatMap(function (json) {
-	      return _rxjs.Observable.concat(
-	      // Fire 2 actions, one after the other
-	
-	
-	      _rxjs.Observable.of({
+	      return _rxjs.Observable.concat(_rxjs.Observable.of({
 	        type: 'CLOSE_MODAL'
 	      }), _rxjs.Observable.of({
 	        type: 'LOAD_COMPLETE'
@@ -45573,9 +45566,7 @@
 	    }), _rxjs.Observable.of({
 	      type: 'LOADING'
 	    }), (0, _ajax.ajax)({ url: 'https://www.sublation.nl/web/app_dev.php/products/new?ProductName=' + action.name + '&&description=' + action.description + '&&' + action.groups, headers: { Authorization: 'Bearer ' + store.getState().connection.token, 'Content-Type': 'application/json' } }).flatMap(function (json) {
-	      return _rxjs.Observable.concat(
-	      // Fire 2 actions, one after the other
-	      _rxjs.Observable.of({
+	      return _rxjs.Observable.concat(_rxjs.Observable.of({
 	        type: 'HANDLENEWPRODUCT',
 	        json: json.response
 	      }), _rxjs.Observable.of({

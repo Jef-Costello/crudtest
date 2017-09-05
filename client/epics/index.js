@@ -51,7 +51,7 @@ export const singleProductEpic = (action$ =>
   .flatMap(action =>
 Observable.concat(
   Observable.of({
-    type: 'CANCEL',
+    type: 'CANCEL', // Ajax calls cancel each other out, this has no real function at the moment, testing capabilities of observables
   }),
      Observable.of({
        type: 'LOADING',
