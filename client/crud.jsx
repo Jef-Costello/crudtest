@@ -6,7 +6,6 @@ import css from './styles/style.styl';
 
 // import components
 import App from './components/App';
-import Single from './components/Single';
 import Office from './components/Office';
 import Profiel from './components/Profiel';
 import Home from './components/Home';

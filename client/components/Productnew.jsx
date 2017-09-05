@@ -30,9 +30,6 @@ const Productnew = React.createClass({
                 naam: <br /><input ref={(c) => { this.npname = c; }} type="text" onKeyPress={this.enterDetect} /><br />
               beschrijving:<br /><input ref={(c) => { this.ndescription = c; }} type="text" onKeyPress={this.enterDetect} />
               <br />
-              {}
-
-
               <button onClick={this.newproduct}>opslaan</button>
               <button onClick={this.props.closeNpModal}>cancel</button>
               {this.props.ui.modalnperror}

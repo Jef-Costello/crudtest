@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "6d9707b97e0f7caa6445"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "fc1312f482e318897bc7"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -610,10 +610,6 @@
 	
 	var _App2 = _interopRequireDefault(_App);
 	
-	var _Single = __webpack_require__(452);
-	
-	var _Single2 = _interopRequireDefault(_Single);
-	
 	var _Office = __webpack_require__(453);
 	
 	var _Office2 = _interopRequireDefault(_Office);
@@ -632,8 +628,10 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	// redux to react provider
+	var root = _store2.default.getState().connection.root;
+	
 	// import components
-	var root = _store2.default.getState().connection.root; // redux to react provider
 	
 	
 	var router = _react2.default.createElement(
@@ -646,7 +644,7 @@
 	      _reactRouter.Route,
 	      { path: root + '/web/app_dev.php', component: _App2.default },
 	      _react2.default.createElement(_reactRouter.IndexRoute, { component: _Home2.default }),
-	      _react2.default.createElement(_reactRouter.Route, { path: root + '/web/app_dev.php/view/:postId', component: _Single2.default }),
+	      _react2.default.createElement(_reactRouter.Route, { path: root + '/web/app_dev.php/view/:postId', component: Single }),
 	      _react2.default.createElement(_reactRouter.Route, { path: root + '/web/app_dev.php/office', component: _Office2.default }),
 	      _react2.default.createElement(_reactRouter.Route, { path: root + '/web/app_dev.php/profiel', component: _Profiel2.default })
 	    )
@@ -39440,74 +39438,7 @@
 	exports.default = ui;
 
 /***/ },
-/* 452 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(module) {'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _redboxReact2 = __webpack_require__(277);
-	
-	var _redboxReact3 = _interopRequireDefault(_redboxReact2);
-	
-	var _reactTransformCatchErrors3 = __webpack_require__(282);
-	
-	var _reactTransformCatchErrors4 = _interopRequireDefault(_reactTransformCatchErrors3);
-	
-	var _react2 = __webpack_require__(2);
-	
-	var _react3 = _interopRequireDefault(_react2);
-	
-	var _reactTransformHmr3 = __webpack_require__(283);
-	
-	var _reactTransformHmr4 = _interopRequireDefault(_reactTransformHmr3);
-	
-	var _reactRouter = __webpack_require__(179);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var _components = {
-	  _component: {}
-	};
-	
-	var _reactTransformHmr2 = (0, _reactTransformHmr4.default)({
-	  filename: 'c:/xamp/htdocs/api4/client/components/Single.jsx',
-	  components: _components,
-	  locals: [module],
-	  imports: [_react3.default]
-	});
-	
-	var _reactTransformCatchErrors2 = (0, _reactTransformCatchErrors4.default)({
-	  filename: 'c:/xamp/htdocs/api4/client/components/Single.jsx',
-	  components: _components,
-	  locals: [],
-	  imports: [_react3.default, _redboxReact3.default]
-	});
-	
-	function _wrapComponent(id) {
-	  return function (Component) {
-	    return _reactTransformHmr2(_reactTransformCatchErrors2(Component, id), id);
-	  };
-	}
-	
-	var Single = _wrapComponent('_component')(_react3.default.createClass({
-	  displayName: 'Single',
-	  render: function render() {
-	    return _react3.default.createElement(
-	      'div',
-	      { className: 'single-photo' },
-	      'a single photo'
-	    );
-	  }
-	}));
-	
-	exports.default = Single;
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(263)(module)))
-
-/***/ },
+/* 452 */,
 /* 453 */
 /***/ function(module, exports, __webpack_require__) {
 
