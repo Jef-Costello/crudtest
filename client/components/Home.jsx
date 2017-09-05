@@ -5,10 +5,10 @@ const Home = React.createClass({
 
   render() {
     let user;
-    if (this.props.connection.loggedin === true) { return (<div ><h1>welkom</h1></div>); }
+    if (this.props.connection.loggedin === true) { return (<div ><h1>react app met symfony backend</h1></div>); }
     return (
       <div >
-
+        <h1>react app met symfony backend</h1>
 
         <User {...this.props} />
 

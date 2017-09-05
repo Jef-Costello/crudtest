@@ -20,7 +20,6 @@ const router = (
       <Route path={`${root}/web/app_dev.php`} component={App}>
 
         <IndexRoute component={Home} />
-        <Route path={`${root}/web/app_dev.php/view/:postId`} component={Single} />
         <Route path={`${root}/web/app_dev.php/office`} component={Office} />
         <Route path={`${root}/web/app_dev.php/profiel`} component={Profiel} />
       </Route>
