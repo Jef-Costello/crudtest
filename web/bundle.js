@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "b165f205780326a123f4"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "6d9707b97e0f7caa6445"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -39446,7 +39446,7 @@
 	/* WEBPACK VAR INJECTION */(function(module) {'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
-		value: true
+	  value: true
 	});
 	
 	var _redboxReact2 = __webpack_require__(277);
@@ -39470,39 +39470,38 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var _components = {
-		_component: {}
+	  _component: {}
 	};
 	
 	var _reactTransformHmr2 = (0, _reactTransformHmr4.default)({
-		filename: 'c:/xamp/htdocs/api4/client/components/Single.jsx',
-		components: _components,
-		locals: [module],
-		imports: [_react3.default]
+	  filename: 'c:/xamp/htdocs/api4/client/components/Single.jsx',
+	  components: _components,
+	  locals: [module],
+	  imports: [_react3.default]
 	});
 	
 	var _reactTransformCatchErrors2 = (0, _reactTransformCatchErrors4.default)({
-		filename: 'c:/xamp/htdocs/api4/client/components/Single.jsx',
-		components: _components,
-		locals: [],
-		imports: [_react3.default, _redboxReact3.default]
+	  filename: 'c:/xamp/htdocs/api4/client/components/Single.jsx',
+	  components: _components,
+	  locals: [],
+	  imports: [_react3.default, _redboxReact3.default]
 	});
 	
 	function _wrapComponent(id) {
-		return function (Component) {
-			return _reactTransformHmr2(_reactTransformCatchErrors2(Component, id), id);
-		};
+	  return function (Component) {
+	    return _reactTransformHmr2(_reactTransformCatchErrors2(Component, id), id);
+	  };
 	}
 	
 	var Single = _wrapComponent('_component')(_react3.default.createClass({
-		displayName: 'Single',
-		render: function render() {
-	
-			return _react3.default.createElement(
-				'div',
-				{ className: 'single-photo' },
-				'a single photo'
-			);
-		}
+	  displayName: 'Single',
+	  render: function render() {
+	    return _react3.default.createElement(
+	      'div',
+	      { className: 'single-photo' },
+	      'a single photo'
+	    );
+	  }
 	}));
 	
 	exports.default = Single;
