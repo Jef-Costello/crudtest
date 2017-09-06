@@ -6,6 +6,8 @@ import css from './styles/style.styl';
 
 // import components
 import App from './components/App';
+import App2 from './components/App2';
+import Secondary from './components/Secondary';
 import Office from './components/Office';
 import Profiel from './components/Profiel';
 import Home from './components/Home';
@@ -17,12 +19,14 @@ const router = (
   <Provider store={store}>
 
     <Router history={history}>
-      <Route path={`${root}/web/app_dev.php`} component={App}>
+      <Route path={`${root}/web/app_dev.php/office`} component={App}>
 
         <IndexRoute component={Home} />
-        <Route path={`${root}/web/app_dev.php/office`} component={Office} />
-        <Route path={`${root}/web/app_dev.php/profiel`} component={Profiel} />
+        <Route path={`${root}/web/app_dev.php/office/producten`} component={Office} />
+        <Route path={`${root}/web/app_dev.php/office/profiel`} component={Profiel} />
+
       </Route>
+      <Route path={`${root}/web/app_dev.php`} component={App2} />
     </Router>
   </Provider>
 

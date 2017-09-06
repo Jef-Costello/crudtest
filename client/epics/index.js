@@ -117,6 +117,37 @@ export const allProductsEpic = (action$, store) =>
       error: true,
     })),
   ));
+export const allProductsPublicEpic = (action$) =>
+      action$.ofType('GET_ALL_PRODUCTS_PUBLIC')
+
+      .flatMap(action =>
+        Observable.concat(
+           Observable.of({
+             type: 'LOADING',
+           }),
+       ajax({ url: 'https://www.sublation.nl/web/app_dev.php/products/getallpublic', headers: { 'Content-Type': 'application/json' } })
+       .flatMap(json =>
+         Observable.concat(
+           Observable.of({
+             type: 'HANDLE_GET_PRODUCTS_PUBLIC',
+             json: json.response,
+           }),
+           Observable.of({
+             type: 'LOAD_COMPLETE',
+           }),
+         ),
+       )
+      .race(
+              action$.ofType('CANCEL')
+                .map(() => canceled())
+                .take(1),
+            )
+      .catch(error => Observable.of({
+        type: 'LOAD_ERROR',
+        payload: error,
+        error: true,
+      })),
+    ));
 export const deleteProductEpic = (action$, store) =>
     action$.ofType('DELETEPRODUCT')
 
@@ -314,7 +345,8 @@ export const logOutEpic = action$ =>
      Observable.concat(
               Observable.of({
                 type: 'LOGGED_OUT',
-              })),
+              }),
+            ),
      )
 
   .race(

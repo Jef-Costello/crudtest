@@ -101,6 +101,27 @@ class ProductController extends FOSRestController implements ClassResourceInterf
 
         exit;
     }
+    public function getallpublicAction(Request $request)
+    {
+
+        $em = $this->getDoctrine()->getEntityManager();
+        $repository = $em->getRepository("AppBundle:product");
+        //$user =  $this->get('security.token_storage')->getToken()->getUser();
+        $products=$repository->findAll();
+        $jsonproducts=[];
+        foreach ($products as $p) {
+            $groupsjson=[];
+            $grs=$p->getGroups();
+            foreach ($grs as $g) {
+                $groupsjson[]=['groupname'=>$g->getName(),'groupid'=>$g->getId()];
+            }
+            $jsonproducts[]=["name"=> $p->getName(),"id"=>$p->getId(),"description"=>$p->getDescription(),'groups'=>$groupsjson];
+        }
+        echo json_encode($jsonproducts);
+
+        exit;
+    }
+
     public function productdeleteAction(Request $request)
     {
         if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {

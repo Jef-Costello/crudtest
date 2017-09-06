@@ -120,6 +120,10 @@ function getProducts() {
   return { type: 'GET_ALL_PRODUCTS' };
 }
 export
+function getProductsPublic() {
+  return { type: 'GET_ALL_PRODUCTS_PUBLIC' };
+}
+export
 function finishRefresh() {
   return { type: 'FINISH_REFRESH' };
 }

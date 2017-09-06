@@ -16,6 +16,7 @@ import { retryLastActionEpic } from './epics';
 import { newProductEpic } from './epics';
 import { editProductEpic } from './epics';
 import { allProductsEpic } from './epics';
+import { allProductsPublicEpic } from './epics';
 import { testEpic } from './epics';
 import { getUserEpic } from './epics';
 import { deleteProductEpic } from './epics';
@@ -64,6 +65,12 @@ const products = {
   selectedproduct: { name: 'e', id: 4 },
 }
   ;
+const productsPublic = {
+  initialized: false,
+  products: [],
+  selectedproduct: { name: 'e', id: 4 },
+}
+    ;
 if (getCookie('cloggedin') === 'true') {
   connection.user.name = getCookie('user');
   connection.user.email = getCookie('email');
@@ -75,6 +82,7 @@ const defaultState = {
 
 
   products,
+  productsPublic,
   connection,
 
 
@@ -93,6 +101,7 @@ const rootEpic = combineEpics(
   getUserEpic,
   retryLastActionEpic,
   allProductsEpic,
+  allProductsPublicEpic,
 
 
 );

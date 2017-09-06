@@ -7,12 +7,21 @@ function connection(state = [], action) {
       return { ...state, token: action.json, error: 'succes', loggedin: true };
 
     case 'LOG_OUT':
-      location.assign('/web/app_dev.php/');
       document.cookie = 'cloggedin=false';
-      document.cookie = 'ctoken=null';
+    //  location.assign('http://localhost/api4/web/app_dev.php/');
+      var cookies = document.cookie.split(';');
+
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i];
+        const eqPos = cookie.indexOf('=');
+        const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+      }
+      location.assign('https://www.sublation.nl/web/app_dev.php/');
       return { ...state, token: '', loggedin: false };
 
     case 'HANDLE_USER': {
+      document.cookie = 'path=/';
       document.cookie = `user=${action.json.name}`;
       document.cookie = `email=${action.json.email}`;
       const cuser = { ...state.user, name: action.json.name, email: action.json.email };
