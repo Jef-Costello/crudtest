@@ -2,13 +2,21 @@ import React from 'react';
 import User from '../components/User';
 import TopBar from '../components/TopBar';
 import Product from '../components/ProductsGrid';
-// send through the props to photo and the index (not available through key)
-const Home = React.createClass({
+import styled from 'styled-components';
 
+const Maincontainer = styled.div`
+
+height:100%;
+`;
+
+const Home = React.createClass({
+  componentDidMount() {
+    console.log('de');
+  },
   render() {
     if (this.props.connection.loggedin === true) {
       return (
-        <div >
+        <Maincontainer>
           <TopBar {...this.props} /><h1>react app met symfony backend</h1>
           {this.props.products.products.map((product, i) =>
             (<Product
@@ -19,7 +27,7 @@ const Home = React.createClass({
               selectProduct={this.props.selectProduct}
             />))}
 
-        </div>
+        </Maincontainer>
 
       );
     }

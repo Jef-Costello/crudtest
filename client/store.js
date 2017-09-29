@@ -14,37 +14,40 @@ import { reloadProductEpic } from './epics';
 import { singleProductEpic } from './epics';
 import { retryLastActionEpic } from './epics';
 import { newProductEpic } from './epics';
+import { newLocationEpic } from './epics';
 import { editProductEpic } from './epics';
 import { allProductsEpic } from './epics';
 import { allProductsPublicEpic } from './epics';
 import { testEpic } from './epics';
+import { initializeEpic } from './epics';
 import { getUserEpic } from './epics';
+import { getLocationsEpic } from './epics';
+import { deleteLocationEpic } from './epics';
 import { deleteProductEpic } from './epics';
+import { loadGmapsEpic } from './epics';
+import { editLocationEpic } from './epics';
+import { initializepublicEpic } from './epics';
 import { combineEpics } from 'redux-observable';
 import rootReducer from './reducers/index';
-
-function getCookie(cname) {
-  const name = `${cname}=`;
-  const decodedCookie = decodeURIComponent(document.cookie);
-  const ca = decodedCookie.split(';');
-  for (let i = 0; i < ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return '';
-}
+import getCookie from './tools';
 
 
-// const products = { all: [{ empty: 'empty', name: 'none', description: 'none', id: 'x' }] };
+// con st products = { all: [{ empty: 'empty', name: 'none', description: 'none', id: 'x' }] };
+const gmap = {
+  apiKey: 'AIzaSyDVH4o0trN9-as7muenydsbpiMbMDq3zfY',
+  initialized: false,
+  lat: 52.132633,
+  lng: 5.2912659,
+  predictions: [],
+  SelectedPrediction: 0,
+  markers: [],
+  marker: null,
+  renderedlocations: [],
+};
 const connection = {
   root: '',
   loading: false,
-  user: { name: 'logged out', email: 'none' },
+
   refreshing: false,
   token: 'none',
   error: 'none',
@@ -52,11 +55,19 @@ const connection = {
   lastaction: 'none',
   loginerror: 'none',
   loggedin: getCookie('cloggedin') === 'true' };
+const user = { name: 'logged out', email: 'none', initialized: false, producer: false, reseller: false };
+const locations = { all: [], initialized: false, selectedlocation: { id: 0 } };
+const locationsPublic = { all: [], initialized: false, selectedlocation: { id: 0 } };
+const producttypes = { all: [] };
 const ui = {
   modal: false,
   modalnp: false,
+  modallocation: false,
   modalnperror: '',
   modalcatbuttons: [false, false, false],
+  modallocationbuttons: [],
+
+  ptfilterbuttons: [{ value: true, id: 6, name: 'groente' }, { value: true, id: 7, name: 'fruit' }, { value: true, id: 99, name: 'vlees & vis' }, { value: true, id: 99, name: 'zuivel' }],
 };
 
 const products = {
@@ -72,8 +83,8 @@ const productsPublic = {
 }
     ;
 if (getCookie('cloggedin') === 'true') {
-  connection.user.name = getCookie('user');
-  connection.user.email = getCookie('email');
+  user.name = getCookie('user');
+  user.email = getCookie('email');
   connection.token = getCookie('ctoken');
 }
 
@@ -84,9 +95,12 @@ const defaultState = {
   products,
   productsPublic,
   connection,
-
-
+  locations,
+  locationsPublic,
+  gmap,
   ui,
+  user,
+  producttypes,
 
 };
 const rootEpic = combineEpics(
@@ -99,9 +113,16 @@ const rootEpic = combineEpics(
   reloadProductEpic,
   refreshEpic,
   getUserEpic,
+  getLocationsEpic,
   retryLastActionEpic,
   allProductsEpic,
   allProductsPublicEpic,
+  loadGmapsEpic,
+  newLocationEpic,
+  initializeEpic,
+  editLocationEpic,
+  deleteLocationEpic,
+  initializepublicEpic,
 
 
 );

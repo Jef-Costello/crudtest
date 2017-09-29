@@ -11,15 +11,10 @@ class Main extends React.Component {
   render() {
     return (
       <div>
-        <div>
-          <br />
-          <br />
-          <br />
 
-          <div />
-        </div>
+
         <TopBar {...this.props} />
-        <CSSTransitionGroup transitionName="like" transitionEnterTimeout={500} transitionLeaveTimeout={500} />
+
 
         {React.cloneElement(this.props.children, this.props)}
       </div>

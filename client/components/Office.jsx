@@ -1,5 +1,13 @@
 import React from 'react';
 import ProductsGrid from '../components/ProductsGrid';
+import Google from '../components/Google';
+import styled from 'styled-components';
+
+const Maincontainer = styled.div`
+
+height:100%;
+margin-top:20px;
+`;
 
 const Office = React.createClass({
   newproduct(that) {
@@ -18,16 +26,13 @@ const Office = React.createClass({
   render() {
     if (this.props.connection.loggedin === true) {
       return (
-        <div>
-          <div>
-            <br />
-          </div>
-          <div>
+        <Maincontainer>
 
-            <ProductsGrid {...this.props} />
-          </div>
+          <Google {...this.props} />
+          <ProductsGrid {...this.props} />
 
-        </div>
+
+        </Maincontainer>
       );
     } return (<div>PLease log in to access this page</div>);
   },

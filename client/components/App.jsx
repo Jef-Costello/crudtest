@@ -1,21 +1,29 @@
-// this file sends storestate and actions through as props to react
+
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actionCreators from '../actions/actionCreators';
 import Main from './Main';
 import { getSelectedProduct } from '../reducers';
+import { filteredProducts } from '../reducers';
+import { getProducerLocation } from '../reducers';
+import { getSelectedLocation } from '../reducers';
 
 function mapStateToProps(state) {
   return {
+    filteredProducts: filteredProducts(state),
     getSelectedProduct: getSelectedProduct(state),
+    getProducerLocation: getProducerLocation(state),
+    getSelectedLocation: getSelectedLocation(state),
     products: state.products,
-
+    productsPublic: state.productsPublic,
+    locations: state.locations,
+    locationsPublic: state.locationsPublic,
     connection: state.connection,
-    global: state.global,
-    scriptloaded: state.scriptloaded,
-    gm: state.gm,
+    gmap: state.gmap,
     ui: state.ui,
+    user: state.user,
+    producttypes: state.producttypes,
   };
 }
 function mapDispatchToProps(dispatch) {

@@ -2,13 +2,6 @@ function connection(state = [], action) {
   switch (action.type) {
 
     case 'GET_TOKEN':
-      document.cookie = `ctoken=${action.json}`;
-      document.cookie = 'cloggedin=true';
-      return { ...state, token: action.json, error: 'succes', loggedin: true };
-
-    case 'LOG_OUT':
-      document.cookie = 'cloggedin=false';
-    //  location.assign('http://localhost/api4/web/app_dev.php/');
       var cookies = document.cookie.split(';');
 
       for (let i = 0; i < cookies.length; i++) {
@@ -17,15 +10,27 @@ function connection(state = [], action) {
         const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
         document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT`;
       }
-      location.assign('https://www.sublation.nl/web/app_dev.php/');
+      document.cookie = 'cloggedin=true;path=/';
+      document.cookie = `ctoken=${action.json};path=/`;
+      document.cookie = 'cdtoken=efe;path=/';
+      // document.cookie = 'cloggedin=true';
+      return { ...state, token: action.json, error: 'succes', loggedin: true };
+
+    case 'LOG_OUT':
+
+      document.cookie = 'cloggedin=false;path=/';
+      document.cookie = 'ctoken=;path=/';
+      document.cookie = 'user=;path=/';
+      document.cookie = 'email=;path=/';
+      location.assign('https://www.sublation.nl/web/app_dev.php');
       return { ...state, token: '', loggedin: false };
 
     case 'HANDLE_USER': {
-      document.cookie = 'path=/';
-      document.cookie = `user=${action.json.name}`;
-      document.cookie = `email=${action.json.email}`;
-      const cuser = { ...state.user, name: action.json.name, email: action.json.email };
-      return { ...state, user: cuser, loggedIn: true };
+      // document.cookie = 'path=/';
+      document.cookie = `user=${action.json.name};path=/`;
+      document.cookie = `email=${action.json.email};path=/`;
+    //  const cuser = { ...state.user, name: action.json.name, email: action.json.email };
+      return { ...state, loggedIn: true };
     }
 
 

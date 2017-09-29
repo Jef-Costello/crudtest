@@ -1,8 +1,20 @@
 import React from 'react';
 import CSSTransitionGroup from 'react-addons-css-transition-group';
 import TopBar from '../components/TopBar';
+import Gmap from '../components/Gmap';
 import User from '../components/User';
+import Menu from '../components/Menu';
+import Homemap from '../components/Homemap';
+import Modallocation from '../components/Modallocation';
+import ModalLogIn from '../components/ModalLogIn';
 import ProductsGridPublic from '../components/ProductsGridPublic';
+import styled from 'styled-components';
+
+const Maincontainer = styled.div`
+
+height:100%;
+margin-top:20px;
+`;
 
 class Secondary extends React.Component {
 
@@ -15,31 +27,24 @@ class Secondary extends React.Component {
   render() {
     if (this.props.connection.loggedin === true) {
       return (
-        <div>
+        <Maincontainer>
           <TopBar {...this.props} />
+          <Homemap{...this.props} />
+          <Menu {...this.props} />
 
-          <br />
-          <br />
-          <br />
-          <h1>react app met symfony backend</h1>
-          <ProductsGridPublic {...this.props} /></div>);
-    }
-    return (
-      <div>
-        <div>
-          <br />
-          <br />
-          <br />
+          <ProductsGridPublic {...this.props} />
 
-          <div />
-        </div>
+        </Maincontainer>);
+    } return (
+      <Maincontainer>
         <TopBar {...this.props} />
-        <CSSTransitionGroup transitionName="like" transitionEnterTimeout={500} transitionLeaveTimeout={500} />
-        <User {...this.props} />
+
+        <Homemap{...this.props} />
+        <Menu {...this.props} />
+        <ModalLogIn {...this.props} />
         <ProductsGridPublic {...this.props} />
-        secondary
-      </div>
-    );
+
+      </Maincontainer>);
   }
 }
 
