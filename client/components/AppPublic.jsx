@@ -10,7 +10,7 @@ import { getProducerLocation } from '../reducers';
 import { getSelectedLocation } from '../reducers';
 import { filteredProducts } from '../reducers';
 import { getSelectedPrediction } from '../reducers';
-
+// /PUBLIC APP
 function mapStateToProps(state) {
   return {
     filteredProducts: filteredProducts(state),
@@ -22,7 +22,6 @@ function mapStateToProps(state) {
     connection: state.connection,
     productsPublic: state.productsPublic,
     gmap: state.gmap,
-    locations: state.locations,
     locationsPublic: state.locationsPublic,
     user: state.user,
     producttypes: state.producttypes,
@@ -32,6 +31,6 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(actionCreators, dispatch);
 }
 
-const App2 = connect(mapStateToProps, mapDispatchToProps)(Secondary);
+const AppPublic = connect(mapStateToProps, mapDispatchToProps)(Secondary);
 
-export default App2;
+export default AppPublic;

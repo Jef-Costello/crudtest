@@ -13,6 +13,9 @@ app_producten:
 app_login:
     path:     /office/profiel
     defaults: { _controller: AppBundle:Default:index }
+app_gridtest:
+    path:     /gridtest
+    defaults: { _controller: AppBundle:Default:index }
 
 app:
     resource: "@AppBundle/Controller/"
@@ -24,9 +27,11 @@ users:
 products:
     type:     rest
     resource: AppBundle\Controller\ProductController
+    methods: [POST,GET]
 locations:
     type:     rest
     resource: AppBundle\Controller\LocationController
+    methods: [POST,GET]
 
 fos_oauth_server_token:
     resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"

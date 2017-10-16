@@ -30,7 +30,7 @@ class Group
 	 * @var \Doctrine\Common\Collections\Collection|Product[]
 	 *
      * @ORM\ManyToMany(targetEntity="Product", mappedBy="groups")
-	 * @ORM\JoinTable(name="ProductsGroups",
+	 * @ORM\JoinTable(name="productsgroups",
      *      joinColumns={@ORM\JoinColumn(name="pgID", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="jid", referencedColumnName="id")}
      *      )

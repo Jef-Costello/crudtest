@@ -1,6 +1,6 @@
 import React from 'react';
 import ProductsGrid from '../components/ProductsGrid';
-import Google from '../components/Google';
+
 import styled from 'styled-components';
 
 const Maincontainer = styled.div`
@@ -28,7 +28,7 @@ const Office = React.createClass({
       return (
         <Maincontainer>
 
-          <Google {...this.props} />
+
           <ProductsGrid {...this.props} />
 
 

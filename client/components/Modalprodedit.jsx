@@ -1,5 +1,5 @@
 import React from 'react';
-import Productedit from '../components/Productedit';
+import Productedit2 from '../components/Productedit2';
 import Modalbase from '../components/Modalbase';
 
 function modalDecorator(InputComp) {
@@ -24,7 +24,7 @@ function modalDecorator(InputComp) {
         openThisModal={this.openModal.bind(this)}
         closeThisModal={this.closeModal.bind(this)}
         getModalFlag={this.getModalFlag.bind(this)}
-      ><Productedit {...this.props} /></InputComp></div>);
+      ><Productedit2 {...this.props} /></InputComp></div>);
     }
 };
 }

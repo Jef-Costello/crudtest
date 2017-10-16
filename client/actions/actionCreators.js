@@ -2,7 +2,7 @@
 import getCookie from '../tools';
 
 export
-function newProduct(token, name, description, groups, locations, ptype) {
+function newProduct(name, subtitle, description, price, pricetype, groups, locations, ptype) {
  // check if user has logged out in other window todo: find better solution
   let locs = '';
   Object.keys(locations).map((key, index) => (
@@ -12,19 +12,65 @@ function newProduct(token, name, description, groups, locations, ptype) {
 
   ));
   console.log(locs);
-  return { type: 'NEWPRODUCT', token, name, description, groups: `g[0]=${groups[0]}&g[1]=${groups[1]}&g[2]=${groups[2]}`, locations: locs, ptype };
+  return { type: 'NEWPRODUCT', name, subtitle, description, price, pricetype, groups: `g[0]=${groups[0]}&g[1]=${groups[1]}&g[2]=${groups[2]}`, locations: locs, ptype };
 }
 export
 function selectLocation(id) {
   return { type: 'SELECT_LOCATION', id };
 }
 export
-function newLocation(token, name, description, ltype, address, lat, lng) {
-  return { type: 'NEW_LOCATION', token, name, description, ltype, address, lat, lng };
+function setSearchAddress(address) {
+  return { type: 'SET_SEARCH_ADDRESS', address };
 }
 export
-function editLocation(name, description, id, address, lat, lng) {
-  return { type: 'EDIT_LOCATION', name, description, id, address, lat, lng };
+function addLocationToUser(id) {
+  console.log('jj');
+  return { type: 'ADD_LOCATION_USER', id };
+}
+export
+function removeLocationFromUser(id) {
+  console.log('jj');
+  return { type: 'REMOVE_LOCATION_USER', id };
+}
+export
+function showMap(value) {
+  return { type: 'SHOW_MAP', value };
+}
+export
+function dLocAdd(id) {
+  return { type: 'DLOC_ADD', id };
+}
+export
+function dLocRemove(id) {
+  return { type: 'DLOC_REMOVE', id };
+}
+export
+function toggleMenu(value) {
+  return { type: 'TOGGLE_MENU', value };
+}
+export
+function upload(file) {
+  return { type: 'UPLOAD_IMAGE', file };
+}
+export
+function editProduct(file) {
+  return { type: 'EDIT_PRODUCT', file };
+}
+export
+function getLocationByUrl(url) {
+  return { type: 'GET_LOCATION_BY_URL', url };
+}
+export
+function newLocation(fd) {
+  return { type: 'NEW_LOCATION', fd };
+}
+export
+function setScroll(y) {
+  return { type: 'SET_SCROLL', y };
+}
+export
+function editLocation(fd) {
+  return { type: 'EDIT_LOCATION', fd };
 }
 export
 function deleteLocation(id) {
@@ -113,13 +159,13 @@ function modalNPError(message) {
   return { type: 'MODAL_NP_ERROR', message };
 }
 export
-function editProduct(token, id, name, description, groups, locations, ptype) {
+function editProductold(id, name, subtitle, description, price, pricetype, groups, locations, ptype) {
   let locs = '';
   Object.keys(locations).map((key, index) => {
     if (locations[key])locs += `&l[${index}]=${key}`;
     return null;
   });
-  return { type: 'EDITPRODUCT', token, id, name, description, groups: `g[0]=${groups[0]}&g[1]=${groups[1]}&g[2]=${groups[2]}`, locations: locs, ptype };
+  return { type: 'EDITPRODUCT', id, name, subtitle, description, price, pricetype, groups: `g[0]=${groups[0]}&g[1]=${groups[1]}&g[2]=${groups[2]}`, locations: locs, ptype };
 }
 export
 function mapInit() {
@@ -193,6 +239,7 @@ function closeNpModal() {
 
 export
 function login(name, pw) {
+  console.log('name');
   return { type: 'LOGIN',
     name,
     pw };
@@ -237,10 +284,22 @@ export
 function handleGetProducts(json) {
   return { type: 'HANDLE_GET_PRODUCTS', json };
 }
+export
 function handleDeleteProduct(json) {
   return { type: 'HANDLE_DELETE_PRODUCT', json };
 }
-
+export
+function removeMarkers() {
+  return { type: 'REMOVE_MARKERS' };
+}
+export
+function removeMap() {
+  return { type: 'REMOVE_MAP' };
+}
+export
+function waitingForGoogle(action) {
+  return { type: 'AWAIT_GOOGLE', action };
+}
 export
 function getToken(json) {
   return { type: 'GET_TOKEN', json };
@@ -292,8 +351,14 @@ function getProducts() {
   return { type: 'GET_ALL_PRODUCTS' };
 }
 export
+function setPreviewImageSrc(src) {
+  return { type: 'SET_PREVIEW_IMAGE_SRC', src };
+}
+export
 function getProductsPublic() {
-  return { type: 'INITIALIZE_PUBLIC' };
+  return { type: 'INITIALIZE_PUBLIC',
+    lat: 52.132633,
+    lng: 5.2912659 };
 }
 export
 function apiLoading() {

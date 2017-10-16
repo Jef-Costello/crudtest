@@ -40,10 +40,13 @@ float:right;`;
 const Productedit = React.createClass({
   edit() {
     this.props.editProduct(
-      this.props.connection.token,
       this.props.getSelectedProduct.id,
-      this.refs.namesingle.value,
-      this.refs.descriptionsingle.value,
+      this.npname.value,
+      this.nsubTitle.value,
+      this.ndescription.value,
+      this.nprice.value,
+      this.npricetype.value,
+
       this.props.ui.modalcatbuttons,
       this.props.ui.modallocationbuttons,
       this.props.ui.ptype,
@@ -68,8 +71,12 @@ const Productedit = React.createClass({
 
         <div className="grid-photo-wrap" />
         <div>
-          naam:<br /><input ref={'namesingle'} defaultValue={this.props.getSelectedProduct.name} /><br />
-        beschrijving:<br /><input ref={'descriptionsingle'} defaultValue={this.props.getSelectedProduct.description} />
+          naam: <br /><input ref={(c) => { this.npname = c; }} type="text" defaultValue={this.props.getSelectedProduct.name} onKeyPress={this.enterDetect} /><br />
+        ondertitel:<br /><input ref={(c) => { this.nsubTitle = c; }} type="text" defaultValue={this.props.getSelectedProduct.subtitle} onKeyPress={this.enterDetect} /><br />
+      beschrijving:<br /><textarea ref={(c) => { this.ndescription = c; }} type="text" defaultValue={this.props.getSelectedProduct.description} onKeyPress={this.enterDetect} /><br />
+    prijs:<br /><input ref={(c) => { this.nprice = c; }} type="text" defaultValue={this.props.getSelectedProduct.price} onKeyPress={this.enterDetect} /><br />
+  prijs toevoeging:<br /><input ref={(c) => { this.npricetype = c; }} type="text" defaultValue={this.props.getSelectedProduct.pricetype}onKeyPress={this.enterDetect} /><br />
+          <br />
           <div className="groups"><br />labels:<br />
             <Button onClick={(e) => this.pb(e, 0)} ref={(c) => { this.b1 = c; }} className={this.props.ui.modalcatbuttons[0] ? 'selected' : ''}>biologisch</Button>
             <Button onClick={(e) => this.pb(e, 1)} ref={(c) => { this.b2 = c; }} className={this.props.ui.modalcatbuttons[1] ? 'selected' : ''}>lokaal</Button>
@@ -83,7 +90,7 @@ const Productedit = React.createClass({
 
           </div>))}
           <br />product soort:<br />
-          <Pimg><img className="pticon" alt="selected product" src={`/web/${this.props.ui.ptimageurl}`} /></Pimg>
+          <Pimg><img className="pticon" alt="selected product" src={`${this.props.connection.root}/web/${this.props.ui.ptimageurl}`} /></Pimg>
           {this.props.producttypes.all.map((pt) => (<Button className={(pt.id === this.props.ui.ptype) ? 'selected' : ''} onClick={(e) => this.selectpt(e, pt.id, pt.imgurl)} key={pt.id}>{pt.name}</Button>))}
 
         </div>

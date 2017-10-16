@@ -8,17 +8,17 @@ import { getSelectedProduct } from '../reducers';
 import { filteredProducts } from '../reducers';
 import { getProducerLocation } from '../reducers';
 import { getSelectedLocation } from '../reducers';
-
+// PRIVATE APP
 function mapStateToProps(state) {
   return {
-    filteredProducts: filteredProducts(state),
+    // filteredProducts: filteredProducts(state),
     getSelectedProduct: getSelectedProduct(state),
     getProducerLocation: getProducerLocation(state),
     getSelectedLocation: getSelectedLocation(state),
     products: state.products,
-    productsPublic: state.productsPublic,
+    // productsPublic: state.productsPublic,
     locations: state.locations,
-    locationsPublic: state.locationsPublic,
+    // locationsPublic: state.locationsPublic,
     connection: state.connection,
     gmap: state.gmap,
     ui: state.ui,
@@ -30,6 +30,6 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(actionCreators, dispatch);
 }
 
-const App = connect(mapStateToProps, mapDispatchToProps)(Main);
+const AppPrivate = connect(mapStateToProps, mapDispatchToProps)(Main);
 
-export default App;
+export default AppPrivate;

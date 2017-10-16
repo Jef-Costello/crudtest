@@ -2,7 +2,7 @@ function products(state = [], action) {
   switch (action.type) {
 
     case 'HANDLENEWPRODUCT':
-      return { ...state, products: action.json };
+      return { ...state, products: [...state.products, action.json] };
 
     case 'SELECT_PRODUCT':
       const selp = { ...state.selectedproduct, id: action.id };
@@ -24,15 +24,13 @@ function products(state = [], action) {
       return { ...state, products: loccopy2.products };
 
     case 'UPDATE_PRODUCT_IN_STORE':
-      const statecopy = { ...state };
-      const index = productIndexById(state, action.id);
-      statecopy.products[index].name = action.name;
-      statecopy.products[index].description = action.description;
-      statecopy.products[index].groups = action.groups;
-      statecopy.products[index].locations = action.locations;
-      statecopy.products[index].ptype = action.ptype;
+      console.log(action.product);
 
-      return statecopy;
+      const indx3 = state.products.map((p)=> p.id).indexOf(action.product.id);
+      const pc = { ...state };
+      pc.products[indx3] = action.product;
+
+      return { ...state, products: pc.products };
 
 
     default:

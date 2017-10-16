@@ -1,6 +1,6 @@
 import React from 'react';
 import { CSSTransitionGroup } from 'react-transition-group';
-import Gmap from '../components/Gmap';
+import LocationMap from '../components/LocationMap';
 import styled from 'styled-components';
 
 const ModalInner = styled.div`
@@ -34,12 +34,31 @@ const Locationnew = React.createClass({
 
   newlocation(e) {
     if (e !== undefined)e.preventDefault();
+    const fd = new FormData();
 
     if (this.locname.value === '' || this.locdescription.value === '') { this.props.modalNPError('voer alle velden in.'); } else {
-      this.props.newLocation(
-      this.props.connection.token, this.locname.value, this.locdescription.value.replace(/\n/g, '%0A'), this.props.ltype, this.locaddress.value, this.props.ui.lat, this.props.ui.lng,
-    );
+      fd.append('file', this.limage.files[0]);
+      fd.append('name', this.locname.value);
+      fd.append('description', this.locdescription.value.replace(/\n/g, '%0A'));
+      fd.append('ltype', this.props.ltype);
+      fd.append('address', this.locaddress.value);
+      fd.append('lat', this.props.ui.lat);
+      fd.append('lng', this.props.ui.lng);
+      this.props.newLocation(fd);
     }
+  },
+  previewChange() {
+    console.log('e.target');
+    const reader = new FileReader();
+    const that = this;
+    reader.onload = function (e) {
+      console.log('e.target');
+      that.props.setPreviewImageSrc(e.target.result);
+    };
+
+    reader.readAsDataURL(this.limage.files[0]);
+  //  console.log(this.npimage.files[0]);
+  //  this.props.setPreviewImageSrc(this.npimage.files[0].result);
   },
   geocodeAddress(geocoder, resultsMap, address) {
     const GeocoderRequest = { address, region: 'nl' };
@@ -54,6 +73,7 @@ const Locationnew = React.createClass({
     });
   },
   componentDidUpdate() {},
+  componentDidMount() { window.scrollTo(0, 0); },
   componentWillMount() {
     this.props.setLatLngUi(this.props.gmap.lat, this.props.gmap.lng);
   },
@@ -61,8 +81,12 @@ const Locationnew = React.createClass({
     return (
 
       <figure className="modalinner" >
-        <Gmap {...this.props} />
+        <LocationMap {...this.props} />
         <div className="grid-photo-wrap" />
+
+
+          afbeelding: <br /><input ref={(c) => { this.limage = c; }} onChange={this.previewChange} type="file" name="file" id="file" className="inputfile" /><label htmlFor="file">Kies bestand</label><br />
+        <img className="preview" src={this.props.ui.previewimage} /><br />
                 adres: <br /><input ref={(c) => { this.locaddress = c; }} type="text" onChange={this.findAdres} /><br />
               naam: <br /><input ref={(c) => { this.locname = c; }} type="text" /><br />
             beschrijving:<br /><textarea ref={(c) => { this.locdescription = c; }} type="text" />

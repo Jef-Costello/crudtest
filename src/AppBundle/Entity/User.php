@@ -6,6 +6,7 @@ use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="user")
@@ -29,7 +30,7 @@ class User extends BaseUser
 
     /**
      * @var \Doctrine\Common\Collections\Collection|Product[]
-	 * One User has Many Products.
+     * One User has Many Products.
      * @ORM\OneToMany(targetEntity="Product", mappedBy="user")
      */
     protected $products;
@@ -41,8 +42,16 @@ class User extends BaseUser
      * @ORM\OneToMany(targetEntity="Shop", mappedBy="user")
      */
     protected $shops;
-
-
+    /**
+     * @var \Doctrine\Common\Collections\Collection|Location[]
+     *
+       * @ORM\ManyToMany(targetEntity="Location", mappedBy="userds")
+     * @ORM\JoinTable(name="dlocationsusers",
+       *      joinColumns={@ORM\JoinColumn(name="duID", referencedColumnName="id")},
+       *      inverseJoinColumns={@ORM\JoinColumn(name="jid", referencedColumnName="id")}
+       *      )
+       **/
+   protected $dlocations;
     /**
      * @var \Doctrine\Common\Collections\Collection|Location[]
     * One User has Many Locations.
@@ -57,17 +66,18 @@ class User extends BaseUser
     {
         parent::__construct();
         $this->products = new ArrayCollection();
-      $this->shops = new ArrayCollection();
+        $this->shops = new ArrayCollection();
         $this->locations = new ArrayCollection();
+        $this->dlocations = new ArrayCollection();
     }
-	 public function getProducts()
+    public function getProducts()
     {
         return $this->products;
     }
     public function getName()
-     {
-         return $this->username;
-     }
+    {
+        return $this->username;
+    }
 
     /**
      * Add product
@@ -183,5 +193,39 @@ class User extends BaseUser
     public function getProducer()
     {
         return $this->producer;
+    }
+
+    /**
+     * Add dlocation
+     *
+     * @param \AppBundle\Entity\Location $dlocation
+     *
+     * @return User
+     */
+    public function addDlocation(\AppBundle\Entity\Location $dlocation)
+    {
+        $this->dlocations[] = $dlocation;
+
+        return $this;
+    }
+
+    /**
+     * Remove dlocation
+     *
+     * @param \AppBundle\Entity\Location $dlocation
+     */
+    public function removeDlocation(\AppBundle\Entity\Location $dlocation)
+    {
+        $this->dlocations->removeElement($dlocation);
+    }
+
+    /**
+     * Get dlocations
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDlocations()
+    {
+        return $this->dlocations;
     }
 }

@@ -32,5 +32,6 @@ export const filteredProducts = function (state) {
   //  console.log(el);
     if (fb.indexOf(el.ptparent) != -1)filtered.push(el);
   });
-  return { filtered };
+  // filtered.sort((a, b) => b.price - a.price);
+  return { filtered, markersredrawn: true };
 };

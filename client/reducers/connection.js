@@ -44,16 +44,14 @@ function connection(state = [], action) {
     case 'LAST_ACTION':
       return { ...state, lastaction: action };
 
-    case 'LOAD_ERROR':
-
-      return state;
 
     case 'LOADING':
       return { ...state, loading: true };
 
     case 'LOAD_COMPLETE':
       return { ...state, loading: false };
-
+    case 'LOAD_ERROR':
+      return { ...state, loading: false };
     case 'CANCEL':
       return { ...state, loading: false };
 

@@ -15,6 +15,8 @@
 /vendor/
 /web/bundles/
 /web/hot/
+/web/img/
+/web/font/
 .idea
 .idea/*
 /node_modules

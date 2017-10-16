@@ -26,15 +26,44 @@ class Product
      */
     protected $name;
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
+     *
+     */
+    protected $subTitle;
+    /**
+     * @ORM\Column(type="text", nullable=true)
      *
      */
     protected $description;
+    /**
+    * @ORM\Column(type="decimal", precision=7, scale=2, nullable=true)
+    */
+    protected $price = 0;
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     *
+     */
+    protected $priceType;
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     *
+     */
+    protected $imgUrl;
+    /**
+     * @ORM\Column(type="boolean")
+     *
+     */
+    protected $useCustomImage;
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     *
+     */
+    protected $highLighted;
      /**
       *
      * @var \Doctrine\Common\Collections\Collection|Group[]
      * @ORM\ManyToMany(targetEntity="Group", inversedBy="products")
-     * @ORM\JoinTable(name="ProductsGroups",
+     * @ORM\JoinTable(name="productsgroups",
      *      joinColumns={@ORM\JoinColumn(name="pgID", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="jid", referencedColumnName="id")}
      *      )
@@ -56,7 +85,7 @@ class Product
      *
     * @var \Doctrine\Common\Collections\Collection|Group[]
     * @ORM\ManyToMany(targetEntity="Location", inversedBy="products")
-    * @ORM\JoinTable(name="ProductsLocations",
+    * @ORM\JoinTable(name="productslocations",
     *      joinColumns={@ORM\JoinColumn(name="plID", referencedColumnName="id")},
     *      inverseJoinColumns={@ORM\JoinColumn(name="jid", referencedColumnName="id")}
     *      )
@@ -108,6 +137,50 @@ class Product
     public function getDist()
     {
         return $this->distance;
+    }
+    public function toJson()
+    {
+      $groupsjson=[];
+    $grs=$this->getGroups();
+
+
+    foreach ($grs as $g) {
+        $groupsjson[]=['groupname'=>$g->getName(),'groupid'=>$g->getId()];
+    }
+    $locationsjson=[];
+    $ls=$this->getLocations();
+    foreach ($ls as $l) {
+        $locationsjson[]=['name'=>$l->getName(),'id'=>$l->getId(),'type'=>$l->getType()];
+    }
+    $ptparent=null;
+    if ($this->getProducttype()!=null) {
+        $ptype=$this->getProducttype()->getId();
+        $par=$this->getProducttype()->getParent();//todo : should be determined in frontend.. normalized
+      if ($par!=null) {
+          $ptparent=$this->getProducttype()->getParent()->getId();
+      } else {
+          $ptparent=$this->getProducttype()->getId();
+      }
+    } else {
+        $ptype=null;
+    }
+      return(([
+        "name"=>$this->getName(),
+        "id"=>$this->getId(),
+        "subtitle"=>$this->getSubTitle(),
+        "description"=>$this->getDescription(),
+        "price"=>$this->getPrice(),
+        "pricetype"=>$this->getPriceType(),
+        "imgurl"=>$this->getImgUrl(),
+        "usecustomimage"=>$this->getUseCustomImage(),
+        "highlighted"=>$this->getHighLighted(),
+        'groups'=>$groupsjson,
+        //'userid'=>$uid,
+        //'username'=>$uname,
+        'ptype'=>$ptype,
+        'ptparent'=>$ptparent,
+        'distance'=>$this->getDistance(),
+        'locations'=>$locationsjson]));
     }
 
     /**
@@ -347,5 +420,149 @@ return $query->getResult();
     public function getProducttype()
     {
         return $this->producttype;
+    }
+
+    /**
+     * Set price
+     *
+     * @param string $price
+     *
+     * @return Product
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * Get price
+     *
+     * @return string
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * Set priceType
+     *
+     * @param string $priceType
+     *
+     * @return Product
+     */
+    public function setPriceType($priceType)
+    {
+        $this->priceType = $priceType;
+
+        return $this;
+    }
+
+    /**
+     * Get priceType
+     *
+     * @return string
+     */
+    public function getPriceType()
+    {
+        return $this->priceType;
+    }
+
+    /**
+     * Set imgUrl
+     *
+     * @param string $imgUrl
+     *
+     * @return Product
+     */
+    public function setImgUrl($imgUrl)
+    {
+        $this->imgUrl = $imgUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get imgUrl
+     *
+     * @return string
+     */
+    public function getImgUrl()
+    {
+        return $this->imgUrl;
+    }
+
+    /**
+     * Set useCustomImage
+     *
+     * @param boolean $useCustomImage
+     *
+     * @return Product
+     */
+    public function setUseCustomImage($useCustomImage)
+    {
+        $this->useCustomImage = $useCustomImage;
+
+        return $this;
+    }
+
+    /**
+     * Get useCustomImage
+     *
+     * @return boolean
+     */
+    public function getUseCustomImage()
+    {
+        return $this->useCustomImage;
+    }
+
+    /**
+     * Set highLighted
+     *
+     * @param boolean $highLighted
+     *
+     * @return Product
+     */
+    public function setHighLighted($highLighted)
+    {
+        $this->highLighted = $highLighted;
+
+        return $this;
+    }
+
+    /**
+     * Get highLighted
+     *
+     * @return boolean
+     */
+    public function getHighLighted()
+    {
+        return $this->highLighted;
+    }
+
+    /**
+     * Set subTitle
+     *
+     * @param string $subTitle
+     *
+     * @return Product
+     */
+    public function setSubTitle($subTitle)
+    {
+        $this->subTitle = $subTitle;
+
+        return $this;
+    }
+
+    /**
+     * Get subTitle
+     *
+     * @return string
+     */
+    public function getSubTitle()
+    {
+        return $this->subTitle;
     }
 }

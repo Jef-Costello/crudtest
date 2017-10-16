@@ -18,6 +18,233 @@ use Doctrine\ORM\Query\ResultSetMappingBuilder;
 
 class ProductController extends FOSRestController implements ClassResourceInterface
 {
+    public function uploadAction(Request $request)
+    {
+        var_dump(json_decode($request->get('name')));
+        $img=$request->files->get('file');
+        move_uploaded_file($img, 'img/uploads/ffyff.jpg');
+   //file_put_contents($img, file_get_contents($url));
+   exit;
+    }
+    public function new2Action(Request $request)
+    {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $product = new Product();
+
+        $ProductName=$request->get('name');
+        $Subtitle=$request->get('subtitle');
+        $Highlighted=$request->get('highlighted');
+        $Description=$request->get('description');
+        $Price=$request->get('price');
+        $PriceType=$request->get('pricetype');
+        $img=$request->files->get('file');
+        $cntr=0;
+        $product->setUseCustomImage(false);
+        $filename=$ProductName;
+        $filename=preg_replace('/[^A-Za-z0-9_-]/', '', $filename);
+        while (file_exists('img/uploads/'.$filename.$cntr.'.jpg')) {
+            $cntr+=1;
+        }
+        if ($img!=null) {
+            move_uploaded_file($img, 'img/uploads/'.$filename.$cntr.'.jpg');
+            $product->setImgUrl('img/uploads/'.$filename.$cntr.'.jpg');
+            $product->setUseCustomImage(true);
+        }
+      //  var_dump($file);exit;
+        $product->setName($ProductName);
+        $product->setSubTitle($Subtitle);
+        $product->setDescription($Description);
+        $product->setPrice($Price);
+        $product->setPriceType($PriceType);
+    //  $product->setImgUrl("");
+
+      $product->setHighLighted($Highlighted);
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $ptrepo = $em->getRepository("AppBundle:Producttype");
+        $producttype=$request->get('ptype');
+        $pt=$ptrepo->findOneById($producttype);
+        $product->setProducttype($pt);
+        $repository = $em->getRepository("AppBundle:User");
+        $user =  $this->get('security.token_storage')->getToken()->getUser();
+        $product->setUser($user);
+        $groups = $em->getRepository("AppBundle:Group");
+        $locations = $em->getRepository("AppBundle:Location");
+        $indx=1;
+        $ingroups=json_decode($request->get('groups'));
+        foreach ($ingroups as $g) {
+            if ($g=='true') {
+                $group=$groups->findOneById($indx);
+                $product->addGroup($group);
+            }
+
+            $indx++;
+        }
+        $inlocs=json_decode($request->get('locations'));
+        foreach ($inlocs as $indx=>$l) {
+            if ($l=='true') {
+                $location=$locations->findOneById($indx);
+                $product->addLocation($location);
+            }
+        }
+
+        $em->persist($product);
+        $em->flush();
+        $groupsjson=[];
+        $grs=$product->getGroups();
+        foreach ($grs as $g) {
+            $groupsjson[]=['groupname'=>$g->getName(),'groupid'=>$g->getId()];
+        }
+        $locationsjson=[];
+        $ls=$product->getLocations();
+        foreach ($ls as $l) {
+            $locationsjson[]=['name'=>$l->getName(),'id'=>$l->getId(),'type'=>$l->getType()];
+        }
+        if ($product->getProducttype()!=null) {
+            $ptype=$product->getProducttype()->getId();
+        } else {
+            $ptype=null;
+        }
+        echo json_encode($product->toJson());
+
+
+        exit;
+    }
+    public function edit2Action(Request $request)
+    {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw $this->createAccessDeniedException();
+        }
+        $user =  $this->get('security.token_storage')->getToken()->getUser();
+        if ($request->get('id')=='new') {
+            $product = new Product();
+        } else {
+            $edit=true;
+            $product = $this->getDoctrine()
+       ->getRepository('AppBundle:Product')
+       ->find($request->get('id'));
+            if ($product->getUser()!=$user) {
+                exit;
+            }
+        }
+
+        $ProductName=$request->get('name');
+        $Subtitle=$request->get('subtitle');
+        $Highlighted=$request->get('highlighted');
+        $Description=$request->get('description');
+        $Price=$request->get('price');
+        $PriceType=$request->get('pricetype');
+        $img=$request->files->get('file');
+        if ($img!=null) {
+            //var_dump($img);exit;
+      $cntr=0;
+            while (file_exists('img/uploads/'.$ProductName.$cntr.'.jpg')) {
+                $cntr+=1;
+            }
+            move_uploaded_file($img, 'img/uploads/'.$ProductName.$cntr.'.jpg');
+            $product->setImgUrl('img/uploads/'.$ProductName.$cntr.'.jpg');
+            $product->setUseCustomImage(true);
+        }
+
+        $product->setName($ProductName);
+        $product->setSubTitle($Subtitle);
+        $product->setDescription($Description);
+        $product->setPrice($Price);
+        $product->setPriceType($PriceType);
+    //  $product->setImgUrl("");
+    //  $product->setUseCustomImage(false);
+      $product->setHighLighted($Highlighted);
+        $em = $this->getDoctrine()->getEntityManager();
+
+        $ptrepo = $em->getRepository("AppBundle:Producttype");
+        $producttype=$request->get('ptype');
+        $pt=$ptrepo->findOneById($producttype);
+        $product->setProducttype($pt);
+        $repository = $em->getRepository("AppBundle:User");
+        $user =  $this->get('security.token_storage')->getToken()->getUser();
+        $product->setUser($user);
+        $groups = $em->getRepository("AppBundle:Group");
+        $locations = $em->getRepository("AppBundle:Location");
+        $groups = $em->getRepository("AppBundle:Group");
+        $gid=[];
+        $savedgroup= $product->getGroups();
+        foreach ($savedgroup as $sg) {
+            $gid[]=$sg->getId();//to do : find right method for this
+        }
+      //  var_dump($gid);
+        $indx=1;
+        $ingroups=json_decode($request->get('groups'));
+      //  var_dump( $ingroups);exit;
+        foreach ($ingroups as $g) {
+            if ($g==true) {
+                $group=$groups->findOneById($indx);
+                if (!in_array($indx, $gid)) {
+                    $product->addGroup($group);
+                }
+            }
+            if ($g==false) {
+                $group=$groups->findOneById($indx);
+                if (in_array($indx, $gid)) {
+                    $product->removeGroup($group);
+                }
+            }
+            $indx++;
+        }
+ //var_dump(json_decode($request->get('locations')));exit;
+      $locations = $em->getRepository("AppBundle:Location");
+        $locs=$locations->findAll();
+        $prodlocs=$product->getLocations();
+        $prodl=[];
+        foreach ($prodlocs as $pl) {
+            $prodl[]=$pl->getId();
+        }
+      //$savedlocations= $product->getLocations();
+
+      if (count($request->get('locations'))!=0) {
+          foreach ($locs as $sl) {
+              if (in_array($sl->getId(), json_decode($request->get('locations')))) {
+                  //$loc=$locations->findOneBy(array('user'=>$user->getId(),'id'=>$sl->getId()));
+            //  var_dump($loc->getName());exit;
+            if (!in_array($sl->getId(), $prodl)) {
+                $product->addLocation($locations->findOneById($sl->getId()));
+            }
+              } else {
+                  $product->removeLocation($locations->findOneById($sl->getId()));
+              }
+          }
+      } else {
+          foreach ($locs as $sl) {
+              $product->removeLocation($sl);
+          }
+      }
+
+
+
+
+        $em->flush();
+
+        $products=$user->getProducts();
+        $groupsjson=[];
+        $grs=$product->getGroups();
+        foreach ($grs as $g) {
+            $groupsjson[]=['groupname'=>$g->getName(),'groupid'=>$g->getId()];
+        }
+        $jsonproducts=[];
+        foreach ($products as $p) {
+            $jsonproducts[]=["name"=> $p->getName(),"id"=>$p->getId()];
+        }
+        $locationsjson=[];
+        $ls=$product->getLocations();
+        foreach ($ls as $l) {
+            $locationsjson[]=['name'=>$l->getName(),'id'=>$l->getId(),'type'=>$l->getType()];
+        }
+        echo json_encode($product->ToJson());
+
+        exit;
+    }
     public function testAction(Request $request)
     {
 
@@ -58,9 +285,18 @@ class ProductController extends FOSRestController implements ClassResourceInterf
         $product = new Product();
 
         $ProductName=$request->query->get('ProductName');
+        $Subtitle=$request->query->get('subtitle');
         $Description=$request->query->get('description');
+        $Price=$request->query->get('price');
+        $PriceType=$request->query->get('pricetype');
         $product->setName($ProductName);
+        $product->setSubTitle($Subtitle);
         $product->setDescription($Description);
+        $product->setPrice($Price);
+        $product->setPriceType($PriceType);
+        $product->setImgUrl("");
+        $product->setUseCustomImage(false);
+        $product->setHighLighted(false);
         $em = $this->getDoctrine()->getEntityManager();
 
         $ptrepo = $em->getRepository("AppBundle:Producttype");
@@ -130,7 +366,7 @@ class ProductController extends FOSRestController implements ClassResourceInterf
         $em->persist($product);
         $em->flush();
 
-  echo"added producttype";
+        echo"added producttype";
         exit;
     }
     public function singleAction(Request $request)
@@ -185,25 +421,32 @@ class ProductController extends FOSRestController implements ClassResourceInterf
         $repository = $em->getRepository("AppBundle:product");
        //$user =  $this->get('security.token_storage')->getToken()->getUser();
        $inLat=$request->query->get('lat');
-       $inLng=$request->query->get('lng');
-         $rsm = new ResultSetMappingBuilder($em);
-         $rsm->addRootEntityFromClassMetadata('AppBundle\Entity\Product', 'u');
-         $rsm->addFieldResult('u', 'name', 'name');
-         $rsm->addFieldResult('u', 'description', 'description');
-         $rsm->addFieldResult('u', 'id', 'id');
-         $rsm->addMetaResult('u', 'lat', 'lat');
-         $rsm->addMetaResult('u', 'lng', 'lng');
-         $rsm->addFieldResult('u', 'groups', 'groups');
-         $rsm->addFieldResult('u', 'locations', 'locations');
-         $rsm->addMetaResult('u', 'producttype', 'producttype');
+        $inLng=$request->query->get('lng');
+        $rsm = new ResultSetMappingBuilder($em);
+        $rsm->addRootEntityFromClassMetadata('AppBundle\Entity\Product', 'u');
+        $rsm->addFieldResult('u', 'name', 'name');
+        $rsm->addFieldResult('u', 'subTitle', 'subTitle');
+        $rsm->addFieldResult('u', 'description', 'description');
+        $rsm->addFieldResult('u', 'id', 'id');
+        $rsm->addFieldResult('u', 'price', 'price');
+        $rsm->addFieldResult('u', 'priceType', 'priceType');
+        $rsm->addFieldResult('u', 'imgUrl', 'imgUrl');
+        $rsm->addFieldResult('u', 'useCustomImage', 'useCustomImage');
+        $rsm->addMetaResult('u', 'highLighted', 'highLighted');
+        $rsm->addMetaResult('u', 'lat', 'lat');
+        $rsm->addMetaResult('u', 'lng', 'lng');
+        $rsm->addFieldResult('u', 'groups', 'groups');
+        $rsm->addFieldResult('u', 'locations', 'locations');
+        $rsm->addMetaResult('u', 'producttype', 'producttype');
      //.  $
      //  $rsm->addFieldResult('u', 'lng', 'lng');
        $rsm->addFieldResult('u', 'distance', 'distance');
-         $query = $em->createNativeQuery('SELECT  e.*,l.lat,l.lng,( 6371 * acos( cos( radians('.$inLat.') ) * cos( radians( lat ) ) * cos( radians( lng ) - radians('.$inLng.') ) + sin( radians('.$inLat.') ) * sin( radians( lat ) ) ) ) as distance FROM productslocations d INNER JOIN products e ON e.id = d.plID
+        $query = $em->createNativeQuery('SELECT  e.*,l.lat,l.lng,( 6371 * acos( cos( radians('.$inLat.') ) * cos( radians( lat ) ) * cos( radians( lng ) - radians('.$inLng.') ) + sin( radians('.$inLat.') ) * sin( radians( lat ) ) ) ) as distance FROM productslocations d INNER JOIN products e ON e.id = d.plID
        INNER JOIN location l ON l.id = d.jid
        ORDER BY distance', $rsm);
-         $products= $query->getResult();
+        $products= $query->getResult();
         $jsonproducts=[];
+
         foreach ($products as $p) {
             $groupsjson=[];
             $grs=$p->getGroups();
@@ -223,13 +466,33 @@ class ProductController extends FOSRestController implements ClassResourceInterf
             foreach ($ls as $l) {
                 $locationsjson[]=['name'=>$l->getName(),'id'=>$l->getId(),'type'=>$l->getType()];
             }
-            if ($p->getProducttype()!=null){
-
-              $ptype=$p->getProducttype()->getId();
-              $par=$p->getProducttype()->getParent();//todo : should be determined in frontend.. normalized
-              if( $par!=null )$ptparent=$p->getProducttype()->getParent()->getId();else $ptparent=null;
-            }else $ptype=null;
-            $jsonproducts[]=["name"=> $p->getName(),"id"=>$p->getId(),"description"=>$p->getDescription(),'groups'=>$groupsjson,'userid'=>$uid,'username'=>$uname,'ptype'=>$ptype,'ptparent'=>$ptparent,'distance'=>$p->getDistance(),'locations'=>$locationsjson];
+            if ($p->getProducttype()!=null) {
+                $ptype=$p->getProducttype()->getId();
+                $par=$p->getProducttype()->getParent();//todo : should be determined in frontend.. normalized
+              if ($par!=null) {
+                  $ptparent=$p->getProducttype()->getParent()->getId();
+              } else {
+                  $ptparent=$p->getProducttype()->getId();
+              }
+            } else {
+                $ptype=null;
+            }
+            $jsonproducts[]=["name"=> $p->getName(),
+            "id"=>$p->getId(),
+            "subtitle"=>$p->getSubTitle(),
+            "description"=>$p->getDescription(),
+            "price"=>$p->getPrice(),
+            "pricetype"=>$p->getPriceType(),
+            "imgurl"=>$p->getImgUrl(),
+            "usecustomimage"=>$p->getUseCustomImage(),
+            "highlighted"=>$p->getHighLighted(),
+            'groups'=>$groupsjson,
+            'userid'=>$uid,
+            'username'=>$uname,
+            'ptype'=>$ptype,
+            'ptparent'=>$ptparent,
+            'distance'=>$p->getDistance(),
+            'locations'=>$locationsjson];
         }
         echo json_encode($jsonproducts);
 
@@ -273,8 +536,14 @@ class ProductController extends FOSRestController implements ClassResourceInterf
         }
         $productId=$request->query->get('ProductId');
 
-        $productName=$request->query->get('ProductName');
+
         $productDescription=$request->query->get('ProductDescription');
+        $ProductName=$request->query->get('ProductName');
+        $Subtitle=$request->query->get('subtitle');
+        $Description=$request->query->get('description');
+        $Price=$request->query->get('price');
+        $PriceType=$request->query->get('pricetype');
+
         $em = $this->getDoctrine()->getEntityManager();
         $ptrepo = $em->getRepository("AppBundle:Producttype");
         $producttype=$request->query->get('ptype');
@@ -287,9 +556,14 @@ class ProductController extends FOSRestController implements ClassResourceInterf
        ->getRepository('AppBundle:Product')
        ->find($productId);
         if ($product->getUser()==$user) {
-            $product->setName($productName);
-            $product->setDescription($productDescription);
-            $product->setProducttype($pt);
+            $product->setName($ProductName);
+            $product->setSubTitle($Subtitle);
+            $product->setDescription($Description);
+            $product->setPrice($Price);
+            $product->setPriceType($PriceType);
+            $product->setImgUrl("");
+            $product->setUseCustomImage(false);
+            $product->setHighLighted(false);
             $groups = $em->getRepository("AppBundle:Group");
             $gid=[];
             $savedgroup= $product->getGroups();
@@ -360,7 +634,7 @@ class ProductController extends FOSRestController implements ClassResourceInterf
         foreach ($ls as $l) {
             $locationsjson[]=['name'=>$l->getName(),'id'=>$l->getId()];
         }
-        echo json_encode(["name"=> $product->getName(),"id"=>$product->getId(),'description'=>$product->getDescription(),'groups'=>$groupsjson,'locations'=>$locationsjson,'ptype'=>$product->getProducttype()->getId()]);
+        echo json_encode(["name"=> $product->getName(),"id"=>$product->getId(),'subtitle'=>$product->getSubTitle(),'description'=>$product->getDescription(),'price'=>$product->getPrice(),'pricetype'=>$product->getPriceType(),'groups'=>$groupsjson,'locations'=>$locationsjson,'ptype'=>$product->getProducttype()->getId()]);
 
         exit;
     }

@@ -15,7 +15,7 @@ import { singleProductEpic } from './epics';
 import { retryLastActionEpic } from './epics';
 import { newProductEpic } from './epics';
 import { newLocationEpic } from './epics';
-import { editProductEpic } from './epics';
+import { editProduct2Epic } from './epics';
 import { allProductsEpic } from './epics';
 import { allProductsPublicEpic } from './epics';
 import { testEpic } from './epics';
@@ -24,15 +24,21 @@ import { getUserEpic } from './epics';
 import { getLocationsEpic } from './epics';
 import { deleteLocationEpic } from './epics';
 import { deleteProductEpic } from './epics';
+import { uploadImageEpic } from './epics';
 import { loadGmapsEpic } from './epics';
 import { editLocationEpic } from './epics';
+import { googleEpic } from './epics';
 import { initializepublicEpic } from './epics';
+import { getLocationByUrlEpic } from './epics';
+import { addLocationToUserEpic } from './epics';
+import { removeLocationFromUserEpic } from './epics';
 import { combineEpics } from 'redux-observable';
 import rootReducer from './reducers/index';
 import getCookie from './tools';
 
 
 // con st products = { all: [{ empty: 'empty', name: 'none', description: 'none', id: 'x' }] };
+// gaction={action:{type:"NONE"}};
 const gmap = {
   apiKey: 'AIzaSyDVH4o0trN9-as7muenydsbpiMbMDq3zfY',
   initialized: false,
@@ -43,6 +49,8 @@ const gmap = {
   markers: [],
   marker: null,
   renderedlocations: [],
+  waiting: { type: 'NONE' },
+  map: null,
 };
 const connection = {
   root: '',
@@ -66,8 +74,11 @@ const ui = {
   modalnperror: '',
   modalcatbuttons: [false, false, false],
   modallocationbuttons: [],
-
-  ptfilterbuttons: [{ value: true, id: 6, name: 'groente' }, { value: true, id: 7, name: 'fruit' }, { value: true, id: 99, name: 'vlees & vis' }, { value: true, id: 99, name: 'zuivel' }],
+  uploadImage: '',
+  scroll: 0,
+  showmap: false,
+  showmenu: false,
+  ptfilterbuttons: [{ value: true, id: 6, name: 'groente' }, { value: true, id: 7, name: 'fruit' }, { value: true, id: 8, name: 'vlees' }, { value: true, id: 9, name: 'vis' }, { value: true, id: 10, name: 'zuivel & eieren' }],
 };
 
 const products = {
@@ -108,7 +119,7 @@ const rootEpic = combineEpics(
   logOutEpic,
   singleProductEpic,
   newProductEpic,
-  editProductEpic,
+  editProduct2Epic,
   deleteProductEpic,
   reloadProductEpic,
   refreshEpic,
@@ -123,6 +134,11 @@ const rootEpic = combineEpics(
   editLocationEpic,
   deleteLocationEpic,
   initializepublicEpic,
+  getLocationByUrlEpic,
+  uploadImageEpic,
+  googleEpic,
+  addLocationToUserEpic,
+  removeLocationFromUserEpic,
 
 
 );

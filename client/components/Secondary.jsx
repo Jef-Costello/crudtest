@@ -6,7 +6,7 @@ import User from '../components/User';
 import Menu from '../components/Menu';
 import Homemap from '../components/Homemap';
 import Modallocation from '../components/Modallocation';
-import ModalLogIn from '../components/ModalLogIn';
+// import ModalLogIn from '../components/ModalLogIn';
 import ProductsGridPublic from '../components/ProductsGridPublic';
 import styled from 'styled-components';
 
@@ -29,20 +29,14 @@ class Secondary extends React.Component {
       return (
         <Maincontainer>
           <TopBar {...this.props} />
-          <Homemap{...this.props} />
-          <Menu {...this.props} />
-
-          <ProductsGridPublic {...this.props} />
+          {React.cloneElement(this.props.children, this.props)}
 
         </Maincontainer>);
     } return (
       <Maincontainer>
         <TopBar {...this.props} />
+        {React.cloneElement(this.props.children, this.props)}
 
-        <Homemap{...this.props} />
-        <Menu {...this.props} />
-        <ModalLogIn {...this.props} />
-        <ProductsGridPublic {...this.props} />
 
       </Maincontainer>);
   }

@@ -3,49 +3,23 @@ import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 
 const SGmap = styled.div`
-
-div{width:240px;height:240px;}`;
+height:100%;
+div#map{width:100%;height:100%;}`;
 const Gmap = React.createClass({
 
-  componentDidUpdate() { if (this.props.gmap.redrawMarkers) this.drawMarkers(); },
+  componentDidUpdate() {
+    console.log('uuuuuuuuu');
+    if (this.props.gmap.initialized && this.props.gmap.map == null) this.initMap();
+  },
   componentDidMount() {
-    if (!this.props.gmap.initialized && !this.props.gmap.apiLoading) {
-      window.initMap = this.initMap;
-      this.props.apiLoading();
-      loadJS(`https://maps.googleapis.com/maps/api/js?key=${this.props.gmap.apiKey}&libraries=places&region=NL&callback=initMap`);
-    } else this.initMap();
+    if (this.props.gmap.initialized) this.initMap();
   },
-  drawMarkers() {
-    this.props.redrawMarkers(false);
-    const rendered = [];
-    this.props.filteredProducts.filtered.map((product) => {
-      product.locations.map((location) => {
-        if (rendered.indexOf(location.id) === -1) {
-          rendered.push(location.id);
-          const indx = this.props.locationsPublic.all.map(el =>
-            el.id).indexOf(location.id);
-            // const l=this.props.locations.all.map
-          const latlng = new google.maps.LatLng(this.props.locationsPublic.all[indx].lat, this.props.locationsPublic.all[indx].lng);
-        //  that.props.gmap.map.setCenter(latlng);
-          const marker = new google.maps.Marker({
-            position: latlng,
-            title: location.name,
-            map: this.props.gmap.map,
-          });
-          marker.addListener('click', () => {
-            this.props.gmap.map.setCenter(marker.getPosition());
-            this.props.selectLocationMap(location.id);
-          });
-            // marker.setPosition(latlng);
-          //  marker.setMap(map);
-          this.props.pushMarker(marker);
+  componentWillUnmount() {
+    this.props.removeMap(); this.props.redrawMarkers(false);
+  },
 
-          console.log(location.lat);
-        }
-      });
-    });
-  },
   initMap() {
+    this.props.removeMarkers();
     const latlng = new google.maps.LatLng(this.props.gmap.lat, this.props.gmap.lng);
     const mapOptions =
       {
@@ -56,20 +30,17 @@ const Gmap = React.createClass({
 
     const map = new google.maps.Map(this.node, mapOptions);
     this.props.setMap(map);
-    console.log('initmap');
+    console.log('ingmap');
 
-    const marker = new google.maps.Marker({
-      map,
-      position: latlng,
-    });
-    this.props.setMarker(marker);
-    window.service = new google.maps.places.AutocompleteService();
+
+  //  window.service = new google.maps.places.AutocompleteService();
     // window.google
-    window.geocoder = new google.maps.Geocoder();
+  //  window.geocoder = new google.maps.Geocoder();
     // window.geocoder.setRegion('nl');
   //  this.props.setGeocoder(geocoder);
-    this.props.mapInit();
-    if (this.props.markers) this.props.redrawMarkers(true);
+  //  this.props.mapInit();
+
+  //  if (this.props.markers) this.props.redrawMarkers(true);
   },
 
 
@@ -77,22 +48,13 @@ const Gmap = React.createClass({
     let gmap;
 
     return (
-      <div>
+      <SGmap >
         <div id="map" ref={(node) => this.node = node} />
 
-      </div>
+      </SGmap>
     );
   },
 
 });
 
 export default Gmap;
-function loadJS(src) {
-  const ref = window.document.getElementsByTagName('script')[0];
-
-  const script = window.document.createElement('script');
-  script.src = src;
-  script.async = true;
-  ref.parentNode.insertBefore(script, ref);
-}
-

@@ -8,10 +8,12 @@ import styled from 'styled-components';
 const ProductContainer = styled.div`
 display: flex;
 flex-wrap: wrap;
-max-width: 900px;
+margin: 0 auto;
+max-width: 1200px;
 position:relative;
-left:25%;
+
 top: 50px;
+
 
 `;
 const Button = styled.button`
@@ -24,7 +26,7 @@ box-shadow: 0 2px 2px #dddddd;
 display: inline-block;
 background-color: #fff;
 padding: 0 16px;
-width: 100%;
+width: auto;
 border-radius: 3px;
 font-size: 15px;
 text-align:left;
@@ -34,11 +36,11 @@ outline: 0;
 }
 `;
 const SMenu = styled.div`
-position:fixed;
-width:25%;
-height:100%;
 
-float:left;
+width:100%;
+height:auto%;
+
+
 `;
 const MenuInner = styled.div`
 margin:50px 1em 0 0;
@@ -60,13 +62,19 @@ const ProductsGrid = React.createClass({
   //  }
   },
   render() {
-    let modal;
+    let modal,
+      but;
     // let modalnp;
     let noproducts;
     let prodloc;
     let products;
-    if (this.props.products.products[0] === undefined && this.props.products.initialized === true) { noproducts = <div className="noprod">nog geen producten</div>; }
-    if (Object.keys(this.props.getProducerLocation).length === 0 && this.props.getProducerLocation.constructor === Object) { prodloc = <div>om producten toe te voegen dien je eerst een locatie aan te maken</div>; }
+
+    if (Object.keys(this.props.getProducerLocation).length === 0 && this.props.getProducerLocation.constructor === Object) {
+      prodloc = <div>om producten toe te voegen dien je eerst een locatie aan te maken</div>;
+    } else {
+      but = <Button onClick={this.props.newProductModal} className="likes">+ nieuw product</Button>;
+      if (this.props.products.products[0] === undefined && this.props.products.initialized === true) { noproducts = <div className="noprod">nog geen producten</div>; }
+    }
     // if (this.props.ui.modal === true) { modal = <Productsingle {...this.props} />; }
     if (this.props.producttypes.all.length != 0) {
       products = this.props.products.products.map((product, i) =>
@@ -83,13 +91,11 @@ const ProductsGrid = React.createClass({
 
         <Modalprodedit {...this.props} />
         <Modalnp {...this.props} />
-        <SMenu>
-          <MenuInner>
-            <Button onClick={this.props.newProductModal} className="likes">+ nieuw product</Button>
-          </MenuInner>
-        </SMenu>
-        <ProductContainer>
 
+        <ProductContainer>
+          <SMenu>
+            {but}
+          </SMenu>
 
           {products}
           {noproducts}

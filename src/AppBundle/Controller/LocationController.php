@@ -17,6 +17,32 @@ use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
 
 class LocationController extends FOSRestController implements ClassResourceInterface
 {
+    public static function slugify($text)
+    {
+        // replace non letter or digits by -
+  $text = preg_replace('~[^\pL\d]+~u', '-', $text);
+
+  // transliterate
+  $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+
+  // remove unwanted characters
+  $text = preg_replace('~[^-\w]+~', '', $text);
+
+  // trim
+  $text = trim($text, '-');
+
+  // remove duplicate -
+  $text = preg_replace('~-+~', '-', $text);
+
+  // lowercase
+  $text = strtolower($text);
+
+        if (empty($text)) {
+            return 'n-a';
+        }
+
+        return $text;
+    }
     public function newAction(Request $request)
     {
         if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
@@ -24,21 +50,41 @@ class LocationController extends FOSRestController implements ClassResourceInter
         }
         $location = new Location();
 
-        $LocationName=$request->query->get('LocationName');
-        $Description=$request->query->get('description');
-        $Type=$request->query->get('type');
-        $Address=$request->query->get('address');
-        $lng=$request->query->get('lng');
-        $lat=$request->query->get('lat');
+        $LocationName=$request->get('name');
+        $Description=$request->get('description');
+        $Type=$request->get('ltype');
+        $Address=$request->get('address');
+        $lng=$request->get('lng');
+        $lat=$request->get('lat');
         $location->setName($LocationName);
+        $location->setUrl($this->slugify($LocationName));
+        //to do : check doubles
         $location->setDescription($Description);
         $location->setType($Type);
         $location->setLng($lng);
         $location->setLat($lat);
         $location->setAddress($Address);
+        $filename=$LocationName;
+        $filename=preg_replace('/[^A-Za-z0-9_-]/', '', $filename);
+
+        $img=$request->files->get('file');
+        $cntr=0;
+        while (file_exists('img/uploads/'.$filename.$cntr.'.jpg')) {
+            $cntr+=1;
+        }
+        if ($img!=null) {
+            move_uploaded_file($img, 'img/uploads/'.$filename.$cntr.'.jpg');
+            $location->setImgUrl('img/uploads/'.$filename.$cntr.'.jpg');
+          //  $location->setUseCustomImage(true);
+        }
         $em = $this->getDoctrine()->getEntityManager();
         $repository = $em->getRepository("AppBundle:User");
         $locationrepo = $em->getRepository("AppBundle:Location");
+        $all=$locationrepo->findAll();
+        //foreach($all as $al){
+
+          //$al->setUrl( $this->slugify( $al->getName() ) );
+      //  }
       //  $found=$repository->findOneBy(array('username'=>'erik'));
       //  echo $found->getName();exit;
         $user =  $this->get('security.token_storage')->getToken()->getUser();
@@ -47,46 +93,61 @@ class LocationController extends FOSRestController implements ClassResourceInter
         $found=$locationrepo->findOneBy(array('type'=>'Primary','user'=>$user->getId()));
         $secondaries=$locationrepo->findBy(array('type'=>'Secondary','user'=>$user->getId()));
         //echo $found->getName();exit;
-        if($Type=='Primary'&&$found==null){
-        $location->setUser($user);
-        $user->setProducer(1);
-        foreach($secondaries as $stl){
-          $location->addLocation($stl);
-        }
-        $em->persist($location);
-        $em->flush();
+        if ($Type=='Primary'&&$found==null) {
+            $location->setUser($user);
+            $location->addUserd($user);
+            $user->setProducer(1);
+            foreach ($secondaries as $stl) {
+                $location->addLocation($stl);
+            }
+            $em->persist($location);
+            $em->flush();
 
-        $locations = $user->getLocations();
-        foreach($locations as $l){
-          $sublocs=$l->getLocations();
+            $locations=$locationrepo->findAll();
+            foreach ($locations as $l) {
+                $sublocs=$l->getLocations();
         //  echo $sublocs;exit;
-          foreach($sublocs as $sl){
-            $jsonsublocs[]=["name"=> $sl->getName(),"id"=>$sl->getId(),"description"=>$sl->getDescription(),"address"=>$sl->getAddress(),"lat"=>$sl->getLat(),"lng"=>$sl->getLng(),'type'=>$sl->getType()];}
-            if(count($sublocs)==0)$jsonsublocs=[];
-        $jsonlocations[]=["name"=> $l->getName(),"id"=>$l->getId(),"description"=>$l->getDescription(),"address"=>$l->getAddress(),"lat"=>$l->getLat(),"lng"=>$l->getLng(),'type'=>$l->getType(),'sublocs'=>$jsonsublocs];
-      }
-        echo json_encode($jsonlocations);
+          foreach ($sublocs as $sl) {
+              $jsonsublocs[]=["name"=> $sl->getName(),"userid"=>$sl->getUser()->getId(),"imgurl"=>$sl->getImgurl(),"id"=>$sl->getId(),"description"=>$sl->getDescription(),"address"=>$sl->getAddress(),"lat"=>$sl->getLat(),"lng"=>$sl->getLng(),'type'=>$sl->getType()];
+          }
+                if (count($sublocs)==0) {
+                    $jsonsublocs=[];
+                }
+                $jsonlocations[]=["name"=> $l->getName(),"id"=>$l->getId(),"userid"=>$l->getUser()->getId(),"imgurl"=>$l->getImgurl(),"description"=>$l->getDescription(),"address"=>$l->getAddress(),"lat"=>$l->getLat(),"lng"=>$l->getLng(),'type'=>$l->getType(),'sublocs'=>$jsonsublocs];
+            }
+            echo json_encode($jsonlocations);
 
-        exit;}
-        elseif ($Type=='Secondary') {
-          $location->setUser($user);
-          $em->persist($location);
-          if($found!=null){$found->addLocation($location);
+            exit;
+        } elseif ($Type=='Secondary') {
+            $location->setUser($user);
+            $location->addUserd($user);
+            $em->persist($location);
+            if ($found!=null) {
+                $found->addLocation($location);
 
-          $em->persist($found);}else $em->persist($location);
-          $em->flush();
-          $locations = $user->getLocations();
-          foreach($locations as $l){
-            $sublocs=$l->getLocations();
+                $em->persist($found);
+            } else {
+                $em->persist($location);
+            }
+            $em->flush();
+            $locations=$locationrepo->findAll();
+            foreach ($locations as $l) {
+                $sublocs=$l->getLocations();
           //  echo $sublocs;exit;
-            foreach($sublocs as $sl){
-              $jsonsublocs[]=["name"=> $sl->getName(),"id"=>$sl->getId(),"description"=>$sl->getDescription(),"address"=>$sl->getAddress(),"lat"=>$sl->getLat(),"lng"=>$sl->getLng(),'type'=>$sl->getType()];}
-              if(count($sublocs)==0)$jsonsublocs=[];
-          $jsonlocations[]=["name"=> $l->getName(),"id"=>$l->getId(),"description"=>$l->getDescription(),"address"=>$l->getAddress(),"lat"=>$l->getLat(),"lng"=>$l->getLng(),'type'=>$l->getType(),'sublocs'=>$jsonsublocs];
+            foreach ($sublocs as $sl) {
+                $jsonsublocs[]=["name"=> $sl->getName(),"userid"=>$sl->getUser()->getId(),"imgurl"=>$sl->getImgurl(),"id"=>$sl->getId(),"description"=>$sl->getDescription(),"address"=>$sl->getAddress(),"lat"=>$sl->getLat(),"lng"=>$sl->getLng(),'type'=>$sl->getType()];
+            }
+                if (count($sublocs)==0) {
+                    $jsonsublocs=[];
+                }
+                $jsonlocations[]=["name"=> $l->getName(),"userid"=>$l->getUser()->getId(),"imgurl"=>$l->getImgurl(),"id"=>$l->getId(),"description"=>$l->getDescription(),"address"=>$l->getAddress(),"lat"=>$l->getLat(),"lng"=>$l->getLng(),'type'=>$l->getType(),'sublocs'=>$jsonsublocs];
+            }
+            echo json_encode($jsonlocations);
+            exit;
+        } else {
+            echo 'allready stored a location for this user';
+            exit;
         }
-          echo json_encode($jsonlocations);exit;
-        }
-        else {echo 'allready stored a location for this user';exit;}
     }
     public function editAction(Request $request)
     {
@@ -96,27 +157,44 @@ class LocationController extends FOSRestController implements ClassResourceInter
         $em = $this->getDoctrine()->getEntityManager();
         $locationrepo = $em->getRepository("AppBundle:Location");
 
-        $LocationId=$request->query->get('id');
+        $LocationId=$request->get('id');
         $location=$locationrepo->findOneBy(array("id"=>$LocationId));
-        $LocationName=$request->query->get('LocationName');
-        $Description=$request->query->get('description');
+        $LocationName=$request->get('name');
+        $Description=$request->get('description');
         //$Type=$request->query->get('type');
-        $Address=$request->query->get('address');
-        $lng=$request->query->get('lng');
-        $lat=$request->query->get('lat');
+        $Address=$request->get('address');
+        $lng=$request->get('lng');
+        $lat=$request->get('lat');
         $location->setName($LocationName);
         $location->setDescription($Description);
         //$location->setType($Type);
         $location->setLng($lng);
         $location->setLat($lat);
         $location->setAddress($Address);
+        $filename=$LocationName;
+        $filename=preg_replace('/[^A-Za-z0-9_-]/', '', $filename);
+
+        $img=$request->files->get('file');
+        $cntr=0;
+        while (file_exists('img/uploads/'.$filename.$cntr.'.jpg')) {
+            $cntr+=1;
+        }
+        if ($img!=null) {
+            move_uploaded_file($img, 'img/uploads/'.$filename.$cntr.'.jpg');
+            $location->setImgUrl('img/uploads/'.$filename.$cntr.'.jpg');
+          //  $location->setUseCustomImage(true);
+        }
+
         $em = $this->getDoctrine()->getEntityManager();
         $repository = $em->getRepository("AppBundle:User");
       //  $locationrepo = $em->getRepository("AppBundle:Location");
       //  $found=$repository->findOneBy(array('username'=>'erik'));
       //  echo $found->getName();exit;
         $user =  $this->get('security.token_storage')->getToken()->getUser();
-        if(!$location->getUser()->getId()==$user->getId()){echo "illegal";exit;}
+        if (!$location->getUser()->getId()==$user->getId()) {
+            echo "illegal";
+            exit;
+        }
         //$storedlocations = $user->getLocations();
         //$found=$locationrepo->findOneBy(array('type'=>'Primary','user'=>$user->getId()));
         //echo $found->getName();exit;
@@ -127,15 +205,14 @@ class LocationController extends FOSRestController implements ClassResourceInter
         $em->flush();
         $jsonsublocs=[];
         $sublocs=$location->getLocations();
-        foreach($sublocs as $sl){
-          $jsonsublocs[]=["name"=> $sl->getName(),"id"=>$sl->getId(),"address"=>$sl->getAddress(),"description"=>$sl->getDescription(),'type'=>$sl->getType()];}
-      $jsonlocation=["name"=> $location->getName(),"id"=>$location->getId(),"address"=>$location->getAddress(),"description"=>$location->getDescription(),'type'=>$location->getType(),'sublocs'=>$jsonsublocs];
+        foreach ($sublocs as $sl) {
+            $jsonsublocs[]=["name"=> $sl->getName(),"id"=>$sl->getId(),"address"=>$sl->getAddress(),"description"=>$sl->getDescription(),'type'=>$sl->getType()];
+        }
+        $jsonlocation=["name"=> $location->getName(),"imgurl"=>$location->getImgUrl(),"userid"=>$user->getId(),"id"=>$location->getId(),"address"=>$location->getAddress(),"description"=>$location->getDescription(),'type'=>$location->getType(),'sublocs'=>$jsonsublocs];
 
         echo json_encode($jsonlocation);
 
         exit;//}
-
-
     }
     public function newsublocationAction(Request $request)
     {
@@ -161,17 +238,23 @@ class LocationController extends FOSRestController implements ClassResourceInter
         $user =  $this->get('security.token_storage')->getToken()->getUser();
         $storedlocations = $user->getLocations();
         $found=$storedlocations->findBy(array('type'=>'primary','user'=>$user->getId()));
-        echo $found->getName();exit;
-        if(count($storedlocations)==0){
-        $location->setUser($user);
+        echo $found->getName();
+        exit;
+        if (count($storedlocations)==0) {
+            $location->setUser($user);
+            $location->addUserd($user);
+            $user->addDlocation($location);
+            $em->persist($location);
+            $em->persist($user);
+            $em->flush();
 
-        $em->persist($location);
-        $em->flush();
+            echo json_encode(["location"=>"added"]);
 
-        echo json_encode(["location"=>"added"]);
-
-        exit;}
-        else {echo 'allready stored a location for this user';exit;}
+            exit;
+        } else {
+            echo 'allready stored a location for this user';
+            exit;
+        }
     }
     public function singleAction(Request $request)
     {
@@ -185,16 +268,58 @@ class LocationController extends FOSRestController implements ClassResourceInter
         $locations=$user->getLocations();
         //$em = $this->getDoctrine()->getEntityManager();
         //$repository = $em->getRepository("AppBundle:Product");
-        foreach($locations as $l){
-          $sublocs=$locations->getLocations();
-          foreach($sublocs as $sl){
-            $jsonsublocs[]=["name"=> $sl->getName(),"id"=>$sl->getId(),"address"=>$sl->getAddress(),"description"=>$sl->getDescription(),'type'=>$sl->getType()];}
-        $jsonlocations[]=["name"=> $l->getName(),"id"=>$l->getId(),"address"=>$sl->getAddress(),"description"=>$l->getDescription(),'type'=>$l->getType(),'sublocs'=>$jsonsublocs];
-      }
+        foreach ($locations as $l) {
+            $sublocs=$locations->getLocations();
+            foreach ($sublocs as $sl) {
+                $jsonsublocs[]=["name"=> $sl->getName(),"id"=>$sl->getId(),"address"=>$sl->getAddress(),"description"=>$sl->getDescription(),'type'=>$sl->getType()];
+            }
+            $jsonlocations[]=["name"=> $l->getName(),"id"=>$l->getId(),"address"=>$sl->getAddress(),"description"=>$l->getDescription(),'type'=>$l->getType(),'sublocs'=>$jsonsublocs];
+        }
         //$p=$repository->findOneById($ProductId);
 
 
         echo json_encode($jsonlocations);
+
+        exit;
+    }
+    public function byurlAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+        $repository = $em->getRepository("AppBundle:Location");
+        //$user =  $this->get('security.token_storage')->getToken()->getUser();
+        //$ProductId=$request->query->get('ProductId');
+        //$locations=$user->getLocations();
+        //$em = $this->getDoctrine()->getEntityManager();
+        //$repository = $em->getRepository("AppBundle:Product");
+        $Url=$request->query->get('url');
+        $l=$repository->findOneBy(array('Url'=>$Url));
+        //foreach($locations as $l){
+        $jsonsublocs=[];
+        $products=$l->getProducts();
+        $jsonproducts=[];
+        foreach ($products as $product) {
+            $locationsjson=[];
+            $ls=$product->getLocations();
+            foreach ($ls as $l) {
+                $locationsjson[]=['name'=>$l->getName(),'id'=>$l->getId()];
+            }
+            $groupsjson=[];
+            $grs=$product->getGroups();
+            foreach ($grs as $g) {
+                $groupsjson[]=['groupname'=>$g->getName(),'groupid'=>$g->getId()];
+            }
+            $jsonproducts[]=$product->toJson();
+        }
+        $sublocs=$l->getLocations();
+        foreach ($sublocs as $sl) {
+            $jsonsublocs[]=["name"=> $sl->getName(),"id"=>$sl->getId(),"address"=>$sl->getAddress(),"description"=>$sl->getDescription(),'type'=>$sl->getType()];
+        }
+        $jsonlocation=["name"=> $l->getName(),"id"=>$l->getId(),"address"=>$l->getAddress(),"description"=>$l->getDescription(),'imgurl'=>$l->getImgUrl(),'type'=>$l->getType(),'sublocs'=>$jsonsublocs];
+
+        //$p=$repository->findOneById($ProductId);
+
+
+        echo json_encode(["location"=>$jsonlocation,"products"=>$jsonproducts]);
 
         exit;
     }
@@ -223,33 +348,32 @@ class LocationController extends FOSRestController implements ClassResourceInter
         exit;
     }
     public function getallpublicAction(Request $request)
-   {
-
-       $em = $this->getDoctrine()->getEntityManager();
-       $repository = $em->getRepository("AppBundle:product");
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+        $repository = $em->getRepository("AppBundle:product");
        //$user =  $this->get('security.token_storage')->getToken()->getUser();
        $products=$repository->findAll();
-       $jsonproducts=[];
-       foreach ($products as $p) {
-           $groupsjson=[];
-           $grs=$p->getGroups();
-           $user=$p->getUser();
-     $uid='none';
-     $uname='';
-           if($user!=null){
-           $uid=$user->getId();
-     $uname=$user->getName();
-     }
+        $jsonproducts=[];
+        foreach ($products as $p) {
+            $groupsjson=[];
+            $grs=$p->getGroups();
+            $user=$p->getUser();
+            $uid='none';
+            $uname='';
+            if ($user!=null) {
+                $uid=$user->getId();
+                $uname=$user->getName();
+            }
 
-           foreach ($grs as $g) {
-               $groupsjson[]=['groupname'=>$g->getName(),'groupid'=>$g->getId()];
-           }
-           $jsonproducts[]=["name"=> $p->getName(),"id"=>$p->getId(),"description"=>$p->getDescription(),'groups'=>$groupsjson,'userid'=>$uid,'username'=>$uname];
-       }
-       echo json_encode($jsonproducts);
+            foreach ($grs as $g) {
+                $groupsjson[]=['groupname'=>$g->getName(),'groupid'=>$g->getId()];
+            }
+            $jsonproducts[]=["name"=> $p->getName(),"id"=>$p->getId(),"description"=>$p->getDescription(),'groups'=>$groupsjson,'userid'=>$uid,'username'=>$uname];
+        }
+        echo json_encode($jsonproducts);
 
-       exit;
-   }
+        exit;
+    }
 
     public function locationdeleteAction(Request $request)
     {
@@ -321,7 +445,8 @@ class LocationController extends FOSRestController implements ClassResourceInter
         }
         $jsonproducts=[];
         foreach ($products as $p) {
-            $jsonproducts[]=["name"=> $p->getName(),"id"=>$p->getId()];        }
+            $jsonproducts[]=["name"=> $p->getName(),"id"=>$p->getId()];
+        }
         echo json_encode(["name"=> $product->getName(),"id"=>$product->getId(),'description'=>$product->getDescription(),'groups'=>$groupsjson]);
 
         exit;
@@ -336,7 +461,7 @@ class LocationController extends FOSRestController implements ClassResourceInter
             $repository = $em->getRepository("AppBundle:User");
             $users = $repository->findAll();
 
-        $userId=$this->get('security.token_storage')->getToken()->getUser()->getId();
+            $userId=$this->get('security.token_storage')->getToken()->getUser()->getId();
             $user = $this->getDoctrine()
         ->getRepository('AppBundle:User')
         ->find($userId);

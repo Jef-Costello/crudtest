@@ -29,6 +29,11 @@ class Location
      * @ORM\Column(type="text", nullable=true)
      *
      */
+     protected $Url;
+     /**
+      * @ORM\Column(type="text", nullable=true)
+      *
+      */
      protected $type;
      /**
       * @ORM\Column(type="text", nullable=true)
@@ -36,6 +41,11 @@ class Location
       */
 
     protected $description;
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     *
+     */
+    protected $imgUrl;
     /**
        * @ORM\Column(type="string", length=255, nullable=true)
        */
@@ -76,7 +86,18 @@ class Location
      * @ORM\ManyToOne(targetEntity="User", inversedBy="products")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
+
     protected $user;
+    /**
+     *
+    * @var \Doctrine\Common\Collections\Collection|User[]
+    * @ORM\ManyToMany(targetEntity="User", inversedBy="dlocations")
+    * @ORM\JoinTable(name="dlocationsusers",
+    *      joinColumns={@ORM\JoinColumn(name="duID", referencedColumnName="id")},
+    *      inverseJoinColumns={@ORM\JoinColumn(name="jid", referencedColumnName="id")}
+    *      )
+    **/
+   protected $userds;
      /**
      * Default constructor, initializes collections
      */
@@ -89,6 +110,7 @@ class Location
     {
         $this->products = new \Doctrine\Common\Collections\ArrayCollection();
           $this->locations = new \Doctrine\Common\Collections\ArrayCollection();
+          $this->userds = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
 
@@ -340,5 +362,89 @@ class Location
     {
         return $this->locations;
     }
-    
+
+
+    /**
+     * Set url
+     *
+     * @param string $url
+     *
+     * @return Location
+     */
+    public function setUrl($url)
+    {
+        $this->Url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get url
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->Url;
+    }
+
+    /**
+     * Set imgUrl
+     *
+     * @param string $imgUrl
+     *
+     * @return Location
+     */
+    public function setImgUrl($imgUrl)
+    {
+        $this->imgUrl = $imgUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get imgUrl
+     *
+     * @return string
+     */
+    public function getImgUrl()
+    {
+        return $this->imgUrl;
+    }
+
+
+
+    /**
+     * Add userd
+     *
+     * @param \AppBundle\Entity\User $userd
+     *
+     * @return Location
+     */
+    public function addUserd(\AppBundle\Entity\User $userd)
+    {
+        $this->userds[] = $userd;
+
+        return $this;
+    }
+
+    /**
+     * Remove userd
+     *
+     * @param \AppBundle\Entity\User $userd
+     */
+    public function removeUserd(\AppBundle\Entity\User $userd)
+    {
+        $this->userds->removeElement($userd);
+    }
+
+    /**
+     * Get userds
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getUserds()
+    {
+        return $this->userds;
+    }
 }

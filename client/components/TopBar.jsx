@@ -4,6 +4,21 @@ import { Link } from 'react-router';
 import styled from 'styled-components';
 import Google from '../components/Google';
 
+const OptSmall = styled.span`
+display: inline;
+a{user-select:none;
+border:none;}
+@media only screen and (min-width : 660px) {display:none
+
+}
+`;
+const OptBig = styled.span`
+display: none;
+a{color:#254022;border-bottom:2px solid transparent;}
+@media only screen and (min-width : 660px) {display:inline
+}
+
+`;
 const Button = styled.button`
 
 height: 40px;
@@ -23,6 +38,7 @@ outline: 0;
     border: none;
 &.selected{  border: none;background: #da943a;}
 }
+&.close{width:auto;box-shadow:none;background:transparent;padding-left:3px;height:auto;line-height:0;color: #254022;}
 `;
 const LButton = styled.button`
 color:white;
@@ -36,19 +52,79 @@ float:right;
 
 
 `;
+// const op = (this.props.ui.scroll / 230);
+const Logo = styled.div`
+top: 2%;
+  transform: rotate(15deg);
+    opacity:${props => (props.scroll > 100) ? 0 : 0.5};
+
+    transition:opacity 1s;
+    position: fixed;
+      width: calc(16vw + 30px);
+    right: 2%;
+    z-index:-1;
+    img{position:absolute;z-index:-5}
+
+
+`;
+const Icon = styled.span`
+    font-size: 20px;
+
+  font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+  speak: none;
+
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: -2px;
+
+  /* You can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+
+  /* Font smoothing. That was taken from TWBS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+`;
+
 const SLink = styled(Link)`
-color:#254022;
+
 padding-left:3px;
 text-decoration:none;
 font-size:16px;
-border-left:2px solid #3f6f3a;
+color:#254022;
 margin:16px;
-
+@media only screen and (min-width : 660px) {
+  color:#254022;border-bottom:2px solid #3f6f3a;
+  &.active {
+  transition:all 1s;
+      color: #fff;
+      text-shadow: 1px 1px 2px #254022;
+      border-bottom:2px solid #65a72b;
+    }
+}
 &.active {
 transition:all 1s;
     color: #fff;
-    text-shadow: 1px 1px 2px #254022;
-    border-left:2px solid #65a72b;
+    text-shadow: 1px 1px 2px #254022;border:none;
+    border-bottom:2px solid #65a72b;
   }
 `;
 const Predictions = styled.div`
@@ -65,6 +141,9 @@ float:none;
 
 }
 input{
+  display:none;
+    @media only screen and (min-width : 660px) {display:inline
+    }
 outline: none;
   border-style: none;
 box-shadow: inset 1px 1px 4px 0px #b6b6b6;
@@ -91,6 +170,7 @@ z-index: 4;
 position:fixed;
 background:#e28122;
 background:#3f6f3a;
+background:#5d863b;
 width:100%;
 height:3em;
 top:0px;
@@ -143,38 +223,62 @@ const TopBar = React.createClass({
     if (this.useraddress.value) { service.getPlacePredictions({ input: this.useraddress.value, location: latlng, radius: 200000 }, displaySuggestions); }
   },
   searchFocus() { return this.props.ui.searchFocus; },
-  componentDidMount() {},
+  componentDidMount() {
+    if (!this.props.gmap.initialized && !this.props.gmap.apiLoading) {
+      window.initGoogle = this.initGoogle;
+      this.props.apiLoading();
+      loadJS(`https://maps.googleapis.com/maps/api/js?key=${this.props.gmap.apiKey}&libraries=places&region=NL&callback=initGoogle`);
+    }
+  },
   componentDidUpdate() { },
+  initGoogle() {
+    console.log('initgoogle');
+    window.service = new google.maps.places.AutocompleteService();
+        // window.google
+    window.geocoder = new google.maps.Geocoder();
+        // window.geocoder.setRegion('nl');
+      //  this.props.setGeocoder(geocoder);
+    this.props.mapInit();
+  },
+
   render() {
     let refreshing;
     let loading;
-    let pred = null;
+    const pred = null;
     let input;
+    let logo;
+    let optsmall,
+      optbig;
 
-    if (this.props.ui.searchFocus) {
-      let r = 0;
-      pred = this.props.gmap.predictions.map((e) => <div key={r += 1} className={`prediction ${this.activep(r)}`}>{e.description}</div>);
-      pred = <div className="predcontainer" >{pred}</div>;
-    } else { pred = null; }
-    if (this.props.route.path === '/web/app_dev.php') {
-      input =
-        <input placeholder="Locatie" onFocus={this.props.setSearchFocus.bind(this, true)} onBlur={this.props.setSearchFocus.bind(this, false)}ref={(c) => { this.useraddress = c; }} type="text" onKeyUp={this.findAdres} defaultValue={this.props.getSelectedLocation.address} />;
-    }
+    if (this.props.ui.scroll < 220 && this.props.route.path === '/web/app_dev.php') { logo = <Logo scroll={this.props.ui.scroll}><img src="/web/img/logo5.png" /></Logo>; }
 
 
-    const opt = (
-      <span>
+    optbig = (
+      <OptBig>
         <SLink activeClassName="active" to="/web/app_dev.php/">home</SLink>
         <SLink activeClassName="active" to="/web/app_dev.php/office/producten">mijn producten</SLink>
-        <SLink activeClassName="active" to="/web/app_dev.php/office/profiel">profiel</SLink></span>
+        <SLink activeClassName="active" to="/web/app_dev.php/office/profiel">profiel</SLink>
+
+      </OptBig>
+
     );
+    optsmall = (
+      <OptSmall>
+        <SLink activeClassName="active" to="/web/app_dev.php/"><Icon>{ String.fromCharCode(0xe80c)}</Icon></SLink>
+        <SLink activeClassName="active" to="/web/app_dev.php/office/producten"><Icon>{ String.fromCharCode(0xe80a)}</Icon></SLink>
+        <SLink activeClassName="active" to="/web/app_dev.php/office/profiel"><Icon>{ String.fromCharCode(0xe801)}</Icon></SLink>
+        {this.props.route.path === '/web/app_dev.php' ? <Button className="close" onClick={this.props.toggleMenu} activeClassName="active" ><Icon>{ String.fromCharCode(0xf0c9)}</Icon></Button> : null}
+
+      </OptSmall>
+  );
+
     if (this.props.connection.refreshing === true) { refreshing = <div className="refreshing">..refreshing token..</div>; }
     if (this.props.connection.loading === true) { loading = <div className="spinner" />; }
     if (this.props.connection.loggedin === true) {
       return (
         <Topbar>
-
-          <TopBarInner><div>{this.props.user.name}{opt}</div>
+          {logo}
+          <TopBarInner><div>{optbig}{optsmall}</div>
             <Predictions>
               {input}
 

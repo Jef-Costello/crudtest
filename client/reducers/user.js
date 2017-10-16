@@ -3,7 +3,7 @@ function user(state = [], action) {
 
 
     case 'HANDLE_USER': {
-      return { ...state, name: action.json.name, email: action.json.email, initialized: true };
+      return { ...state, userid: action.json.userId, name: action.json.name, email: action.json.email, initialized: true };
     }
 
     default:

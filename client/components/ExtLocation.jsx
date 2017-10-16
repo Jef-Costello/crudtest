@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import Icon from '../components/Icon';
 
 const Button = styled.button`
 
@@ -8,12 +7,12 @@ height: 40px;
 line-height: 40px;
 white-space: nowrap;
 margin: 10px;
-z-index:2;
+box-shadow: 0 2px 2px #dddddd;
 display: inline-block;
 background-color: #fff;
 padding: 0 16px;
 position:absolute;
-right:10px;top:10px;
+right:10px;bottom:10px;
 border-radius: 3px;
 font-size: 15px;
 text-align:left;
@@ -21,9 +20,9 @@ outline: 0;
 -webkit-appearance: none;
     border: none;
 &.selected{  border: none;background: #da943a;}
-&.edit{top:0px;right:0px}
 }
 `;
+const Title = styled.span`font-size:15px;`;
 const SLocation = styled.div`
 
 color: #324430;
@@ -41,22 +40,23 @@ box-shadow: 0 0 14px 10px rgba(0,0,0,0.03);
 position: relative;
 
 `;
-const Location = React.createClass({
+const ExtLocation = React.createClass({
 
   componentDidUpdate() {},
   componentDidMount() {},
 
   render() {
+    // <div className="description">{location.description.split('\n').map((item, key) => <span key={key}>{item}<br /></span>)} </div><br />
     const { location } = this.props;
     return (
 
       <SLocation>
-        {location.name}<br />
-        <div className="description">{location.description.split('\n').map((item, key) => <span key={key}>{item}<br /></span>)} </div><br />
-        <div>{location.address} </div>
+        <Title>                                                                        {location.name}</Title><br />
+
+        <div>{location.address} </div><br />
 
 
-        <Button className="edit" onClick={this.onClickl}><Icon>{ String.fromCharCode(0xe800)}</Icon></Button>
+        {this.props.locations.dlocations.map((e)=> e.id).indexOf(location.id) != -1 ? <Button onClick={this.remove.bind(this, location.id)}>verwijder uit lijst</Button> : <Button onClick={this.add.bind(this, location.id)}>voeg toe aan lijst</Button>}
 
 
       </SLocation>
@@ -74,6 +74,11 @@ const Location = React.createClass({
 
     this.props.addLocationToUser(id);
   },
+  remove(id) {
+    console.log(id);
+
+    this.props.removeLocationFromUser(id);
+  },
 });
 
-export default Location;
+export default ExtLocation;

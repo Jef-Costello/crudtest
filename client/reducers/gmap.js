@@ -7,6 +7,9 @@ function gmap(state = [], action) {
     case 'SET_MAP':
 
       return { ...state, map: action.map };
+    case 'REMOVE_MAP':
+
+      return { ...state, map: null };
     case 'SET_PREDICTIONS':
 
       return { ...state, predictions: action.predictions };
@@ -25,6 +28,9 @@ function gmap(state = [], action) {
     case 'PREDICTION_REMOVE':
 
       return { ...state, SelectedPrediction: 0 };
+    case 'NONE':
+      console.log('whoopie');
+      return { ...state };
     case 'SET_MARKER':
 
       return { ...state, marker: action.marker };
@@ -37,9 +43,22 @@ function gmap(state = [], action) {
     case 'SET_GEOCODER':
 
       return { ...state, geocoder: action.geocoder };
+
     case 'REDRAW_MARKERS':
 
       return { ...state, redrawMarkers: action.value };
+    case 'LOAD_GOOGLE':
+
+
+      return { ...state };
+    case 'REMOVE_MARKERS':
+      let markers = { ...state };
+      markers = markers.markers;
+      markers.map((m)=> m.setMap(null));
+      return { ...state, markers: [] };
+    case 'SET_PT_FILTEpR':
+
+      return { ...state, redrawMarkers: true };
 
     default:
       return state;

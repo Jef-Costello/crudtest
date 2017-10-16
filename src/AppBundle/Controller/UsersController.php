@@ -7,6 +7,7 @@ use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\Model\UserInterface;
 use AppBundle\Entity\User;
 use AppBundle\Entity\Product;
+use AppBundle\Entity\Group;
 use AppBundle\Form\UserType;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -116,17 +117,21 @@ class UsersController extends FOSRestController implements ClassResourceInterfac
         $locationrepo = $em->getRepository("AppBundle:Location");
 
         $user =  $this->get('security.token_storage')->getToken()->getUser();
-          $producer=$locationrepo->findOneBy(array('type'=>'Primary','user'=>$user->getId()));
+        $producer=$locationrepo->findOneBy(array('type'=>'Primary','user'=>$user->getId()));
 
         $locations = $user->getLocations();
-        foreach($locations as $l){
-          $sublocs=$l->getLocations();
+        foreach ($locations as $l) {
+            $sublocs=$l->getLocations();
         //  echo $sublocs;exit;
-          foreach($sublocs as $sl){
-            $jsonsublocs[]=["name"=> $sl->getName(),"id"=>$sl->getId(),"description"=>$sl->getDescription(),'type'=>$sl->getType()];}
-            if(count($sublocs)==0)$jsonsublocs=[];
-        $jsonlocations[]=["name"=> $l->getName(),"id"=>$l->getId(),"description"=>$l->getDescription(),'type'=>$l->getType(),'sublocs'=>$jsonsublocs];
-      }exit;
+          foreach ($sublocs as $sl) {
+              $jsonsublocs[]=["name"=> $sl->getName(),"id"=>$sl->getId(),"description"=>$sl->getDescription(),'type'=>$sl->getType()];
+          }
+            if (count($sublocs)==0) {
+                $jsonsublocs=[];
+            }
+            $jsonlocations[]=["name"=> $l->getName(),"id"=>$l->getId(),"description"=>$l->getDescription(),'type'=>$l->getType(),'sublocs'=>$jsonsublocs];
+        }
+        exit;
     }
         //$p=$repository->findOneById($ProductId);
         public function initializeAction(Request $request)
@@ -137,23 +142,35 @@ class UsersController extends FOSRestController implements ClassResourceInterfac
             $em = $this->getDoctrine()->getEntityManager();
             $repository = $em->getRepository("AppBundle:User");
             $locationrepo = $em->getRepository("AppBundle:Location");
-              $ptyperepo = $em->getRepository("AppBundle:Producttype");
-$user =  $this->get('security.token_storage')->getToken()->getUser();
+            $ptyperepo = $em->getRepository("AppBundle:Producttype");
+            $user =  $this->get('security.token_storage')->getToken()->getUser();
             $producer=$locationrepo->findOneBy(array('type'=>'Primary','user'=>$user->getId()));
             $ptypes=$ptyperepo->findAll();
             $jsonptypes=[];
-            foreach($ptypes as $ptp){
-              $jsonptypes[]=["id"=>$ptp->getId(),"name"=> $ptp->getName(),"imgurl"=>$ptp->getImageurl()];
+            foreach ($ptypes as $ptp) {
+
+                    $jsonptypes[]=["id"=>$ptp->getId(),"name"=> $ptp->getName(),"imgurl"=>$ptp->getImageurl()];
+
             }
-            $locations = $user->getLocations();
-            foreach($locations as $l){
-              $sublocs=$l->getLocations();
+          //  $locations = $user->getLocations();
+           $locations=$locationrepo->findAll();
+            foreach ($locations as $l) {
+                $sublocs=$l->getLocations();
             //  echo $sublocs;exit;
-              foreach($sublocs as $sl){
-                $jsonsublocs[]=["name"=> $sl->getName(),"id"=>$sl->getId(),"description"=>$sl->getDescription(),"address"=>$sl->getAddress(),"lat"=>$sl->getLat(),"lng"=>$sl->getLng(),'type'=>$sl->getType()];}
-                if(count($sublocs)==0)$jsonsublocs=[];
-            $jsonlocations[]=["name"=> $l->getName(),"id"=>$l->getId(),"description"=>$l->getDescription(),"address"=>$l->getAddress(),"lat"=>$l->getLat(),"lng"=>$l->getLng(),'type'=>$l->getType(),'sublocs'=>$jsonsublocs];
-          }
+              foreach ($sublocs as $sl) {
+                  $jsonsublocs[]=["name"=> $sl->getName(),"id"=>$sl->getId(),"userid"=>$l->getUser()->getId(),"description"=>$sl->getDescription(),"address"=>$sl->getAddress(),"lat"=>$sl->getLat(),"lng"=>$sl->getLng(),'imgurl'=>$sl->getImgUrl(),'type'=>$sl->getType()];
+              }
+                if (count($sublocs)==0) {
+                    $jsonsublocs=[];
+                }
+                $jsonlocations[]=["name"=> $l->getName(),"id"=>$l->getId(),"userid"=>$l->getUser()->getId(),"description"=>$l->getDescription(),"address"=>$l->getAddress(),"lat"=>$l->getLat(),"lng"=>$l->getLng(),'imgurl'=>$l->getImgUrl(),'type'=>$l->getType(),'sublocs'=>$jsonsublocs];
+            }
+            $jsondlocs=[];
+            $dlocations=$user->getDlocations();
+            foreach($dlocations as $dl){
+              $jsondlocs[]=["id"=>$dl->getId()];
+
+            }
             //$p=$repository->findOneById($ProductId);
             $products = $user->getProducts();
             foreach ($products as $p) {
@@ -165,19 +182,27 @@ $user =  $this->get('security.token_storage')->getToken()->getUser();
                 $locationsjson=[];
                 $ls=$p->getLocations();
                 foreach ($ls as $l) {
-                    $locationsjson[]=['name'=>$l->getName(),'id'=>$l->getId()];
+                    $locationsjson[]=['name'=>$l->getName(),'id'=>$l->getId(),'type'=>$l->getType()];
                 }
-                if($p->getProducttype()!=null){$ptype=$p->getProducttype()->getId();} else $ptype=null;
-                $jsonproducts[]=["name"=> $p->getName(),"id"=>$p->getId(),"description"=>$p->getDescription(),'groups'=>$groupsjson,'locations'=>$locationsjson,'ptype'=>$ptype];
+                if ($p->getProducttype()!=null) {
+                    $ptype=$p->getProducttype()->getId();
+                } else {
+                    $ptype=null;
+                }
+                $jsonproducts[]=$p->toJson();
             }
 
 
-if(count($locations)==0)$jsonlocations=[];
+            if (count($locations)==0) {
+                $jsonlocations=[];
+            }
 
-if(count($products)==0)$jsonproducts=[];
-        echo json_encode(['name'=>$user->getUserName(),'email'=>$user->getEmail(),'locations'=>$jsonlocations,'products'=>$jsonproducts,'producttypes'=>$jsonptypes]);
-        exit;
-    }
+            if (count($products)==0) {
+                $jsonproducts=[];
+            }
+            echo json_encode(['name'=>$user->getUserName(),"userId"=>$user->getId(),'email'=>$user->getEmail(),'locations'=>$jsonlocations,'dlocs'=>$jsondlocs,'products'=>$jsonproducts,'producttypes'=>$jsonptypes]);
+            exit;
+        }
 
     public function apiAction(Request $request)
     {
@@ -192,95 +217,129 @@ if(count($products)==0)$jsonproducts=[];
         echo  $this->client->getPublicId();
         exit;
     }
+    public function addlocationuserAction(Request $request)
+    {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $locationId=$request->query->get('Id');
+        $em = $this->getDoctrine()->getEntityManager();
+        $user=$this->get('security.token_storage')->getToken()->getUser();
+        $locationrepo = $em->getRepository("AppBundle:Location");
+
+        $location=$locationrepo->findOneById($locationId);
+        $user->addDlocation($location);
+        $location->addUserd($user);
+        $em->persist($user);
+        $em->persist($location);
+        $em->flush();
+
+        echo json_encode(["id"=>$locationId]);
+        exit;
+    }
+    public function removelocationuserAction(Request $request)
+    {
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $locationId=$request->query->get('Id');
+        $em = $this->getDoctrine()->getEntityManager();
+        $user=$this->get('security.token_storage')->getToken()->getUser();
+        $locationrepo = $em->getRepository("AppBundle:Location");
+
+        $location=$locationrepo->findOneById($locationId);
+        $user->removeDlocation($location);
+        $location->removeUserd($user);
+        $em->persist($user);
+        $em->persist($location);
+        $em->flush();
+
+        echo json_encode(["id"=>$locationId]);
+        exit;
+    }
     public function initializepublicAction(Request $request)
     {
-
+        $locationId=$request->query->get('id');
         $em = $this->getDoctrine()->getEntityManager();
-      $prodrepo = $em->getRepository("AppBundle:Product");
+        $repository = $em->getRepository("AppBundle:Product");
         $locationrepo = $em->getRepository("AppBundle:Location");
-          $ptyperepo = $em->getRepository("AppBundle:Producttype");
+        $ptyperepo = $em->getRepository("AppBundle:Producttype");
 
 
         $ptypes=$ptyperepo->findAll();
         $jsonptypes=[];
-        foreach($ptypes as $ptp){
-          $jsonptypes[]=["id"=>$ptp->getId(),"name"=> $ptp->getName(),"imgurl"=>$ptp->getImageurl()];
+        foreach ($ptypes as $ptp) {
+            $jsonptypes[]=["id"=>$ptp->getId(),"name"=> $ptp->getName(),"imgurl"=>$ptp->getImageurl()];
         }
         $locations = $locationrepo->findAll();
-        foreach($locations as $l){
-          $sublocs=$l->getLocations();
-          $prods=$l->getProducts();
-          $jsonprods1=[];
-          foreach($prods as $prd){
-            $jsonprods1[]=["id"=>$prd->getId()];
-          }
-        //  echo $sublocs;exit;
-          foreach($sublocs as $sl){
-            $prods=$sl->getProducts();
-            $jsonprodssub=[];
-            foreach($prods as $prd){
-              $jsonprodssub[]=["id"=>$prd->getId()];
-            }
-            $jsonsublocs[]=["name"=> $sl->getName(),"id"=>$sl->getId(),"description"=>$sl->getDescription(),"address"=>$sl->getAddress(),"lat"=>$sl->getLat(),"lng"=>$sl->getLng(),'type'=>$sl->getType(),'products'=>$jsonprodssub];}
-            if(count($sublocs)==0)$jsonsublocs=[];
-        $jsonlocations[]=["name"=> $l->getName(),"id"=>$l->getId(),"description"=>$l->getDescription(),"address"=>$l->getAddress(),"lat"=>$l->getLat(),"lng"=>$l->getLng(),'type'=>$l->getType(),'sublocs'=>$jsonsublocs,'products'=>$jsonprods1];
-      }
+
         //$p=$repository->findOneById($ProductId);
         //$repository = $em->getRepository("AppBundle:product");
        //$user =  $this->get('security.token_storage')->getToken()->getUser();
+
        $inLat=$request->query->get('lat');
-       $inLng=$request->query->get('lng');
-         $rsm = new ResultSetMappingBuilder($em);
-         $rsm->addRootEntityFromClassMetadata('AppBundle\Entity\Product', 'u');
-         $rsm->addFieldResult('u', 'name', 'name');
-         $rsm->addFieldResult('u', 'description', 'description');
-         $rsm->addFieldResult('u', 'id', 'id');
-         $rsm->addMetaResult('u', 'lat', 'lat');
-         $rsm->addMetaResult('u', 'lng', 'lng');
-         $rsm->addFieldResult('u', 'groups', 'groups');
-         $rsm->addFieldResult('u', 'locations', 'locations');
-         $rsm->addMetaResult('u', 'producttype', 'producttype');
+        $inLng=$request->query->get('lng');
+        $rsm = new ResultSetMappingBuilder($em);
+        $rsm->addRootEntityFromClassMetadata('AppBundle\Entity\Product', 'u');
+        $rsm->addFieldResult('u', 'name', 'name');
+        $rsm->addFieldResult('u', 'subTitle', 'subTitle');
+        $rsm->addFieldResult('u', 'description', 'description');
+        $rsm->addFieldResult('u', 'id', 'id');
+        $rsm->addFieldResult('u', 'price', 'price');
+        $rsm->addFieldResult('u', 'priceType', 'priceType');
+        $rsm->addFieldResult('u', 'imgUrl', 'imgUrl');
+        $rsm->addFieldResult('u', 'useCustomImage', 'useCustomImage');
+        $rsm->addMetaResult('u', 'highLighted', 'highLighted');
+        $rsm->addMetaResult('u', 'lat', 'lat');
+        $rsm->addMetaResult('u', 'lng', 'lng');
+        $rsm->addFieldResult('u', 'groups', 'groups');
+        $rsm->addFieldResult('u', 'locations', 'locations');
+        $rsm->addMetaResult('u', 'producttype', 'producttype');
      //.  $
      //  $rsm->addFieldResult('u', 'lng', 'lng');
        $rsm->addFieldResult('u', 'distance', 'distance');
-         $query = $em->createNativeQuery('SELECT  e.*,l.lat,l.lng,( 6371 * acos( cos( radians('.$inLat.') ) * cos( radians( lat ) ) * cos( radians( lng ) - radians('.$inLng.') ) + sin( radians('.$inLat.') ) * sin( radians( lat ) ) ) ) as distance FROM productslocations d INNER JOIN products e ON e.id = d.plID
+        $query = $em->createNativeQuery('SELECT  e.*,l.lat,l.lng,( 6371 * acos( cos( radians('.$inLat.') ) * cos( radians( lat ) ) * cos( radians( lng ) - radians('.$inLng.') ) + sin( radians('.$inLat.') ) * sin( radians( lat ) ) ) ) as distance FROM productslocations d INNER JOIN products e ON e.id = d.plID
        INNER JOIN location l ON l.id = d.jid
        ORDER BY distance', $rsm);
-         $products= $query->getResult();
-         foreach ($products as $p) {
-             $groupsjson=[];
-             $grs=$p->getGroups();
-             $user=$p->getUser();
-             $uid='none';
-             $uname='';
-             if ($user!=null) {
-                 $uid=$user->getId();
-                 $uname=$user->getName();
-             }
+        $products= $query->getResult();
+        $jsonproducts=[];
+      //  foreach ($products as $p) {var_dump($p->getDistance());};exit;
+        foreach ($products as $p) {
+            $jsonproducts[]=$p->toJson();
+        }
+        foreach ($locations as $l) {
+            $sublocs=$l->getLocations();
+            $prods=$l->getProducts();
+            $jsonprods1=[];
+            foreach ($prods as $prd) {
+                $jsonprods1[]=["id"=>$prd->getId()];
+            }
+        //  echo $sublocs;exit;
+          foreach ($sublocs as $sl) {
+              $prods=$sl->getProducts();
+              $jsonprodssub=[];
+              foreach ($prods as $prd) {
+                  $jsonprodssub[]=["id"=>$prd->getId()];
+              }
+              $jsonsublocs[]=["name"=> $sl->getName(),"id"=>$sl->getId(),"description"=>$sl->getDescription(),"address"=>$sl->getAddress(),"lat"=>$sl->getLat(),"lng"=>$sl->getLng(),'url'=>$sl->getUrl(),'type'=>$sl->getType(),'products'=>$jsonprodssub];
+          }
+            if (count($sublocs)==0) {
+                $jsonsublocs=[];
+            }
+            $jsonlocations[]=["name"=> $l->getName(),"id"=>$l->getId(),"description"=>$l->getDescription(),"address"=>$l->getAddress(),"lat"=>$l->getLat(),"lng"=>$l->getLng(),'url'=>$l->getUrl(),'type'=>$l->getType(),'sublocs'=>$jsonsublocs,'products'=>$jsonprods1];
+        }
 
-             foreach ($grs as $g) {
-                 $groupsjson[]=['groupname'=>$g->getName(),'groupid'=>$g->getId()];
-             }
-             $locationsjson=[];
-             $ls=$p->getLocations();
-             foreach ($ls as $l) {
-                 $locationsjson[]=['name'=>$l->getName(),'id'=>$l->getId(),'type'=>$l->getType()];
-             }
-             if ($p->getProducttype()!=null){
+        if (count($locations)==0) {
+            $jsonlocations=[];
+        }
 
-               $ptype=$p->getProducttype()->getId();
-               $par=$p->getProducttype()->getParent();//todo : should be determined in frontend.. normalized
-               if( $par!=null )$ptparent=$p->getProducttype()->getParent()->getId();else $ptparent=null;
-             }else $ptype=null;
-             $jsonproducts[]=["name"=> $p->getName(),"id"=>$p->getId(),"description"=>$p->getDescription(),'groups'=>$groupsjson,'userid'=>$uid,'username'=>$uname,'ptype'=>$ptype,'ptparent'=>$ptparent,'distance'=>$p->getDistance(),'locations'=>$locationsjson];
-         }
-
-
-    if(count($locations)==0)$jsonlocations=[];
-
-    if(count($products)==0)$jsonproducts=[];
-    echo json_encode(['locations'=>$jsonlocations,'products'=>$jsonproducts,'producttypes'=>$jsonptypes]);
-    exit;
+        if (count($products)==0) {
+            $jsonproducts=[];
+        }
+        echo json_encode(['locations'=>$jsonlocations,'products'=>$jsonproducts,'producttypes'=>$jsonptypes]);
+        exit;
     }
 
     public function postAction(Request $request)

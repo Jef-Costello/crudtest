@@ -1,8 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 import { CSSTransitionGroup } from 'react-transition-group';
+import Icon from '../components/Icon';
 
 const Modal = styled.div`
+
+width:100%;
+height: 100%;
+position:absolute;
+z-index:6;`;
+const Blocker = styled.div`
 position:fixed;
 width:100%;
 height: 100%;
@@ -20,16 +27,15 @@ top:0px;
 
 z-index:4;`;
 const ModalContainer = styled.div`
-
-margin-left: -200px;
-
-
+max-width: 400px;
+margin: auto;
+z-index: 5;
 background: #fff;
 box-shadow: 0 0 0 5px rgba(0,0,0,0.03);
-position: absolute;
-width: 400px;
+position: relative;
+width: 100%;
 top: 10px;
-left: 50%;
+
 `;
 
 const Button = styled.button`
@@ -52,7 +58,7 @@ padding: 15px;
 const Modalbase = React.createClass({
 
   componentDidUpdate() {},
-  componentDidMount() {},
+  componentDidMount() { },
   ee() {
 
   //  if (this.props.ocflag()) { return 'tyur'; } return 'fasle';
@@ -69,8 +75,9 @@ const Modalbase = React.createClass({
           transitionLeave={false}
         >
           <Modal>
+            <Blocker />
             <ModalContainer>
-              <ModalHeader><Button className="headerbutton"onClick={this.props.closeThisModal} >X</Button>{this.props.modaltitle} </ModalHeader>
+              <ModalHeader><Button className="headerbutton"onClick={this.props.closeThisModal} ><Icon>{ String.fromCharCode(0xe80b)}</Icon></Button>{this.props.modaltitle} </ModalHeader>
 
 
               {React.cloneElement(this.props.children, this.props)}

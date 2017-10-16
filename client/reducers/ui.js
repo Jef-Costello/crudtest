@@ -22,6 +22,17 @@ function ui(state = [], action) {
     case 'OPEN_MODAL_LOCATION':
 
       return { ...state, modallocation: true };
+
+    case 'SET_SEARCH_ADDRESS':
+      return { ...state, searchaddress: action.address };
+    case 'SET_SCROLL':
+      return { ...state, scroll: action.y };
+    case 'SHOW_MAP':
+
+      return { ...state, showmap: !state.showmap };
+    case 'TOGGLE_MENU':
+
+      return { ...state, showmenu: !state.showmenu };
     case 'CLOSE_MODAL_LOCATION':
 
       return { ...state, modallocation: false };
@@ -46,7 +57,7 @@ function ui(state = [], action) {
 
     case 'CLOSE_MODAL':
 
-      return { ...state, modal: false, modalcatbuttons: [false, false, false] };
+      return { ...state, modal: false, modalcatbuttons: [false, false, false], ptype: null, modallocationbuttons: [] };
     case 'CLOSE_HOC_MODAL':
 
       return { ...state, hocmodal: false };
@@ -58,7 +69,7 @@ function ui(state = [], action) {
 
     case 'CLOSE_MODALNP':
 
-      return { ...state, modalnp: false };
+      return { ...state, modalnp: false, modalcatbuttons: [false, false, false], ptype: null, modallocationbuttons: [], previewimage: '' };
 
     case 'PRESS_CAT_BUTTON': {
       const buttons = { ...state.modalcatbuttons };
@@ -84,13 +95,16 @@ function ui(state = [], action) {
       return { ...state, predictions: action.predictions };
     }
     case 'INIT_PT_FILTER_BUTTONS': {
-      const ptfilterbuttons2 = [false, false, false, false];
+      const ptfilterbuttons2 = [false, false, false, false, false];
       return state;
     }
     case 'SET_PT_FILTER': {
       const ptfilterbuttons = [...state.ptfilterbuttons];
       ptfilterbuttons[action.id].value = !ptfilterbuttons[action.id].value;
       return { ...state, ptfilterbuttons };
+    }
+    case 'SET_PREVIEW_IMAGE_SRC': { console.log('ée');
+      return { ...state, previewimage: action.src };
     }
     case 'SET_CAT_BUTTON': {
       const buttons = { ...state.modalcatbuttons };
