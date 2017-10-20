@@ -3,11 +3,11 @@ import { render } from 'react-dom';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { Provider } from 'react-redux'; // redux to react provider
 import css from './styles/style.styl';
-
+// import { ConnectedRouter, routerReducer, routerMiddleware, push } from 'react-router-redux';
 // import components
 import AppPrivate from './components/AppPrivate';
 import AppPublic from './components/AppPublic';
-
+// import createHistory from 'history/createBrowserHistory'
 import Office from './components/Office';
 import Home from './components/Home';
 import Profiel from './components/Profiel';
@@ -15,6 +15,7 @@ import Supplier from './components/Supplier';
 import GridTest from './components/GridTest';
 import store, { history } from './store';
 
+// const history = createHistory();
 const root = store.getState().connection.root;
 
 const router = (
@@ -32,7 +33,7 @@ const router = (
       <Route path={`${root}/web/app_dev.php`} component={AppPublic} >
 
         <IndexRoute component={Home} />
-        <Route path={`${root}/web/app_dev.php/aanbieder/:url`} component={Supplier} />
+        <Route path={`${root}/web/app_dev.php/:url`} component={Supplier} />
       </Route>
     </Router>
   </Provider>

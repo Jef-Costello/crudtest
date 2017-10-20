@@ -18,6 +18,7 @@ function mapStateToProps(state) {
     products: state.products,
     // productsPublic: state.productsPublic,
     locations: state.locations,
+    labels: state.labels,
     // locationsPublic: state.locationsPublic,
     connection: state.connection,
     gmap: state.gmap,

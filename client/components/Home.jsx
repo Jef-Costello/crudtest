@@ -6,7 +6,7 @@ import ModalLogIn from '../components/ModalLogIn';
 import ProductsGridPublic from '../components/ProductsGridPublic';
 import styled from 'styled-components';
 
-
+const Container = styled.div`width:100%`;
 const Home = React.createClass({
 
   componentDidUpdate() {},
@@ -14,12 +14,12 @@ const Home = React.createClass({
 
   render() {
     return (
-      <div>                                                    <ModalLogIn {...this.props} />
+      <Container>                                                              <ModalLogIn {...this.props} />
 
 
         <ProductsGridPublic {...this.props} />
 
-      </div>);
+      </Container>);
   },
 
 });

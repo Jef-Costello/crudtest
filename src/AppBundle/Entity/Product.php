@@ -145,7 +145,7 @@ class Product
 
 
     foreach ($grs as $g) {
-        $groupsjson[]=['groupname'=>$g->getName(),'groupid'=>$g->getId()];
+        $groupsjson[]=['groupname'=>$g->getName(),'groupid'=>$g->getId(),'imgurl'=>$g->getImgUrl()];
     }
     $locationsjson=[];
     $ls=$this->getLocations();

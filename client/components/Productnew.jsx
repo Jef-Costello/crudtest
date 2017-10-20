@@ -136,7 +136,7 @@ prijs toevoeging:<br /><input ref={(c) => { this.npricetype = c; }} type="text" 
           </div>))}
           <br />product soort:<br />
           <Pimg><img className="pticon" alt="" src={`${this.props.connection.root}/web/${this.props.ui.ptimageurl}`} /></Pimg>
-          {this.props.producttypes.all.map((pt) => (<Button className={(pt.id === this.props.ui.ptype) ? 'selected' : ''} onClick={(e) => this.selectpt(e, pt.id, pt.imgurl)} key={pt.id}>{pt.name}</Button>))}
+          {this.props.producttypes.all.map((pt) => (pt.id > 5 ? <Button className={(pt.id === this.props.ui.ptype) ? 'selected' : ''} onClick={(e) => this.selectpt(e, pt.id, pt.imgurl)} key={pt.id}>{pt.name}</Button> : null))}
           <br /><br />
         </div>
         <Button className="crud" onClick={this.upload}>opslaan</Button>

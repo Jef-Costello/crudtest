@@ -3,6 +3,7 @@ import geocodeAddress from '../tools';
 import { Link } from 'react-router';
 import styled from 'styled-components';
 import Google from '../components/Google';
+import ModalLogIn from '../components/ModalLogIn';
 
 const OptSmall = styled.span`
 display: inline;
@@ -53,20 +54,7 @@ float:right;
 
 `;
 // const op = (this.props.ui.scroll / 230);
-const Logo = styled.div`
-top: 2%;
-  transform: rotate(15deg);
-    opacity:${props => (props.scroll > 100) ? 0 : 0.5};
 
-    transition:opacity 1s;
-    position: fixed;
-      width: calc(16vw + 30px);
-    right: 2%;
-    z-index:-1;
-    img{position:absolute;z-index:-5}
-
-
-`;
 const Icon = styled.span`
     font-size: 20px;
 
@@ -171,6 +159,7 @@ position:fixed;
 background:#e28122;
 background:#3f6f3a;
 background:#5d863b;
+background:rgb(72, 104, 48);
 width:100%;
 height:3em;
 top:0px;
@@ -242,35 +231,53 @@ const TopBar = React.createClass({
   },
 
   render() {
+    const root = this.props.connection.root;
     let refreshing;
     let loading;
     const pred = null;
     let input;
     let logo;
     let optsmall,
-      optbig;
-
-    if (this.props.ui.scroll < 220 && this.props.route.path === '/web/app_dev.php') { logo = <Logo scroll={this.props.ui.scroll}><img src="/web/img/logo5.png" /></Logo>; }
+      optsmallloggedout,
+      optbig,
+      optbigloggedout;
 
 
     optbig = (
       <OptBig>
-        <SLink activeClassName="active" to="/web/app_dev.php/">home</SLink>
-        <SLink activeClassName="active" to="/web/app_dev.php/office/producten">mijn producten</SLink>
-        <SLink activeClassName="active" to="/web/app_dev.php/office/profiel">profiel</SLink>
+        <SLink activeClassName="active" to={`${this.props.connection.root}/web/app_dev.php`}>home</SLink>
+        <SLink activeClassName="active" to={`${this.props.connection.root}/web/app_dev.php/office/producten`}>mijn producten</SLink>
+        <SLink activeClassName="active" to={`${this.props.connection.root}/web/app_dev.php/office/profiel`}>profiel</SLink>
 
       </OptBig>
 
     );
     optsmall = (
       <OptSmall>
-        <SLink activeClassName="active" to="/web/app_dev.php/"><Icon>{ String.fromCharCode(0xe80c)}</Icon></SLink>
-        <SLink activeClassName="active" to="/web/app_dev.php/office/producten"><Icon>{ String.fromCharCode(0xe80a)}</Icon></SLink>
-        <SLink activeClassName="active" to="/web/app_dev.php/office/profiel"><Icon>{ String.fromCharCode(0xe801)}</Icon></SLink>
-        {this.props.route.path === '/web/app_dev.php' ? <Button className="close" onClick={this.props.toggleMenu} activeClassName="active" ><Icon>{ String.fromCharCode(0xf0c9)}</Icon></Button> : null}
+        <SLink activeClassName="active" to={`${this.props.connection.root}/web/app_dev.php`}><Icon>{ String.fromCharCode(0xe80c)}</Icon></SLink>
+        <SLink activeClassName="active" to={`${this.props.connection.root}/web/app_dev.php/office/producten`}><Icon>{ String.fromCharCode(0xe80a)}</Icon></SLink>
+        <SLink activeClassName="active" to={`${this.props.connection.root}/web/app_dev.php/office/profiel`}><Icon>{ String.fromCharCode(0xe801)}</Icon></SLink>
+        {this.props.route.path === (`${this.props.connection.root}/web/app_dev.php`) ? <Button className="close" onClick={this.props.toggleMenu} activeClassName="active" ><Icon>{ String.fromCharCode(0xf0c9)}</Icon></Button> : null}
 
       </OptSmall>
   );
+    optbigloggedout = (
+      <OptBig>
+        <SLink activeClassName="active" to={`${this.props.connection.root}/web/app_dev.php`}>home</SLink>
+
+
+      </OptBig>
+
+  );
+    optsmallloggedout = (
+      <OptSmall>
+        <SLink activeClassName="active" to={`${this.props.connection.root}/web/app_dev.php`}><Icon>{ String.fromCharCode(0xe80c)}</Icon></SLink>
+
+        {this.props.route.path === (`${this.props.connection.root}/web/app_dev.php`) ? <Button className="close" onClick={this.props.toggleMenu} activeClassName="active" ><Icon>{ String.fromCharCode(0xf0c9)}</Icon></Button> : null}
+
+      </OptSmall>
+);
+
 
     if (this.props.connection.refreshing === true) { refreshing = <div className="refreshing">..refreshing token..</div>; }
     if (this.props.connection.loading === true) { loading = <div className="spinner" />; }
@@ -286,7 +293,7 @@ const TopBar = React.createClass({
 
 
             </Predictions>{this.props.ui.foundlocation}{refreshing}{loading}</TopBarInner>
-
+          <ModalLogIn {...this.props} />
         </Topbar>
       );
     } return (
@@ -300,7 +307,7 @@ const TopBar = React.createClass({
             {pred}
 
 
-          </Predictions><LButton onClick={this.props.openModalLogIn}>login</LButton>{loading}</TopBarInner>
+          </Predictions>                         {optbigloggedout}                                               {optsmallloggedout} <LButton onClick={this.props.openModalLogIn}>login</LButton>{loading}</TopBarInner>
 
       </Topbar>
 

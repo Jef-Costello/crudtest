@@ -143,8 +143,13 @@ class UsersController extends FOSRestController implements ClassResourceInterfac
             $repository = $em->getRepository("AppBundle:User");
             $locationrepo = $em->getRepository("AppBundle:Location");
             $ptyperepo = $em->getRepository("AppBundle:Producttype");
+            $grouprepo = $em->getRepository("AppBundle:Group");
             $user =  $this->get('security.token_storage')->getToken()->getUser();
             $producer=$locationrepo->findOneBy(array('type'=>'Primary','user'=>$user->getId()));
+            $labels=$grouprepo->findAll();
+            foreach ($labels as $c) {
+                $labelsjson[]=['name'=>$c->getName(),'id'=>$c->getId()];
+            }
             $ptypes=$ptyperepo->findAll();
             $jsonptypes=[];
             foreach ($ptypes as $ptp) {
@@ -163,7 +168,75 @@ class UsersController extends FOSRestController implements ClassResourceInterfac
                 if (count($sublocs)==0) {
                     $jsonsublocs=[];
                 }
-                $jsonlocations[]=["name"=> $l->getName(),"id"=>$l->getId(),"userid"=>$l->getUser()->getId(),"description"=>$l->getDescription(),"address"=>$l->getAddress(),"lat"=>$l->getLat(),"lng"=>$l->getLng(),'imgurl'=>$l->getImgUrl(),'type'=>$l->getType(),'sublocs'=>$jsonsublocs];
+                $monfrom=$l->getMonFrom();
+                if($monfrom!=null)$monfrom=$monfrom->format('H:i');
+                $monto=$l->getMonTo();
+                if($monto!=null)$monto=$monto->format('H:i');
+
+                $tuefrom=$l->getTueFrom();
+                if($tuefrom!=null)$tuefrom=$tuefrom->format('H:i');
+                $tueto=$l->getTueTo();
+                if($tueto!=null)$tueto=$tueto->format('H:i');
+
+                $wedfrom=$l->getWedFrom();
+                if($wedfrom!=null)$wedfrom=$wedfrom->format('H:i');
+                $wedto=$l->getWedTo();
+                if($wedto!=null)$wedto=$wedto->format('H:i');
+
+                $thufrom=$l->getThuFrom();
+                if($thufrom!=null)$thufrom=$thufrom->format('H:i');
+                $thuto=$l->getThuTo();
+                if($thuto!=null)$thuto=$thuto->format('H:i');
+
+                $frifrom=$l->getFriFrom();
+                if($frifrom!=null)$frifrom=$frifrom->format('H:i');
+                $frito=$l->getFriTo();
+                if($frito!=null)$frito=$frito->format('H:i');
+
+                $satfrom=$l->getSatFrom();
+                if($satfrom!=null)$satfrom=$satfrom->format('H:i');
+                $satto=$l->getSatTo();
+                if($satto!=null)$satto=$satto->format('H:i');
+
+                $sunfrom=$l->getSunFrom();
+                if($sunfrom!=null)$sunfrom=$sunfrom->format('H:i');
+                $sunto=$l->getSunTo();
+                if($sunto!=null)$sunto=$sunto->format('H:i');
+
+
+
+
+
+                $jsonlocations[]=["name"=> $l->getName(),
+                "id"=>$l->getId(),
+                "userid"=>$l->getUser()->getId(),
+                "description"=>$l->getDescription(),
+                "address"=>$l->getAddress(),
+                "lat"=>$l->getLat(),
+                "lng"=>$l->getLng(),
+                'imgurl'=>$l->getImgUrl(),
+                'type'=>$l->getType(),
+                'sublocs'=>$jsonsublocs,
+                'monfrom'=>$monfrom,
+                'monto'=>$monto,
+                'tuefrom'=>$tuefrom,
+                'tueto'=>$tueto,
+                'wedfrom'=>$wedfrom,
+                'wedto'=>$wedto,
+                'thufrom'=>$thufrom,
+                'thuto'=>$thuto,
+                'frifrom'=>$frifrom,
+                'frito'=>$frito,
+                'satfrom'=>$satfrom,
+                'satto'=>$satto,
+                'sunfrom'=>$sunfrom,
+                'sunto'=>$sunto,
+
+
+
+              ];
+
+
             }
             $jsondlocs=[];
             $dlocations=$user->getDlocations();
@@ -177,7 +250,7 @@ class UsersController extends FOSRestController implements ClassResourceInterfac
                 $groupsjson=[];
                 $grs=$p->getGroups();
                 foreach ($grs as $g) {
-                    $groupsjson[]=['groupname'=>$g->getName(),'groupid'=>$g->getId()];
+                    $groupsjson[]=['groupname'=>$g->getName(),'groupid'=>$g->getId(),'imgurl'=>$g->getImgurl()];
                 }
                 $locationsjson=[];
                 $ls=$p->getLocations();
@@ -200,7 +273,7 @@ class UsersController extends FOSRestController implements ClassResourceInterfac
             if (count($products)==0) {
                 $jsonproducts=[];
             }
-            echo json_encode(['name'=>$user->getUserName(),"userId"=>$user->getId(),'email'=>$user->getEmail(),'locations'=>$jsonlocations,'dlocs'=>$jsondlocs,'products'=>$jsonproducts,'producttypes'=>$jsonptypes]);
+            echo json_encode(['name'=>$user->getUserName(),"userId"=>$user->getId(),'email'=>$user->getEmail(),'locations'=>$jsonlocations,'dlocs'=>$jsondlocs,'labels'=>$labelsjson,'products'=>$jsonproducts,'producttypes'=>$jsonptypes]);
             exit;
         }
 
@@ -266,7 +339,12 @@ class UsersController extends FOSRestController implements ClassResourceInterfac
         $repository = $em->getRepository("AppBundle:Product");
         $locationrepo = $em->getRepository("AppBundle:Location");
         $ptyperepo = $em->getRepository("AppBundle:Producttype");
+        $grouprepo = $em->getRepository("AppBundle:Group");
 
+        $labels=$grouprepo->findAll();
+        foreach ($labels as $c) {
+            $labelsjson[]=['name'=>$c->getName(),'id'=>$c->getId(),'imgurl'=>$c->getImgUrl()];
+        }
 
         $ptypes=$ptyperepo->findAll();
         $jsonptypes=[];
@@ -323,12 +401,80 @@ class UsersController extends FOSRestController implements ClassResourceInterfac
               foreach ($prods as $prd) {
                   $jsonprodssub[]=["id"=>$prd->getId()];
               }
-              $jsonsublocs[]=["name"=> $sl->getName(),"id"=>$sl->getId(),"description"=>$sl->getDescription(),"address"=>$sl->getAddress(),"lat"=>$sl->getLat(),"lng"=>$sl->getLng(),'url'=>$sl->getUrl(),'type'=>$sl->getType(),'products'=>$jsonprodssub];
+              $jsonsublocs[]=["name"=> $sl->getName(),
+              "id"=>$sl->getId(),
+              "description"=>$sl->getDescription(),
+              "address"=>$sl->getAddress(),
+              "lat"=>$sl->getLat(),
+              "lng"=>$sl->getLng(),
+              'url'=>$sl->getUrl(),
+              'type'=>$sl->getType(),
+              'products'=>$jsonprodssub];
           }
             if (count($sublocs)==0) {
                 $jsonsublocs=[];
             }
-            $jsonlocations[]=["name"=> $l->getName(),"id"=>$l->getId(),"description"=>$l->getDescription(),"address"=>$l->getAddress(),"lat"=>$l->getLat(),"lng"=>$l->getLng(),'url'=>$l->getUrl(),'type'=>$l->getType(),'sublocs'=>$jsonsublocs,'products'=>$jsonprods1];
+            $monfrom=$l->getMonFrom();
+            if($monfrom!=null)$monfrom=$monfrom->format('H:i');
+            $monto=$l->getMonTo();
+            if($monto!=null)$monto=$monto->format('H:i');
+
+            $tuefrom=$l->getTueFrom();
+            if($tuefrom!=null)$tuefrom=$tuefrom->format('H:i');
+            $tueto=$l->getTueTo();
+            if($tueto!=null)$tueto=$tueto->format('H:i');
+
+            $wedfrom=$l->getWedFrom();
+            if($wedfrom!=null)$wedfrom=$wedfrom->format('H:i');
+            $wedto=$l->getWedTo();
+            if($wedto!=null)$wedto=$wedto->format('H:i');
+
+            $thufrom=$l->getThuFrom();
+            if($thufrom!=null)$thufrom=$thufrom->format('H:i');
+            $thuto=$l->getThuTo();
+            if($thuto!=null)$thuto=$thuto->format('H:i');
+
+            $frifrom=$l->getFriFrom();
+            if($frifrom!=null)$frifrom=$frifrom->format('H:i');
+            $frito=$l->getFriTo();
+            if($frito!=null)$frito=$frito->format('H:i');
+
+            $satfrom=$l->getSatFrom();
+            if($satfrom!=null)$satfrom=$satfrom->format('H:i');
+            $satto=$l->getSatTo();
+            if($satto!=null)$satto=$satto->format('H:i');
+
+            $sunfrom=$l->getSunFrom();
+            if($sunfrom!=null)$sunfrom=$sunfrom->format('H:i');
+            $sunto=$l->getSunTo();
+            if($sunto!=null)$sunto=$sunto->format('H:i');
+            $jsonlocations[]=[
+            "name"=> $l->getName(),
+            "id"=>$l->getId(),
+            "description"=>$l->getDescription(),
+            "address"=>$l->getAddress(),
+            "lat"=>$l->getLat(),
+            "lng"=>$l->getLng(),
+            'url'=>$l->getUrl(),
+            'type'=>$l->getType(),
+            'sublocs'=>$jsonsublocs,
+            'products'=>$jsonprods1,
+            'monfrom'=>$monfrom,
+            'monto'=>$monto,
+            'tuefrom'=>$tuefrom,
+            'tueto'=>$tueto,
+            'wedfrom'=>$wedfrom,
+            'wedto'=>$wedto,
+            'thufrom'=>$thufrom,
+            'thuto'=>$thuto,
+            'frifrom'=>$frifrom,
+            'frito'=>$frito,
+            'satfrom'=>$satfrom,
+            'satto'=>$satto,
+            'sunfrom'=>$sunfrom,
+            'sunto'=>$sunto,
+
+          ];
         }
 
         if (count($locations)==0) {
@@ -338,7 +484,7 @@ class UsersController extends FOSRestController implements ClassResourceInterfac
         if (count($products)==0) {
             $jsonproducts=[];
         }
-        echo json_encode(['locations'=>$jsonlocations,'products'=>$jsonproducts,'producttypes'=>$jsonptypes]);
+        echo json_encode(['locations'=>$jsonlocations,'products'=>$jsonproducts,'producttypes'=>$jsonptypes,'labels'=>$labelsjson]);
         exit;
     }
 

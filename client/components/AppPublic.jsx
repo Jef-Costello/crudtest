@@ -25,6 +25,7 @@ function mapStateToProps(state) {
     locationsPublic: state.locationsPublic,
     user: state.user,
     producttypes: state.producttypes,
+    labels: state.labels,
   };
 }
 function mapDispatchToProps(dispatch) {

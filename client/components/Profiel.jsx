@@ -191,14 +191,14 @@ const Profiel = React.createClass({
 
         <Ssupplier>
           <ImgContainer><Imghlp />
-            <img src={`/web/${this.props.getProducerLocation.imgurl}`} /></ImgContainer>
+            <img src={`${this.props.connection.root}/web/${this.props.getProducerLocation.imgurl}`} /></ImgContainer>
           <TextContainer>
             <Title>{this.props.getProducerLocation.name}</Title><br />
             {this.props.getProducerLocation.description}
             <br /><br />
             <Icon>{ String.fromCharCode(0xe808)}</Icon> {this.props.getProducerLocation.address}
           </TextContainer>
-          <Button className="edit" onClick={this.onClickl}>                                                                                                                          <Icon>{ String.fromCharCode(0xe800)}</Icon></Button>
+          <Button className="edit" onClick={this.onClickl}>                                                                                                                                    <Icon>{ String.fromCharCode(0xe800)}</Icon></Button>
 
         </Ssupplier>
 

@@ -160,7 +160,22 @@ class LocationController extends FOSRestController implements ClassResourceInter
         $LocationId=$request->get('id');
         $location=$locationrepo->findOneBy(array("id"=>$LocationId));
         $LocationName=$request->get('name');
+        $location->setUrl($this->slugify($LocationName));
         $Description=$request->get('description');
+        $location->setMonFrom( $request->get('monfrom')!=null ? new \DateTime($request->get('monfrom')) : null);
+        $location->setMonTo( $request->get('monto')!=null ? new \DateTime($request->get('monto')) : null);
+        $location->setTueFrom( $request->get('tuefrom')!=null ? new \DateTime($request->get('tuefrom')) : null);
+        $location->setTueTo( $request->get('tueto')!=null ? new \DateTime($request->get('tueto')) : null);
+        $location->setWedFrom( $request->get('wedfrom')!=null ? new \DateTime($request->get('wedfrom')) : null);
+        $location->setWedTo( $request->get('wedto')!=null ? new \DateTime($request->get('wedto')) : null);
+        $location->setThuFrom( $request->get('thufrom')!=null ? new \DateTime($request->get('thufrom')) : null);
+        $location->setThuTo( $request->get('thuto')!=null ? new \DateTime($request->get('thuto')) : null);
+        $location->setFriFrom( $request->get('frifrom')!=null ? new \DateTime($request->get('frifrom')) : null);
+        $location->setFriTo( $request->get('frito')!=null ? new \DateTime($request->get('frito')) : null);
+        $location->setSatFrom( $request->get('satfrom')!=null ? new \DateTime($request->get('satfrom')) : null);
+        $location->setSatTo( $request->get('satto')!=null ? new \DateTime($request->get('satto')) : null);
+        $location->setSunFrom( $request->get('sunfrom')!=null ? new \DateTime($request->get('sunfrom')) : null);
+        $location->setSunTo( $request->get('sunto')!=null ? new \DateTime($request->get('sunto')) : null);
         //$Type=$request->query->get('type');
         $Address=$request->get('address');
         $lng=$request->get('lng');
@@ -310,11 +325,70 @@ class LocationController extends FOSRestController implements ClassResourceInter
             }
             $jsonproducts[]=$product->toJson();
         }
-        $sublocs=$l->getLocations();
+        $sublocs=$l->getUser()->getDlocations();
         foreach ($sublocs as $sl) {
-            $jsonsublocs[]=["name"=> $sl->getName(),"id"=>$sl->getId(),"address"=>$sl->getAddress(),"description"=>$sl->getDescription(),'type'=>$sl->getType()];
+
+          if($sl->getType()=="Secondary"){
+            $jsonsublocs[]=["name"=> $sl->getName(),"id"=>$sl->getId(),"address"=>$sl->getAddress(),"description"=>$sl->getDescription(),'type'=>$sl->getType()];}
         }
-        $jsonlocation=["name"=> $l->getName(),"id"=>$l->getId(),"address"=>$l->getAddress(),"description"=>$l->getDescription(),'imgurl'=>$l->getImgUrl(),'type'=>$l->getType(),'sublocs'=>$jsonsublocs];
+        $monfrom=$l->getMonFrom();
+        if($monfrom!=null)$monfrom=$monfrom->format('H:i');
+        $monto=$l->getMonTo();
+        if($monto!=null)$monto=$monto->format('H:i');
+
+        $tuefrom=$l->getTueFrom();
+        if($tuefrom!=null)$tuefrom=$tuefrom->format('H:i');
+        $tueto=$l->getTueTo();
+        if($tueto!=null)$tueto=$tueto->format('H:i');
+
+        $wedfrom=$l->getWedFrom();
+        if($wedfrom!=null)$wedfrom=$wedfrom->format('H:i');
+        $wedto=$l->getWedTo();
+        if($wedto!=null)$wedto=$wedto->format('H:i');
+
+        $thufrom=$l->getThuFrom();
+        if($thufrom!=null)$thufrom=$thufrom->format('H:i');
+        $thuto=$l->getThuTo();
+        if($thuto!=null)$thuto=$thuto->format('H:i');
+
+        $frifrom=$l->getFriFrom();
+        if($frifrom!=null)$frifrom=$frifrom->format('H:i');
+        $frito=$l->getFriTo();
+        if($frito!=null)$frito=$frito->format('H:i');
+
+        $satfrom=$l->getSatFrom();
+        if($satfrom!=null)$satfrom=$satfrom->format('H:i');
+        $satto=$l->getSatTo();
+        if($satto!=null)$satto=$satto->format('H:i');
+
+        $sunfrom=$l->getSunFrom();
+        if($sunfrom!=null)$sunfrom=$sunfrom->format('H:i');
+        $sunto=$l->getSunTo();
+        if($sunto!=null)$sunto=$sunto->format('H:i');
+        $jsonlocation=["name"=> $l->getName(),
+        "id"=>$l->getId(),
+        "address"=>$l->getAddress(),
+        "description"=>$l->getDescription(),
+        'imgurl'=>$l->getImgUrl(),
+        'type'=>$l->getType(),
+        'monfrom'=>$monfrom,
+        'monto'=>$monto,
+        'tuefrom'=>$tuefrom,
+        'tueto'=>$tueto,
+        'wedfrom'=>$wedfrom,
+        'wedto'=>$wedto,
+        'thufrom'=>$thufrom,
+        'thuto'=>$thuto,
+        'frifrom'=>$frifrom,
+        'frito'=>$frito,
+        'satfrom'=>$satfrom,
+        'satto'=>$satto,
+        'sunfrom'=>$sunfrom,
+        'sunto'=>$sunto,
+
+
+
+        'sublocs'=>$jsonsublocs];
 
         //$p=$repository->findOneById($ProductId);
 

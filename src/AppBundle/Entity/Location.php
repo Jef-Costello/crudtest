@@ -61,6 +61,124 @@ class Location
        */
    protected $lng;
    /**
+    * @ORM\Column(type="text", nullable=true)
+    *
+    */
+   protected $website;
+   /**
+    * @ORM\Column(type="text", nullable=true)
+    *
+    */
+   protected $phone;
+
+   /**
+    * @ORM\Column(type="time", nullable=true)
+    *
+    */
+   protected $monFrom;
+   /**
+    * @ORM\Column(type="time", nullable=true)
+    *
+    */
+   protected $monTo;
+   /**
+    * @ORM\Column(type="time", nullable=true)
+    *
+    */
+   protected $tueFrom;
+   /**
+    * @ORM\Column(type="time", nullable=true)
+    *
+    */
+   protected $tueTo;
+   /**
+    * @ORM\Column(type="time", nullable=true)
+    *
+    */
+   protected $wedFrom;
+   /**
+    * @ORM\Column(type="time", nullable=true)
+    *
+    */
+   protected $wedTo;
+   /**
+    * @ORM\Column(type="time", nullable=true)
+    *
+    */
+   protected $thuFrom;
+   /**
+    * @ORM\Column(type="time", nullable=true)
+    *
+    */
+   protected $thuTo;
+   /**
+    * @ORM\Column(type="time", nullable=true)
+    *
+    */
+   protected $friFrom;
+   /**
+    * @ORM\Column(type="time", nullable=true)
+    *
+    */
+   protected $friTo;
+   /**
+    * @ORM\Column(type="time", nullable=true)
+    *
+    */
+   protected $satFrom;
+   /**
+    * @ORM\Column(type="time", nullable=true)
+    *
+    */
+   protected $satTo;
+   /**
+    * @ORM\Column(type="time", nullable=true)
+    *
+    */
+   protected $sunFrom;
+   /**
+    * @ORM\Column(type="time", nullable=true)
+    *
+    */
+   protected $sunTo;
+   /**
+    * @ORM\Column(type="boolean", nullable=true)
+    *
+    */
+   protected $monClosed;
+   /**
+    * @ORM\Column(type="boolean", nullable=true)
+    *
+    */
+   protected $tueClosed;
+   /**
+    * @ORM\Column(type="boolean", nullable=true)
+    *
+    */
+   protected $wedClosed;
+   /**
+    * @ORM\Column(type="boolean", nullable=true)
+    *
+    */
+   protected $thuClosed;
+   /**
+    * @ORM\Column(type="boolean", nullable=true)
+    *
+    */
+   protected $friClosed;
+   /**
+    * @ORM\Column(type="boolean", nullable=true)
+    *
+    */
+   protected $satClosed;
+   /**
+    * @ORM\Column(type="boolean", nullable=true)
+    *
+    */
+   protected $sunClosed;
+
+
+   /**
     * @var \Doctrine\Common\Collections\Collection|Product[]
     *
       * @ORM\ManyToMany(targetEntity="Product", mappedBy="locations")
@@ -446,5 +564,557 @@ class Location
     public function getUserds()
     {
         return $this->userds;
+    }
+
+    /**
+     * Set website
+     *
+     * @param string $website
+     *
+     * @return Location
+     */
+    public function setWebsite($website)
+    {
+        $this->website = $website;
+
+        return $this;
+    }
+
+    /**
+     * Get website
+     *
+     * @return string
+     */
+    public function getWebsite()
+    {
+        return $this->website;
+    }
+
+    /**
+     * Set phone
+     *
+     * @param string $phone
+     *
+     * @return Location
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * Get phone
+     *
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * Set monFrom
+     *
+     * @param \DateTime $monFrom
+     *
+     * @return Location
+     */
+    public function setMonFrom($monFrom)
+    {
+        $this->monFrom = $monFrom;
+
+        return $this;
+    }
+
+    /**
+     * Get monFrom
+     *
+     * @return \DateTime
+     */
+    public function getMonFrom()
+    {
+        return $this->monFrom;
+    }
+
+    /**
+     * Set monTo
+     *
+     * @param \DateTime $monTo
+     *
+     * @return Location
+     */
+    public function setMonTo($monTo)
+    {
+        $this->monTo = $monTo;
+
+        return $this;
+    }
+
+    /**
+     * Get monTo
+     *
+     * @return \DateTime
+     */
+    public function getMonTo()
+    {
+        return $this->monTo;
+    }
+
+    /**
+     * Set tueFrom
+     *
+     * @param \DateTime $tueFrom
+     *
+     * @return Location
+     */
+    public function setTueFrom($tueFrom)
+    {
+        $this->tueFrom = $tueFrom;
+
+        return $this;
+    }
+
+    /**
+     * Get tueFrom
+     *
+     * @return \DateTime
+     */
+    public function getTueFrom()
+    {
+        return $this->tueFrom;
+    }
+
+    /**
+     * Set tueTo
+     *
+     * @param \DateTime $tueTo
+     *
+     * @return Location
+     */
+    public function setTueTo($tueTo)
+    {
+        $this->tueTo = $tueTo;
+
+        return $this;
+    }
+
+    /**
+     * Get tueTo
+     *
+     * @return \DateTime
+     */
+    public function getTueTo()
+    {
+        return $this->tueTo;
+    }
+
+    /**
+     * Set wedFrom
+     *
+     * @param \DateTime $wedFrom
+     *
+     * @return Location
+     */
+    public function setWedFrom($wedFrom)
+    {
+        $this->wedFrom = $wedFrom;
+
+        return $this;
+    }
+
+    /**
+     * Get wedFrom
+     *
+     * @return \DateTime
+     */
+    public function getWedFrom()
+    {
+        return $this->wedFrom;
+    }
+
+    /**
+     * Set wedTo
+     *
+     * @param \DateTime $wedTo
+     *
+     * @return Location
+     */
+    public function setWedTo($wedTo)
+    {
+        $this->wedTo = $wedTo;
+
+        return $this;
+    }
+
+    /**
+     * Get wedTo
+     *
+     * @return \DateTime
+     */
+    public function getWedTo()
+    {
+        return $this->wedTo;
+    }
+
+    /**
+     * Set thuFrom
+     *
+     * @param \DateTime $thuFrom
+     *
+     * @return Location
+     */
+    public function setThuFrom($thuFrom)
+    {
+        $this->thuFrom = $thuFrom;
+
+        return $this;
+    }
+
+    /**
+     * Get thuFrom
+     *
+     * @return \DateTime
+     */
+    public function getThuFrom()
+    {
+        return $this->thuFrom;
+    }
+
+    /**
+     * Set thuTo
+     *
+     * @param \DateTime $thuTo
+     *
+     * @return Location
+     */
+    public function setThuTo($thuTo)
+    {
+        $this->thuTo = $thuTo;
+
+        return $this;
+    }
+
+    /**
+     * Get thuTo
+     *
+     * @return \DateTime
+     */
+    public function getThuTo()
+    {
+        return $this->thuTo;
+    }
+
+    /**
+     * Set friFrom
+     *
+     * @param \DateTime $friFrom
+     *
+     * @return Location
+     */
+    public function setFriFrom($friFrom)
+    {
+        $this->friFrom = $friFrom;
+
+        return $this;
+    }
+
+    /**
+     * Get friFrom
+     *
+     * @return \DateTime
+     */
+    public function getFriFrom()
+    {
+        return $this->friFrom;
+    }
+
+    /**
+     * Set friTo
+     *
+     * @param \DateTime $friTo
+     *
+     * @return Location
+     */
+    public function setFriTo($friTo)
+    {
+        $this->friTo = $friTo;
+
+        return $this;
+    }
+
+    /**
+     * Get friTo
+     *
+     * @return \DateTime
+     */
+    public function getFriTo()
+    {
+        return $this->friTo;
+    }
+
+    /**
+     * Set satFrom
+     *
+     * @param \DateTime $satFrom
+     *
+     * @return Location
+     */
+    public function setSatFrom($satFrom)
+    {
+        $this->satFrom = $satFrom;
+
+        return $this;
+    }
+
+    /**
+     * Get satFrom
+     *
+     * @return \DateTime
+     */
+    public function getSatFrom()
+    {
+        return $this->satFrom;
+    }
+
+    /**
+     * Set satTo
+     *
+     * @param \DateTime $satTo
+     *
+     * @return Location
+     */
+    public function setSatTo($satTo)
+    {
+        $this->satTo = $satTo;
+
+        return $this;
+    }
+
+    /**
+     * Get satTo
+     *
+     * @return \DateTime
+     */
+    public function getSatTo()
+    {
+        return $this->satTo;
+    }
+
+    /**
+     * Set sunFrom
+     *
+     * @param \DateTime $sunFrom
+     *
+     * @return Location
+     */
+    public function setSunFrom($sunFrom)
+    {
+        $this->sunFrom = $sunFrom;
+
+        return $this;
+    }
+
+    /**
+     * Get sunFrom
+     *
+     * @return \DateTime
+     */
+    public function getSunFrom()
+    {
+        return $this->sunFrom;
+    }
+
+    /**
+     * Set sunTo
+     *
+     * @param \DateTime $sunTo
+     *
+     * @return Location
+     */
+    public function setSunTo($sunTo)
+    {
+        $this->sunTo = $sunTo;
+
+        return $this;
+    }
+
+    /**
+     * Get sunTo
+     *
+     * @return \DateTime
+     */
+    public function getSunTo()
+    {
+        return $this->sunTo;
+    }
+
+    /**
+     * Set monClosed
+     *
+     * @param boolean $monClosed
+     *
+     * @return Location
+     */
+    public function setMonClosed($monClosed)
+    {
+        $this->monClosed = $monClosed;
+
+        return $this;
+    }
+
+    /**
+     * Get monClosed
+     *
+     * @return boolean
+     */
+    public function getMonClosed()
+    {
+        return $this->monClosed;
+    }
+
+    /**
+     * Set tueClosed
+     *
+     * @param boolean $tueClosed
+     *
+     * @return Location
+     */
+    public function setTueClosed($tueClosed)
+    {
+        $this->tueClosed = $tueClosed;
+
+        return $this;
+    }
+
+    /**
+     * Get tueClosed
+     *
+     * @return boolean
+     */
+    public function getTueClosed()
+    {
+        return $this->tueClosed;
+    }
+
+    /**
+     * Set wedClosed
+     *
+     * @param boolean $wedClosed
+     *
+     * @return Location
+     */
+    public function setWedClosed($wedClosed)
+    {
+        $this->wedClosed = $wedClosed;
+
+        return $this;
+    }
+
+    /**
+     * Get wedClosed
+     *
+     * @return boolean
+     */
+    public function getWedClosed()
+    {
+        return $this->wedClosed;
+    }
+
+    /**
+     * Set thuClosed
+     *
+     * @param boolean $thuClosed
+     *
+     * @return Location
+     */
+    public function setThuClosed($thuClosed)
+    {
+        $this->thuClosed = $thuClosed;
+
+        return $this;
+    }
+
+    /**
+     * Get thuClosed
+     *
+     * @return boolean
+     */
+    public function getThuClosed()
+    {
+        return $this->thuClosed;
+    }
+
+    /**
+     * Set friClosed
+     *
+     * @param boolean $friClosed
+     *
+     * @return Location
+     */
+    public function setFriClosed($friClosed)
+    {
+        $this->friClosed = $friClosed;
+
+        return $this;
+    }
+
+    /**
+     * Get friClosed
+     *
+     * @return boolean
+     */
+    public function getFriClosed()
+    {
+        return $this->friClosed;
+    }
+
+    /**
+     * Set satClosed
+     *
+     * @param boolean $satClosed
+     *
+     * @return Location
+     */
+    public function setSatClosed($satClosed)
+    {
+        $this->satClosed = $satClosed;
+
+        return $this;
+    }
+
+    /**
+     * Get satClosed
+     *
+     * @return boolean
+     */
+    public function getSatClosed()
+    {
+        return $this->satClosed;
+    }
+
+    /**
+     * Set sunClosed
+     *
+     * @param boolean $sunClosed
+     *
+     * @return Location
+     */
+    public function setSunClosed($sunClosed)
+    {
+        $this->sunClosed = $sunClosed;
+
+        return $this;
+    }
+
+    /**
+     * Get sunClosed
+     *
+     * @return boolean
+     */
+    public function getSunClosed()
+    {
+        return $this->sunClosed;
     }
 }

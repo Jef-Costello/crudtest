@@ -2,9 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router';
 
+const Ficon = styled.img`
+width:20px;
+`;
 const Discount = styled.div`
 transform: rotate(-3deg);
 background:#ff8000;
+
 padding:3px;
 color:white;
 position:absolute;
@@ -71,7 +75,7 @@ background: #fff;
 position: relative;
 flex-basis:16vw;
 box-sizing:border-box;
-img.vinkje{width:10px;height:10px;opacity:0.5}
+img.ficon{width:16px;opacity:0.6;float:left;margin-top: 5px;}
 img{    max-height: 100%;
     max-width: 100%;width:auto;margin:auto;display:block;}
 /* Custom, iPhone Retina */
@@ -146,7 +150,7 @@ const ProductPublic = React.createClass({
     indx = this.props.locationsPublic.all.map((el) => el.id).indexOf(id);
 
     if (indx != -1 && this.props.locationsPublic.all.length > 0) {
-      this.props.history.push(`/web/app_dev.php/aanbieder/${this.props.locationsPublic.all[indx].url}`);
+      this.props.history.push(`${this.props.connection.root}/web/app_dev.php/${this.props.locationsPublic.all[indx].url}`);
       console.log(`/web/app_dev.php/aanbieder/${this.props.locationsPublic.all[indx].url}`);
     }
   },
@@ -179,10 +183,10 @@ const ProductPublic = React.createClass({
 
           <br /><Icon>{ String.fromCharCode(0xe808)}</Icon>{product.locations.length > 1 ? 'dichtst bij : ' : 'afstand : '}{Math.round(product.distance)}km<br />
 
-          {product.locations.map((loc) => (loc.type === 'Primary' ? <div key={loc.id}><Icon>{ String.fromCharCode(0xe809)}</Icon>{loc.name}</div> : loc.name))}
+          {product.locations.map((loc) => (loc.type === 'Primary' ? <div key={loc.id}><Icon>{ String.fromCharCode(0xe809)}</Icon>{loc.name}</div> : ''))}
 
         </div>
-        <div className="groups">{product.groups.map(el => (<div className={el.groupname} key={el.groupid}><Icon>{ String.fromCharCode(0xe805)}</Icon>{el.groupname}</div>))} </div>
+        <div className="groups">{product.groups.map(el => (<div className={el.groupname} key={el.groupid}><img className="ficon" src={`${this.props.connection.root}/web/${el.imgurl}`} /></div>))} </div>
 
 
       </SProduct>

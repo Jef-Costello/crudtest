@@ -41,6 +41,7 @@ function locations(state = [], action) {
       const sell = { ...state.selectedlocation, id: action.id };
       return { ...state, selectedlocation: sell };
     case 'SELECT_LOCATION_MAP':
+      console.log(`clicked ${action.id}`);
       const sellm = { ...state.selectedlocationmap, id: action.id };
       return { ...state, selectedlocationmap: sellm };
     default:

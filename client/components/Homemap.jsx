@@ -41,10 +41,10 @@ const Homemap = React.createClass({
             map: this.props.gmap.map,
             icon,
           });
-        //  marker.addListener('click', () => {
-          //  this.props.gmap.map.setCenter(marker.getPosition());
-          //  this.props.selectLocationMap(location.id);
-        //  });
+          marker.addListener('click', () => {
+            this.props.gmap.map.setCenter(marker.getPosition());
+            this.props.selectLocationMap(location.id);
+          });
             // marker.setPosition(latlng);
           //  marker.setMap(map);
           this.props.pushMarker(marker);

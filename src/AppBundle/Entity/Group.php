@@ -24,7 +24,10 @@ class Group
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     protected $name;
-
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $imgUrl;
 
 	/**
 	 * @var \Doctrine\Common\Collections\Collection|Product[]
@@ -128,4 +131,28 @@ public function __toString() {
 }
 
 
+
+    /**
+     * Set imgUrl
+     *
+     * @param string $imgUrl
+     *
+     * @return Group
+     */
+    public function setImgUrl($imgUrl)
+    {
+        $this->imgUrl = $imgUrl;
+
+        return $this;
+    }
+
+    /**
+     * Get imgUrl
+     *
+     * @return string
+     */
+    public function getImgUrl()
+    {
+        return $this->imgUrl;
+    }
 }

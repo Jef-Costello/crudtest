@@ -1,7 +1,7 @@
 import { createStore, compose, applyMiddleware } from 'redux';
 import { syncHistoryWithStore } from 'react-router-redux';
 import { browserHistory } from 'react-router';
-import thunk from 'redux-thunk';
+// import thunk from 'redux-thunk';
 import { createEpicMiddleware } from 'redux-observable';
 // import root reducer
 
@@ -52,6 +52,8 @@ const gmap = {
   waiting: { type: 'NONE' },
   map: null,
 };
+const labels = {};
+
 const connection = {
   root: '',
   loading: false,
@@ -78,7 +80,8 @@ const ui = {
   scroll: 0,
   showmap: false,
   showmenu: false,
-  ptfilterbuttons: [{ value: true, id: 6, name: 'groente' }, { value: true, id: 7, name: 'fruit' }, { value: true, id: 8, name: 'vlees' }, { value: true, id: 9, name: 'vis' }, { value: true, id: 10, name: 'zuivel & eieren' }],
+  ptfilterbuttons: [{ value: false, id: 6, name: 'groente' }, { value: false, id: 7, name: 'fruit' }, { value: false, id: 8, name: 'vlees' }, { value: false, id: 9, name: 'vis' }, { value: false, id: 10, name: 'zuivel & eieren' }],
+  labelfilterbuttons: [{ value: false, id: 1 }, { value: false, id: 2 }, { value: false, id: 3 }, { value: false, id: 4 }, { value: false, id: 5 }, { value: false, id: 6 }, { value: false, id: 7 }, { value: false, id: 8 }, { value: false, id: 9 }],
 };
 
 const products = {
@@ -112,6 +115,7 @@ const defaultState = {
   ui,
   user,
   producttypes,
+  labels,
 
 };
 const rootEpic = combineEpics(

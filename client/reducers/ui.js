@@ -7,6 +7,9 @@ function ui(state = [], action) {
     case 'SET_SEARCH_FOCUS':
 
       return { ...state, searchFocus: action.value };
+    case 'SET_SEARCH_TERM':
+
+      return { ...state, searchterm: action.term };
     case 'SELECT_PRODUCTTYPE':
       // console.log(action);
       return { ...state, ptype: action.id, ptimageurl: action.imgurl };
@@ -98,17 +101,30 @@ function ui(state = [], action) {
       const ptfilterbuttons2 = [false, false, false, false, false];
       return state;
     }
+    case 'INIT_LABEL_FILTER_BUTTONS': {
+      const lbfilterbuttons2 = [false, false, false, false, false];
+      return state;
+    }
     case 'SET_PT_FILTER': {
       const ptfilterbuttons = [...state.ptfilterbuttons];
       ptfilterbuttons[action.id].value = !ptfilterbuttons[action.id].value;
       return { ...state, ptfilterbuttons };
     }
+    case 'SET_LABEL_FILTER': {
+      const labelfilterbuttons = [...state.labelfilterbuttons];
+      labelfilterbuttons[action.id].value = !labelfilterbuttons[action.id].value;
+      return { ...state, labelfilterbuttons };
+    }
     case 'SET_PREVIEW_IMAGE_SRC': { console.log('ée');
       return { ...state, previewimage: action.src };
     }
+    case 'HANDLE_LABELS': {
+      const b = [];
+      action.json.labels.map(() => b.push(false));
+      return { ...state, modalcatbuttons: b }; }
     case 'SET_CAT_BUTTON': {
       const buttons = { ...state.modalcatbuttons };
-      buttons[action.nr] = true;
+      buttons[action.nr] = action.value;
       return { ...state, modalcatbuttons: buttons }; }
     default:
       return state;

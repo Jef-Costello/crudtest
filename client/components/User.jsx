@@ -31,7 +31,9 @@ outline: 0;
 `;
 const User = React.createClass({
 
-
+  enter(e) {
+    if (e.keyCode === 13) { this.props.login(this.refs.name.value, this.refs.password.value); }
+  },
   login(that) {
     this.props.login(that.refs.name.value, that.refs.password.value);
   },
@@ -42,10 +44,10 @@ const User = React.createClass({
     return (
       <ModalInner>
         naam:<br />
-        <input ref="name" type="text" />
+        <input ref="name" type="text" autoCorrect="off" autoCapitalize="none" />
         <br />
         wachtwoord:<br />
-        <input ref="password" type="text" />
+        <input ref="password" type="password" onKeyUp={(e)=> this.enter(e)} />
         <br />
 
         <br />

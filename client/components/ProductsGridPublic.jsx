@@ -6,7 +6,9 @@ import Homemap from '../components/Homemap';
 import styled from 'styled-components';
 
 const ProductContainerInner = styled.div`
-display: flex;
+display: flex;width:100%;
+flex-direction: row;
+    align-content: flex-start;
 flex-wrap: wrap;`;
 const ProductContainer = styled.div`
 display: flex;
@@ -36,7 +38,7 @@ position:relative;
 
   /* Large Devices, Wide Screens */
   @media only screen and (min-width : 1200px) {margin: 0 auto;left:0px;left:0;
-  max-width: 1650px;width:auto;
+  max-width: 1650px;min-width:75%;
 
   }
 

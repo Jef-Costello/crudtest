@@ -22,7 +22,7 @@ function connection(state = [], action) {
       document.cookie = 'ctoken=;path=/';
       document.cookie = 'user=;path=/';
       document.cookie = 'email=;path=/';
-      location.assign('https://www.sublation.nl/web/app_dev.php');
+      location.assign(`${state.root}/web/app_dev.php`);
       return { ...state, token: '', loggedin: false };
 
     case 'HANDLE_USER': {

@@ -19,8 +19,25 @@ function selectLocation(id) {
   return { type: 'SELECT_LOCATION', id };
 }
 export
+function bounceMarker(id, markers) {
+  console.log(id);
+  const indx = markers.map((m) => m.locationId).indexOf(id);
+  markers[indx].setAnimation(google.maps.Animation.BOUNCE);
+
+  function a(markr) { setTimeout(() => { markr.setAnimation(null); }, 2000); }
+  a(markers[indx]);
+
+
+  return { type: 'BOUNCE_MARKER', id };
+}
+
+export
 function setSearchAddress(address) {
   return { type: 'SET_SEARCH_ADDRESS', address };
+}
+export
+function setSearchTerm(term) {
+  return { type: 'SET_SEARCH_TERM', term };
 }
 export
 function addLocationToUser(id) {
@@ -105,8 +122,8 @@ function initPtypeButtons(id) {
   return { type: 'INIT_PTYPE_BUTTONS', id };
 }
 export
-function setCatButton(nr) {
-  return { type: 'SET_CAT_BUTTON', nr };
+function setCatButton(nr, value) {
+  return { type: 'SET_CAT_BUTTON', nr, value };
 }
 export
 function newProductModal() {
@@ -303,6 +320,11 @@ function waitingForGoogle(action) {
 export
 function getToken(json) {
   return { type: 'GET_TOKEN', json };
+}
+export
+
+function setLabelFilter(id) {
+  return { type: 'SET_LABEL_FILTER', id };
 }
 export
 function setPtFilter(id) {

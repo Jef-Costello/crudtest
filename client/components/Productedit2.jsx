@@ -108,16 +108,18 @@ const Productedit2 = React.createClass({
   componentDidMount() {
     console.log('OOOOOOOOOOO');
     this.npname.focus();
-    this.props.setPreviewImageSrc(`/api4/web/${this.props.getSelectedProduct.imgurl}`);
+    this.props.setPreviewImageSrc(`${this.props.connection.root}/web/${this.props.getSelectedProduct.imgurl}`);
 
     const indx = this.props.producttypes.all.map(el =>
       el.id).indexOf(this.props.getSelectedProduct.ptype);
     this.props.initPtypeButtons(this.props.getSelectedProduct.ptype);
     this.props.selectProducttype(this.props.getSelectedProduct.ptype, this.props.producttypes.all[indx].imgurl);
-    this.props.getSelectedProduct.groups.map((el) => this.props.setCatButton(el.groupid - 1));
+    this.props.labels.all.map((el)=> this.props.setCatButton(el.id - 1, false));
+    this.props.getSelectedProduct.groups.map((el) => this.props.setCatButton(el.groupid - 1, true));
     this.props.initLocButtons(this.props.getSelectedProduct.locations, this.props.locations.all);
   },
   render() {
+    let cnt = -1;
     return (
 
       <ModalInner >
@@ -135,9 +137,12 @@ const Productedit2 = React.createClass({
 prijs toevoeging:<input ref={(c) => { this.npricetype = c; }} placeholder="bijv. per kilo" type="text" defaultValue={this.props.getSelectedProduct.pricetype} onKeyPress={this.enterDetect} /><br />
           <br />
           <div className="groups"><br />labels:<br />
-            <Button onClick={(e) => this.pb(e, 0)} ref={(c) => { this.b1 = c; }} className={this.props.ui.modalcatbuttons[0] ? 'selected' : ''}>biologisch</Button>
-            <Button onClick={(e) => this.pb(e, 1)} ref={(c) => { this.b2 = c; }} className={this.props.ui.modalcatbuttons[1] ? 'selected' : ''}>lokaal</Button>
-            <Button onClick={(e) => this.pb(e, 2)} ref={(c) => { this.b3 = c; }} className={this.props.ui.modalcatbuttons[2] ? 'selected' : ''}>duurzaam</Button>
+
+            {this.props.labels.all.map((label) => {
+              cnt += 1; const r = cnt;
+              return (<Button onClick={(e) => this.pb(e, r)} className={this.props.ui.modalcatbuttons[r] ? 'selected' : ''}>{label.name}</Button>);
+            })}
+
           </div>
           <br />beschikbaar bij:<br />
 
@@ -157,7 +162,7 @@ prijs toevoeging:<input ref={(c) => { this.npricetype = c; }} placeholder="bijv.
         )}
           <br />product soort:<br />
           <Pimg><img className="pticon" alt="" src={`${this.props.connection.root}/web/${this.props.ui.ptimageurl}`} /></Pimg>
-          {this.props.producttypes.all.map((pt) => (<Button className={(pt.id === this.props.ui.ptype) ? 'selected' : ''} onClick={(e) => this.selectpt(e, pt.id, pt.imgurl)} key={pt.id}>{pt.name}</Button>))}
+          {this.props.producttypes.all.map((pt) => (pt.id > 5 ? <Button className={(pt.id === this.props.ui.ptype) ? 'selected' : ''} onClick={(e) => this.selectpt(e, pt.id, pt.imgurl)} key={pt.id}>{pt.name}</Button> : null))}
           <br /><br />
         </div>
         <Button className="crud" onClick={this.upload}>opslaan</Button>

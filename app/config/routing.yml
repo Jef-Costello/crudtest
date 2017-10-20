@@ -5,7 +5,7 @@ app_homepublic:
     path:     /
     defaults: { _controller: AppBundle:Default:index }
 app_aanbieders:
-    path:     /aanbieder/{slug}
+    path:     /{slug}
     defaults: { _controller: AppBundle:Default:index }
 app_producten:
     path:     /office/producten

@@ -1,8 +1,42 @@
 import React from 'react';
 import styled from 'styled-components';
 import ModalLogIn from '../components/ModalLogIn';
+import SupplierMap from '../components/SupplierMap';
 import ProductPublic from '../components/ProductPublic';
+import { Link } from 'react-router';
+import Sicon from '../components/Icon';
+import OpeningHours from '../components/OpeningHours';
 
+const Button = styled.button`
+padding: 5px;
+margin-left:25px;
+    font-size: 15px;
+    background: transparent;
+    border-style: none;
+    outline: 0;
+    -webkit-appearance: none;
+    border: none;
+    color: white;
+    float: left;
+    background: rgba(0, 0, 0, 0.36);
+    line-height: 30px;
+    position:absolute;
+bottom:0px;
+    &.bouncey{position:initial;}
+    &.search{float:none;margin:0;padding: 0px 4px 0px 8px;position:initial;}
+`;
+
+const SLink = styled(Link)`
+
+padding-left:3px;
+text-decoration:none;
+font-size:16px;
+color:#254022;
+margin-top:50px;`;
+const SubLocs = styled.div`
+float:right;
+width:25%;
+height:100px; `;
 const Icon = styled.span`
     font-size: 14px;
         color: #406f3a;
@@ -73,7 +107,7 @@ margin: 0 auto;
 max-width: 1200px;
 position:relative;
 
-top: 50px;
+
 
 
 `;
@@ -93,7 +127,8 @@ background: #fff;
 
 position: relative;
 flex-basis:100%;
-box-sizing:border-box;`;
+box-sizing:border-box;
+`;
 const Supplier = React.createClass({
 
   componentDidUpdate() {},
@@ -108,39 +143,57 @@ const Supplier = React.createClass({
 
   render() {
     let products;
-
+    let sublocs;
+    let prodcon;
+    let map;
     if (this.props.locationsPublic.locationPage) {
-      products = this.props.locationsPublic.locationPage.products.map((product, i) =>
-        (<ProductPublic
-          {...this.props}
-          key={product.id}
-
-          i={i}
-          product={product}
-          selectProduct={this.props.selectProduct}
-        />));
+      sublocs = this.props.locationsPublic.locationPage.location.sublocs.map(e=> (<div key={e.id}>
+        <Title>{e.name}</Title><br />{
+        }<br /> {e.address}</div>));
+      sublocs = <SubLocs>afhaal locaties:<br />{sublocs}</SubLocs>;
     }
     if (this.props.locationsPublic.locationPage) {
+      products = this.props.locationsPublic.locationPage.products.map((product, i) =>
+          (<ProductPublic
+            {...this.props}
+            key={product.id}
+
+            i={i}
+            product={product}
+            selectProduct={this.props.selectProduct}
+          />));
+    }
+    if (this.props.ui.showmap) {
+      map = <SupplierMap {...this.props} />;
+    } else {
+      prodcon = (<ProductContainer>
+
+
+        {products}
+      </ProductContainer>);
+    }
+
+    if (this.props.locationsPublic.locationPage) {
       return (<div>
-
-        <ModalLogIn {...this.props} />
-        <br />
-
-        <ProductContainer>
+        <ProductContainer>                                                                                                                                                                                                                                                                      <SLink activeClassName="active" to={`${this.props.connection.root}/web/app_dev.php`}><Sicon>{ String.fromCharCode(0xe80f)}</Sicon>terug</SLink>
           <Ssupplier>
             <ImgContainer><Imghlp />
-              <img src={`/web/${this.props.locationsPublic.locationPage.location.imgurl}`} /></ImgContainer>
+              <img src={`${this.props.connection.root}/web/${this.props.locationsPublic.locationPage.location.imgurl}`} /></ImgContainer>
             <TextContainer>
               <Title>{this.props.locationsPublic.locationPage.location.name}</Title><br />
               {this.props.locationsPublic.locationPage.location.description}
+              <OpeningHours location={this.props.locationsPublic.locationPage.location} />
+              {sublocs}
               <br /><br />
               <Icon>{ String.fromCharCode(0xe808)}</Icon> {this.props.locationsPublic.locationPage.location.address}
             </TextContainer>
+            <Button onClick={this.props.showMap}><Icon>{this.props.ui.showmap ? String.fromCharCode(0xe80b) : String.fromCharCode(0xe808)}</Icon>kaart</Button>
 
+          </Ssupplier>                                                                                                                                                                                                                                                                                                  </ProductContainer>
 
-          </Ssupplier>
-          {products}
-        </ProductContainer></div>);
+        <ModalLogIn {...this.props} />
+        {map}{prodcon}
+      </div>);
     }
     return null;
   },

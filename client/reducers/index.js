@@ -10,8 +10,9 @@ import locations, * as fromLocations from './locations';
 import user from './user';
 import locationsPublic from './locationsPublic';
 import producttypes from './producttypes';
+import labels from './labels';
 
-const rootReducer = combineReducers({ user, connection, gmap, ui, products, productsPublic, locations, locationsPublic, producttypes, routing: routerReducer });
+const rootReducer = combineReducers({ user, connection, gmap, ui, products, productsPublic, locations, locationsPublic, producttypes, labels, routing: routerReducer });
 
 export default rootReducer;
 export const getSelectedProduct = function (state) { return fromProducts.getSelectedProduct(state); };
