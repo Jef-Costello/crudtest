@@ -324,6 +324,10 @@ class UsersController extends FOSRestController implements ClassResourceInterfac
 
         $location=$locationrepo->findOneById($locationId);
         $user->removeDlocation($location);
+        $products=$user->getProducts();
+        foreach($products as $p){ $p->removeLocation($location);
+$em->persist($p);
+        };
         $location->removeUserd($user);
         $em->persist($user);
         $em->persist($location);

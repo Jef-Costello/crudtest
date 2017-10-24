@@ -65,7 +65,7 @@
 /******/ 	}
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "23a9fcd59605d3e0d26d"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "24c784107a1ad8205c93"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -50635,7 +50635,7 @@
 	          _react3.default.createElement(
 	            Button,
 	            { className: 'edit', onClick: this.onClickl },
-	            '                                                                                                                                    ',
+	            '                                                                                                                                                        ',
 	            _react3.default.createElement(
 	              _Icon2.default,
 	              null,
@@ -50727,7 +50727,7 @@
 	            'extern beheerde locaties'
 	          ),
 	          this.props.locations.all.map(function (location) {
-	            return location.userid != _this.props.user.userid && _this.props.locations.dlocations.map(function (e) {
+	            return location.userid != _this.props.user.userid && location.type != 'Primary' && _this.props.locations.dlocations.map(function (e) {
 	              return e.id;
 	            }).indexOf(location.id) == -1 ? _react3.default.createElement(_ExtLocation2.default, _extends({}, _this.props, { location: location, key: location.id })) : '';
 	          })

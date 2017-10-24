@@ -458,6 +458,7 @@ class LocationController extends FOSRestController implements ClassResourceInter
         $em = $this->getDoctrine()->getEntityManager();
         $repository = $em->getRepository("AppBundle:User");
         $user =  $this->get('security.token_storage')->getToken()->getUser();
+        $products=$user->getProducts();
 
         $location = $this->getDoctrine()
        ->getRepository('AppBundle:Location')
@@ -466,7 +467,7 @@ class LocationController extends FOSRestController implements ClassResourceInter
             $em->remove($location);
             $em->flush();
         }
-
+        foreach($product as $p){ $p->removeLocation($location); };
         echo 'location deleted';
         exit;
     }

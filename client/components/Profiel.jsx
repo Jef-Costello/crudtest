@@ -198,7 +198,7 @@ const Profiel = React.createClass({
             <br /><br />
             <Icon>{ String.fromCharCode(0xe808)}</Icon> {this.props.getProducerLocation.address}
           </TextContainer>
-          <Button className="edit" onClick={this.onClickl}>                                                                                                                                    <Icon>{ String.fromCharCode(0xe800)}</Icon></Button>
+          <Button className="edit" onClick={this.onClickl}>                                                                                                                                                        <Icon>{ String.fromCharCode(0xe800)}</Icon></Button>
 
         </Ssupplier>
 
@@ -235,7 +235,7 @@ const Profiel = React.createClass({
           </MyLocations>
 
           <AllLocations><SectionHeader>extern beheerde locaties</SectionHeader>
-            {this.props.locations.all.map((location) => ((location.userid != this.props.user.userid && this.props.locations.dlocations.map((e)=> e.id).indexOf(location.id) == -1) ? <ExtLocation {...this.props} location={location} key={location.id} /> : ''))}
+            {this.props.locations.all.map((location) => ((location.userid != this.props.user.userid && location.type != 'Primary' && this.props.locations.dlocations.map((e)=> e.id).indexOf(location.id) == -1) ? <ExtLocation {...this.props} location={location} key={location.id} /> : ''))}
           </AllLocations>
         </Section>
 
